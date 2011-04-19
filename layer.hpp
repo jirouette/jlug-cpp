@@ -1,6 +1,7 @@
 #ifndef LAYER_HPP_INCLUDED
 #define LAYER_HPP_INCLUDED
 
+#include <iostream>
 #include "utils.hpp"
 
 namespace jlug
@@ -42,6 +43,8 @@ namespace jlug
             jlug::Collision& collision(unsigned int x, unsigned int y);
 
 
+            friend std::ostream& jlug::operator<< (std::ostream& flux, jlug::Layer& layer);
+
         private:
             unsigned int width; // in tiles
             unsigned int height; // in tiles
@@ -57,6 +60,5 @@ namespace jlug
             std::string name;
     };
 }
-
 
 #endif // LAYER_HPP_INCLUDED

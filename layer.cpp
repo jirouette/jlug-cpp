@@ -165,3 +165,19 @@ jlug::Collision& jlug::Layer::collision(unsigned int x, unsigned int y)
 {
     return collisions.at(x).at(y);
 }
+
+
+
+
+
+
+std::ostream& jlug::operator<< (std::ostream& flux, jlug::Layer& layer)
+{
+     layer.getWidth();
+     flux << "Layer \"" << layer.name << "\". " << std::endl;
+     flux << "size = (" << layer.width << ", " << layer.height << "). " << std::endl;
+     flux << "tileSize = (" << layer.tileWidth << ", " << layer.tileHeight << "). " << std::endl;
+     flux << ((layer.visible) ? "Visible. " : "Not visible. ") << std::endl;
+     flux << "Opacity = " << layer.opacity << std::endl;
+     return flux;
+}

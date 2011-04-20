@@ -22,7 +22,7 @@ namespace jlug
             bool setTileSize(jlug::Rect tileSize);
             bool setOpacity(double paramOpacity);
             bool setVisible(bool paramVisible);
-            bool setName(std::string paramName);
+            bool setName(const std::string& paramName);
 
             /*bool addTileset(std::string tileset, unsigned int tilesetWidth, unsigned int tilesetHeight);
             bool addTileset(std::string tileset, jlug::Rect tilesetSize);

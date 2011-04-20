@@ -16,6 +16,11 @@ namespace jlug
         VOID, WALL, SURF, LAYERUP, LAYERDOWN
     };
 
+    enum Weather
+    {
+        NORMAL, RAIN, STORM, SNOW, FOG, SUNSHINE
+    };
+
 
 
 

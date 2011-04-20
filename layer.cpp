@@ -91,7 +91,7 @@ bool jlug::Layer::setVisible(bool paramVisible)
     return true;
 }
 
-bool jlug::Layer::setName(std::string paramName)
+bool jlug::Layer::setName(const std::string& paramName)
 {
     name = paramName;
     return true;

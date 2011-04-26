@@ -1,183 +1,146 @@
 #include "layer.hpp"
 
-
-jlug::Layer::Layer(unsigned int paramWidth, unsigned int paramHeight, unsigned int paramTileWidth, unsigned int paramTileHeight):
-                width(paramWidth), height(paramHeight), tileWidth(paramTileWidth), tileHeight(paramTileHeight),
-                tilesets(), tilesetsSizes(), tiles(), collisions(), opacity(1.0), visible(true), name("")
+/**
+* \brief Constructor
+*/
+jlug::Layer::Layer():
+                tiles(), collisions(), opacity(1.0), visible(true), name("")
 {}
 
+/**
+* \brief Destructor
+* Nothing to do.
+*/
 jlug::Layer::~Layer(void)
 {}
 
-bool jlug::Layer::setWidth(unsigned int paramWidth)
-{
-    if (paramWidth <= 0)
-        return false;
-    width = paramWidth;
-    return true;
-}
-
-bool jlug::Layer::setHeight(unsigned int paramHeight)
-{
-    if (paramHeight <= 0)
-        return false;
-    height = paramHeight;
-    return true;
-}
-
-bool jlug::Layer::setSize(unsigned int paramWidth, unsigned int paramHeight)
-{
-    if (paramWidth <= 0 || paramHeight <= 0)
-        return 0;
-    width = paramWidth;
-    height = paramHeight;
-    return true;
-}
-
-bool jlug::Layer::setSize(jlug::Rect size)
-{
-    if ((size.w <= 0 && size.x <= 0) || (size.h <= 0 && size.y <= 0))
-        return false;
-    width = (size.w <= 0) ? size.x : size.w;
-    height = (size.h <= 0) ? size.y : size.h;
-    return true;
-}
-
-bool jlug::Layer::setTileWidth(unsigned int paramTileWidth)
-{
-    if (paramTileWidth <= 0)
-        return false;
-    tileWidth = paramTileWidth;
-    return true;
-}
-
-bool jlug::Layer::setTileHeight(unsigned int paramTileHeight)
-{
-    if (paramTileHeight <= 0)
-        return false;
-    tileHeight = paramTileHeight;
-    return true;
-}
-
-bool jlug::Layer::setTileSize(unsigned int paramTileWidth, unsigned int paramTileHeight)
-{
-    if (paramTileWidth <= 0 || paramTileHeight <= 0)
-        return false;
-    tileWidth = paramTileWidth;
-    tileHeight = paramTileHeight;
-    return true;
-}
-
-bool jlug::Layer::setTileSize(jlug::Rect tileSize)
-{
-    if ((tileSize.x <= 0 && tileSize.w <= 0) || (tileSize.y <= 0 && tileSize.h <= 0))
-        return false;
-    tileWidth = (tileSize.w <= 0) ? tileSize.x : tileSize.w;
-    tileHeight = (tileSize.h <= 0) ? tileSize.y : tileSize.h;
-    return true;
-}
-
+/**
+* \brief set the opacity of the layer
+* \param paramOpacity : opacity value. Between 0 and 1.
+* \return return true if succeed, otherwise false.
+*/
 bool jlug::Layer::setOpacity(double paramOpacity)
 {
-    if (paramOpacity < 0 || paramOpacity > 1)
+    if (paramOpacity < 0.0 || paramOpacity > 1.0)
         return false;
     opacity = paramOpacity;
     return true;
 }
 
+/**
+* \brief set the visible state of the layer.
+* \param paramVisible : true = visible / false = not visible
+* \return true
+*/
 bool jlug::Layer::setVisible(bool paramVisible)
 {
     visible = paramVisible;
     return true;
 }
 
+/**
+* \brief set the name of the layer
+* \param paramName : new name
+* \return true
+*/
 bool jlug::Layer::setName(const std::string& paramName)
 {
     name = paramName;
     return true;
 }
 
-
-
-
-unsigned int jlug::Layer::getWidth(void)
+/**
+* \brief clear the layer. All attributes returns to default values.
+* \return true
+*/
+bool jlug::Layer::clear(void)
 {
-    return width;
+    tiles.clear();
+    collisions.clear();
+    opacity = 1.0;
+    visible = true;
+    name = "";
+    return true;
 }
 
-unsigned int jlug::Layer::getHeight(void)
-{
-    return height;
-}
-
-jlug::Rect jlug::Layer::getSize(void)
-{
-    jlug::Rect size;
-    size.x = 0;
-    size.y = 0;
-    size.w = width;
-    size.h = height;
-    return size;
-}
-
-unsigned int jlug::Layer::getTileWidth(void)
-{
-    return tileWidth;
-}
-
-unsigned int jlug::Layer::getTileHeight(void)
-{
-    return tileHeight;
-}
-
-jlug::Rect jlug::Layer::getTileSize(void)
-{
-    jlug::Rect tileSize;
-    tileSize.x = 0;
-    tileSize.y = 0;
-    tileSize.w = tileWidth;
-    tileSize.h = tileHeight;
-    return tileSize;
-}
-
+/**
+* \brief get the opacity of the layer
+* \return opacity (between 0 and 1)
+*/
 double jlug::Layer::getOpacity(void)
 {
     return opacity;
 }
 
+/**
+* \brief say if the layer is visible
+* \return true if visible, false if not visible
+*/
 bool jlug::Layer::isVisible(void)
 {
     return visible;
 }
 
+/**
+* \brief get the name of the layer
+* \return name of the layer
+*/
 std::string jlug::Layer::getName(void)
 {
     return name;
 }
 
-
+/**
+* \brief get the GID of a tile
+* \param x : X-position of the tile
+* \param y : Y-position of the tile
+* \return Value of the GID. If the tile does not exist or if the tile is forbidden, returns UINT_MAX or 0.
+*/
 unsigned int& jlug::Layer::tile(unsigned int x, unsigned int y)
 {
-    return tiles.at(x).at(y);
+    unsigned int gid(UINT_MAX);
+    try
+    {
+        gid = tiles.at(x).at(y);
+    }
+    catch (const std::exception& e)
+    {
+        // we don't care this exception.
+        // but this means gid = UINT_MAX.
+    }
+    return gid;
 }
 
+/**
+* \brief get the collision state of a tile
+* \param x : X-position of the tile
+* \param y : Y-position of the tile
+* \return Value of the collision state.
+* \bug This method does not work yet.
+*/
 jlug::Collision& jlug::Layer::collision(unsigned int x, unsigned int y)
 {
     return collisions.at(x).at(y);
 }
 
 
-
-
-
-
-std::ostream& jlug::operator<< (std::ostream& flux, jlug::Layer& layer)
+/**
+* \brief set a GID to a tile
+* \param x : X-position of the tile
+* \param y : Y-position of the tile
+* \param gid : new GID of the tile
+* \return true
+*
+* Set a GID to a tile. If the tile does not exist, it is created.
+*/
+bool jlug::Layer::setTile(unsigned int x, unsigned int y, unsigned int gid)
 {
-     layer.getWidth();
-     flux << "Layer \"" << layer.name << "\". " << std::endl;
-     flux << "size = (" << layer.width << ", " << layer.height << "). " << std::endl;
-     flux << "tileSize = (" << layer.tileWidth << ", " << layer.tileHeight << "). " << std::endl;
-     flux << ((layer.visible) ? "Visible. " : "Not visible. ") << std::endl;
-     flux << "Opacity = " << layer.opacity << std::endl;
-     return flux;
+    if (tiles.size() < (x+1)) // If row is not large enough, we resize it.
+        tiles.resize(x+1);
+    if (tiles[x].size() < (y+1)) // If column is not large enough, we resize it.
+        tiles[x].resize(y+1, UINT_MAX); // We fill blank values created by resizing with UINT_MAX
+
+    tiles[x][y] = gid;
+    return true;
 }
+

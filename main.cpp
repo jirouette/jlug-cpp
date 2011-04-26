@@ -1,16 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include "example.hpp"
-#include "layer.hpp"
-#include "tmxfile.hpp"
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    jlug::Layer layer;
-    layer.setOpacity(0.521);
-    layer.setName("My first layer");
-    std::cout << layer;
-
-    jlug::TmxFile map("D:\\projets\\sans-titre.tmx");
-    std::cout << "Weather = " << map.getMapProperty("weather") << std::endl;
+    game();
     return 0;
 }

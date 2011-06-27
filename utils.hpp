@@ -10,6 +10,7 @@
 #include <vector>
 #include <climits>
 #include "utils/base64.h" // <- base64 functions by Bernard Chardonneau
+#define ABS(x) ((x<0)?(-(x)):(x))
 
 /**
 * \namespace jlug
@@ -141,6 +142,31 @@ namespace jlug
         };
     }
 
+
+    /**
+    * \namespace jlug::Move
+    * \brief Contains directions.
+    */
+    namespace Move
+    {
+        /**
+        * \enum Direction
+        * \brief Character's directions.
+        */
+        enum Direction
+        {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT,
+            NONE,
+
+            Count
+        };
+
+
+
+    }
 }
 
 

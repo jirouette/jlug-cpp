@@ -5,6 +5,7 @@
 #include "tmxfile.hpp"
 #include "map.hpp"
 #include "window.hpp"
+#include "character.hpp"
 
 void game(void);
 

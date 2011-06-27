@@ -16,7 +16,7 @@
 */
 
 jlug::Character::Character(jlug::ImageManager& imageM):
-                        charset(0), name(""), x(0), y(0), z(0), IM(imageM)
+                        charset(0), name(""), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
 {}
 
 /**
@@ -29,7 +29,7 @@ jlug::Character::Character(jlug::ImageManager& imageM):
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(0), y(0), z(0), IM(imageM)
+                        charset(cid), name(cname), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
 {}
 
 /**
@@ -44,7 +44,7 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::Ima
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM)
+                        charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
 {}
 
 /**
@@ -59,30 +59,43 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM)
+                        charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
 {}
 
 
+
+/**
+* \brief Destructor
+*/
+
+jlug::Character::~Character(void)
+{}
+
 /**
 * \brief set manually an X-position
+* \param posx : new X-position
 */
 
 void jlug::Character::setX(unsigned int posx)
   {
       x = posx;
+      pixX = x*16;
   }
 
 /**
 * \brief set manually an Y-position
+* \param posy : new Y-position
 */
 
 void jlug::Character::setY(unsigned int posy)
  {
      y = posy;
+     pixY = y*16;
  }
 
 /**
 * \brief set manually a Z-position
+* \param posz : new Z-position
 */
 
 void jlug::Character::setZ(unsigned int posz)
@@ -92,26 +105,32 @@ void jlug::Character::setZ(unsigned int posz)
 
 
 /**
-* \brief set manually a 2D position
+* \brief set manually a 2D coord
+* \param posx : new X-position
+* \param posy : new Y-position
 */
-void jlug::Character::setPosition(unsigned int posx, unsigned int posy)
+void jlug::Character::setCoord(unsigned int posx, unsigned int posy)
  {
      setX(posx);
      setY(posy);
  }
 
 /**
-* \brief set manually a 3D position
+* \brief set manually a 3D coord
+* \param posx : new X-position
+* \param posy : new Y-position
+* \param posz : new Z-position
 */
 
-void jlug::Character::setPosition(unsigned int posx, unsigned int posy, unsigned int posz)
+void jlug::Character::setCoord(unsigned int posx, unsigned int posy, unsigned int posz)
  {
-     setPosition(posx, posy);
+     setCoord(posx, posy);
      setZ(posz);
  }
 
 /**
 * \brief set manually a charset
+* \param cid : new charset
 */
 
 void jlug::Character::setCharset(unsigned int cid)
@@ -121,12 +140,45 @@ void jlug::Character::setCharset(unsigned int cid)
 
 /**
 * \brief set manually a name
+* \param cname : new name
 */
 
 void jlug::Character::setName(const std::string& cname)
  {
      name = cname;
  }
+
+/**
+* \brief set sprite position
+* \param pos : new sprite position
+*/
+
+void jlug::Character::setPosition(const jlug::Move::Direction& pos)
+ {
+     position = pos;
+ }
+
+/**
+* \brief set move direction
+* \param dir : new move direction
+*/
+
+void jlug::Character::setDirection(const jlug::Move::Direction& dir)
+ {
+     previousDirection = direction;
+     direction = dir;
+ }
+
+/**
+* \brief set speed
+* \param speedParam : new speed
+*/
+
+void jlug::Character::setSpeed(unsigned int speedParam)
+ {
+     speed = speedParam;
+ }
+
 
 
 
@@ -162,14 +214,14 @@ unsigned int jlug::Character::getZ(void)
  }
 
 /**
-* \brief get character's 2D position
-* \return 2D position in a Rect
+* \brief get character's 2D coord
+* \return 2D coord in a Rect
 */
 
-jlug::Rect jlug::Character::getPosition(void)
+jlug::Rect jlug::Character::getCoord(void)
  {
-     jlug::Rect position = {x, y, 0, 0};
-     return position;
+     jlug::Rect coord = {x, y, 0, 0};
+     return coord;
  }
 
 /**
@@ -190,4 +242,118 @@ unsigned int jlug::Character::getCharset(void)
 const std::string& jlug::Character::getName(void)
  {
      return name;
+ }
+
+/**
+* \brief get sprite's position
+* \return sprite's position in a Move::Direction
+*/
+
+const jlug::Move::Direction& jlug::Character::getPosition(void)
+ {
+     return position;
+ }
+
+/**
+* \brief get character's move direction
+* \return character's move direction in a Move::Direction
+*/
+
+const jlug::Move::Direction& jlug::Character::getDirection(void)
+ {
+     return direction;
+ }
+
+/**
+* \brief get character's speed
+* \return character's speed
+*/
+
+unsigned int jlug::Character::getSpeed(void)
+ {
+     return speed;
+ }
+
+
+
+
+
+
+/**
+* \brief move the character
+*/
+
+void jlug::Character::move(jlug::Map& map)
+ {
+     unsigned int altSpeed(0);
+     unsigned int tileWidth(map.getTileWidth());
+     unsigned int tileHeight(map.getTileHeight());
+
+     switch (direction)
+     {
+         case jlug::Move::UP:
+            pixY -= speed;
+         break;
+
+         case jlug::Move::DOWN:
+            pixY += speed;
+         break;
+
+         case jlug::Move::LEFT:
+            pixX -= speed;
+         break;
+
+         case jlug::Move::RIGHT:
+            pixX += speed;
+         break;
+
+         case jlug::Move::NONE:
+         default:
+            if (pixX%tileWidth != 0)
+            {
+                altSpeed = speed;
+                while (ABS(x*16-pixX) < altSpeed)
+                    altSpeed /= 2;
+                if (x*16 != pixX)
+                {
+                    if (previousDirection == jlug::Move::RIGHT)
+                        pixX += altSpeed;
+                    else if (previousDirection == jlug::Move::LEFT)
+                        pixX -= altSpeed;
+                }
+            }
+            if (pixY%tileHeight != 0)
+            {
+                altSpeed = speed;
+                while (ABS(y*16-pixY) < altSpeed)
+                    altSpeed /= 2;
+                if (y*16 != pixY)
+                {
+                    if (previousDirection == jlug::Move::DOWN)
+                        pixY += altSpeed;
+                    else if (previousDirection == jlug::Move::UP)
+                        pixY -= altSpeed;
+                }
+            }
+         break;
+     }
+
+     if (ABS((x*tileWidth)-pixX) == tileWidth)
+        x = pixX/tileWidth;
+     if (ABS((y*tileHeight)-pixY) == tileHeight)
+        y = pixY/tileHeight;
+ }
+
+
+/**
+* \brief display the character on the screen
+*/
+
+void jlug::Character::display(jlug::Map& map, jlug::Window& win)
+ {
+    //std::string filename("");
+    //filename = charset + ".png";
+    jlug::Image sprite = IM["4.png"];
+    sprite.setBlitRect(sprite.getWidth()/2, 0, sprite.getWidth()/2, sprite.getHeight()/6);
+    win.blit(sprite, pixX-map.xscroll, pixY-map.yscroll);
  }

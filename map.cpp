@@ -4,7 +4,7 @@
 * \brief Constructor
 * \param imageM : reference to the ImageManager instance.
 *
-* Initialisize everything to default.
+* Initialize everything to default.
 */
 jlug::Map::Map(jlug::ImageManager& imageM):
                 width(0), height(0), tileWidth(0), tileHeight(0),
@@ -18,7 +18,7 @@ jlug::Map::Map(jlug::ImageManager& imageM):
 * \param filename : path to map file
 * \param imageM : reference to the ImageManager instance.
 *
-* Initialisize everything to default and then, load the map.
+* Initialize everything to default and then, load the map.
 */
 jlug::Map::Map(const std::string& filename, jlug::ImageManager& imageM):
                 width(0), height(0), tileWidth(0), tileHeight(0),

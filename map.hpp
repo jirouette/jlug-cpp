@@ -29,6 +29,9 @@ namespace jlug
     class Map
     {
         public:
+
+            int xscroll, yscroll; // To be changed
+
             Map(jlug::ImageManager& imageM);
             Map(const std::string& filename, jlug::ImageManager& imageM);
             ~Map(void);
@@ -57,14 +60,16 @@ namespace jlug
 
             bool displayLayer(jlug::Window& win, int index);
 
-            int xscroll, yscroll; // To be changed
-
 
         private:
             unsigned int width; /*!< width in tiles */
             unsigned int height; /*!< height in tiles */
             unsigned int tileWidth; /*!< width of tiles in px */
             unsigned int tileHeight; /*!< height of tiles in px */
+
+            //int xscroll; /*!< X-position of the camera on the map */
+            //int yscroll; /*!< Y-position of the camera on the map */
+
             std::vector<jlug::Tileset> tilesets; /*!< tilesets */
             std::vector<jlug::Rect> gidRects; /*!< rect for each GID in their tileset. */
             std::vector<jlug::Tileset*> gidTilesets;/*!< tileset for each GID */

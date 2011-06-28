@@ -45,6 +45,8 @@ namespace jlug
             void setDirection(const jlug::Move::Direction& dir);
             void setSpeed(unsigned int speedParam);
 
+            void setMove(const jlug::Move::Direction& dir, unsigned int speedParam = 0);
+
             unsigned int getX(void);
             unsigned int getY(void);
             unsigned int getZ(void);
@@ -58,6 +60,9 @@ namespace jlug
 
             void move(jlug::Map& map);
             void display(jlug::Map& map, jlug::Window& win);
+
+
+            static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
 
 
 

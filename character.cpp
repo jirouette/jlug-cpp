@@ -155,7 +155,8 @@ void jlug::Character::setName(const std::string& cname)
 
 void jlug::Character::setPosition(const jlug::Move::Direction& pos)
  {
-     position = pos;
+     if (pos != jlug::Move::NONE)
+        position = pos;
  }
 
 /**
@@ -374,9 +375,122 @@ void jlug::Character::move(jlug::Map& map)
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     jlug::Image sprite(IM["4.png"]);
-    sprite.setBlitRect(sprite.getWidth()/2, 0, sprite.getWidth()/2, sprite.getHeight()/6);
+    jlug::Rect rect(getCharsetRect(position, 0, sprite.getWidth(), sprite.getHeight()));
+    sprite.setBlitRect(rect);
+
     win.blit(sprite,
             pixX-map.xscroll+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
             pixY-map.yscroll-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
             );
+ }
+
+
+/**
+* \brief make character moving
+* \param dir : character's move direction and character's position
+* \param speedParam : Facultative. New speed.
+*/
+
+void jlug::Character::setMove(const jlug::Move::Direction& dir, unsigned int speedParam)
+ {
+     setDirection(dir);
+     setPosition(dir);
+     if (speedParam > 0)
+        setSpeed(speedParam);
+ }
+
+/**
+* \brief get charset's rect in order to obtain the sprite of a position
+* \param pos : character's position
+* \param move : Facultative. State of character's moving.
+* \param width : Facultative. Width of the charset.
+* \param height : Facultative. Height of the charset.
+*/
+
+jlug::Rect jlug::Character::getCharsetRect(const jlug::Move::Direction& pos, unsigned int move, unsigned int width, unsigned int height)
+ {
+     jlug::Rect rect = {0, 0, 1, 1};
+     switch (pos)
+     {
+         default:
+         case jlug::Move::DOWN:
+            if (move == 0)
+            {
+                rect.x = 1;
+                rect.y = 0;
+            }
+            else if (move == 1)
+            {
+                rect.x = 1;
+                rect.y = 2;
+            }
+            else if (move == 2)
+            {
+                rect.x = 1;
+                rect.y = 3;
+            }
+         break;
+
+         case jlug::Move::UP:
+            if (move == 0)
+            {
+                rect.x = 0;
+                rect.y = 0;
+            }
+            else if (move == 1)
+            {
+                rect.x = 0;
+                rect.y = 2;
+            }
+            else if (move == 2)
+            {
+                rect.x = 0;
+                rect.y = 3;
+            }
+         break;
+
+         case jlug::Move::LEFT:
+            if (move == 0)
+            {
+                rect.x = 0;
+                rect.y = 1;
+            }
+            else if (move == 1)
+            {
+                rect.x = 0;
+                rect.y = 4;
+            }
+            else if (move == 2)
+            {
+                rect.x = 0;
+                rect.y = 5;
+            }
+         break;
+
+         case jlug::Move::RIGHT:
+            if (move == 0)
+            {
+                rect.x = 1;
+                rect.y = 1;
+            }
+            else if (move == 1)
+            {
+                rect.x = 1;
+                rect.y = 4;
+            }
+            else if (move == 2)
+            {
+                rect.x = 1;
+                rect.y = 5;
+            }
+         break;
+
+     }
+
+     rect.x *= width/2;
+     rect.y *= height/6;
+     rect.w *= width/2;
+     rect.h *= height/6;
+
+     return rect;
  }

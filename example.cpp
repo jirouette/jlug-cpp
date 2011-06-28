@@ -10,15 +10,15 @@ void game(void)
 
     perso.setCoord(3, 3);
     perso.setSpeed(5);
-    perso.setDirection(jlug::Move::RIGHT);
+    perso.setMove(jlug::Move::RIGHT);
     int i = -16;
     while(!input[jlug::KeyCode::Escape] && win.isOpen())
     {
         //win.processEvents(); // Facultative because isOpen() does processEvents().
         if (input[jlug::KeyCode::Space])
-            perso.setDirection(jlug::Move::DOWN);
+            perso.setMove(jlug::Move::DOWN);
         if (input[jlug::KeyCode::Ctrl])
-            perso.setDirection(jlug::Move::NONE);
+            perso.setMove(jlug::Move::NONE);
         perso.move(map);
         if (input[jlug::KeyCode::Left])
             map.xscroll-= 16;

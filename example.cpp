@@ -9,7 +9,7 @@ void game(void)
     jlug::Map map("map.tmx", IM);
 
     perso.setCoord(3, 3);
-    perso.setSpeed(1);
+    perso.setSpeed(5);
     perso.setDirection(jlug::Move::RIGHT);
     int i = -16;
     while(!input[jlug::KeyCode::Escape] && win.isOpen())

@@ -165,7 +165,8 @@ void jlug::Character::setPosition(const jlug::Move::Direction& pos)
 
 void jlug::Character::setDirection(const jlug::Move::Direction& dir)
  {
-     previousDirection = direction;
+     if (direction != dir)
+        previousDirection = direction;
      direction = dir;
  }
 
@@ -288,6 +289,7 @@ void jlug::Character::move(jlug::Map& map)
      unsigned int altSpeed(0);
      unsigned int tileWidth(map.getTileWidth());
      unsigned int tileHeight(map.getTileHeight());
+     int pixbetween(0);
 
      switch (direction)
      {
@@ -312,35 +314,55 @@ void jlug::Character::move(jlug::Map& map)
             if (pixX%tileWidth != 0)
             {
                 altSpeed = speed;
-                while (ABS(x*16-pixX) < altSpeed)
+
+                // Pix between the current tile and the next tile
+
+                if (previousDirection == jlug::Move::RIGHT)
+                    pixbetween = ABS(((x+1)*16)-pixX);
+                else if (previousDirection == jlug::Move::LEFT)
+                    pixbetween = ABS(((x-1)*16)-pixX);
+
+
+                while (pixbetween < altSpeed) // If speed is too big, we reduce it.
                     altSpeed /= 2;
-                if (x*16 != pixX)
-                {
-                    if (previousDirection == jlug::Move::RIGHT)
-                        pixX += altSpeed;
-                    else if (previousDirection == jlug::Move::LEFT)
-                        pixX -= altSpeed;
-                }
+
+                // Then, we go to this next tile
+
+                if (previousDirection == jlug::Move::RIGHT)
+                    pixX += altSpeed;
+                else if (previousDirection == jlug::Move::LEFT)
+                    pixX -= altSpeed;
             }
             if (pixY%tileHeight != 0)
             {
                 altSpeed = speed;
-                while (ABS(y*16-pixY) < altSpeed)
+
+                // Pix between the current tile and the next tile
+
+                if (previousDirection == jlug::Move::DOWN)
+                    pixbetween = ABS(((y+1)*16)-pixY);
+                else if (previousDirection == jlug::Move::UP)
+                    pixbetween = ABS(((y-1)*16)-pixY);
+
+
+                while (pixbetween < altSpeed) // If speed is too big, we reduce it.
                     altSpeed /= 2;
-                if (y*16 != pixY)
-                {
-                    if (previousDirection == jlug::Move::DOWN)
-                        pixY += altSpeed;
-                    else if (previousDirection == jlug::Move::UP)
-                        pixY -= altSpeed;
-                }
+
+                // Then, we go to this next tile
+
+                if (previousDirection == jlug::Move::DOWN)
+                    pixY += altSpeed;
+                else if (previousDirection == jlug::Move::UP)
+                    pixY -= altSpeed;
             }
          break;
      }
 
-     if (ABS((x*tileWidth)-pixX) == tileWidth)
+     // Refreshing tile position with pixel position
+
+     if (ABS((x*tileWidth)-pixX) >= tileWidth)
         x = pixX/tileWidth;
-     if (ABS((y*tileHeight)-pixY) == tileHeight)
+     if (ABS((y*tileHeight)-pixY) >= tileHeight)
         y = pixY/tileHeight;
  }
 
@@ -351,9 +373,10 @@ void jlug::Character::move(jlug::Map& map)
 
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
-    //std::string filename("");
-    //filename = charset + ".png";
-    jlug::Image sprite = IM["4.png"];
+    jlug::Image sprite(IM["4.png"]);
     sprite.setBlitRect(sprite.getWidth()/2, 0, sprite.getWidth()/2, sprite.getHeight()/6);
-    win.blit(sprite, pixX-map.xscroll, pixY-map.yscroll);
+    win.blit(sprite,
+            pixX-map.xscroll+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
+            pixY-map.yscroll-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
+            );
  }

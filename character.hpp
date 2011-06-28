@@ -60,6 +60,7 @@ namespace jlug
 
             void move(jlug::Map& map);
             void display(jlug::Map& map, jlug::Window& win);
+            void animate(void);
 
 
             static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
@@ -82,6 +83,12 @@ namespace jlug
             jlug::Move::Direction direction; /*!< move direction */
             jlug::Move::Direction previousDirection; /*!< previous move direction */
             unsigned int speed; /*!< Velocity in pixels */
+
+            bool isMoving;
+            unsigned char animation;
+            unsigned char previousAnimation;
+            clock_t lastAnimation;
+            double animationTime;
 
 
             jlug::ImageManager& IM; /*!< image manager */

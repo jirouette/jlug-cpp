@@ -16,7 +16,9 @@
 */
 
 jlug::Character::Character(jlug::ImageManager& imageM):
-                        charset(0), name(""), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
+                        charset(0), name(""), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
+                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
 {}
 
 /**
@@ -29,7 +31,9 @@ jlug::Character::Character(jlug::ImageManager& imageM):
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
+                        charset(cid), name(cname), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
+                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
 {}
 
 /**
@@ -44,7 +48,9 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::Ima
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
+                        charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
+                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
 {}
 
 /**
@@ -59,7 +65,9 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4)
+                        charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
+                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
 {}
 
 
@@ -292,6 +300,8 @@ void jlug::Character::move(jlug::Map& map)
      unsigned int tileHeight(map.getTileHeight());
      int pixbetween(0);
 
+     isMoving = true;
+
      switch (direction)
      {
          case jlug::Move::UP:
@@ -334,7 +344,7 @@ void jlug::Character::move(jlug::Map& map)
                 else if (previousDirection == jlug::Move::LEFT)
                     pixX -= altSpeed;
             }
-            if (pixY%tileHeight != 0)
+            else if (pixY%tileHeight != 0)
             {
                 altSpeed = speed;
 
@@ -356,6 +366,8 @@ void jlug::Character::move(jlug::Map& map)
                 else if (previousDirection == jlug::Move::UP)
                     pixY -= altSpeed;
             }
+            else
+                isMoving = false;
          break;
      }
 
@@ -370,12 +382,18 @@ void jlug::Character::move(jlug::Map& map)
 
 /**
 * \brief display the character on the screen
+* \param map : reference to the current map
+* \param win : reference to the current window
 */
 
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     jlug::Image sprite(IM["4.png"]);
-    jlug::Rect rect(getCharsetRect(position, 0, sprite.getWidth(), sprite.getHeight()));
+    jlug::Rect rect;
+
+    animate();
+
+    rect = getCharsetRect(position, animation, sprite.getWidth(), sprite.getHeight());
     sprite.setBlitRect(rect);
 
     win.blit(sprite,
@@ -384,6 +402,38 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
             );
  }
 
+
+/**
+* \brief animate the character
+*/
+
+void jlug::Character::animate(void)
+ {
+     clock_t now(clock());
+     if (isMoving)
+     {
+         //std::cout << "now-lastAnimation/CLOCK(" << static_cast<double>(static_cast<double>(now-lastAnimation)/CLOCKS_PER_SEC) << ") > " << animationTime << std::endl;
+         if (static_cast<double>(static_cast<double>(now-lastAnimation)/CLOCKS_PER_SEC) > animationTime)
+         {
+             if (animation != 0)
+             {
+                 previousAnimation = animation;
+                 animation = 0;
+             }
+             else
+             {
+                 if (previousAnimation == 1)
+                    animation = 2;
+                 else if (previousAnimation == 2)
+                    animation = 1;
+             }
+             lastAnimation = now;
+             //std::cout << "OK" << std::endl;
+         }
+     }
+     else
+        animation = 0;
+ }
 
 /**
 * \brief make character moving

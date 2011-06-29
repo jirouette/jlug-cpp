@@ -38,7 +38,7 @@ namespace jlug
             bool setAlpha(const std::string& filename, unsigned int a);
             bool deleteImage(const std::string& filename);
 
-        private:
+        protected:
             std::map<std::string, sf::Image> images; /*!< Images stored by filename */
     };
 }

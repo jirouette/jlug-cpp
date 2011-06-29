@@ -43,7 +43,7 @@ namespace jlug
             const jlug::Input& getInput(void);
 
             bool isOpen(void);
-        private:
+        protected:
             sf::RenderWindow win; /*!< Graphic library's window */
             jlug::Rect blitRect; /*!< rect which delimits the blit */
     };

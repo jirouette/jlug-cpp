@@ -25,7 +25,7 @@ namespace jlug
     */
     class Image
     {
-        private:
+        protected:
             sf::Sprite image; /*!< Graphic library's variable. Core of the image. */
             jlug::Rect blitRect; /*!< Rect which sets limits of blitting an Image. */
 

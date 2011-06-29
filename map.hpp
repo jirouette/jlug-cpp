@@ -61,7 +61,7 @@ namespace jlug
             bool displayLayer(jlug::Window& win, int index);
 
 
-        private:
+        protected:
             unsigned int width; /*!< width in tiles */
             unsigned int height; /*!< height in tiles */
             unsigned int tileWidth; /*!< width of tiles in px */

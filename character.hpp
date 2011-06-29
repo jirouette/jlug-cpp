@@ -70,7 +70,7 @@ namespace jlug
 
 
 
-        private:
+        protected:
             unsigned int charset; /*!< ID of the character's charset */
             std::string name; /*!< Name of the character. May be empty, displayed otherwise. */
 

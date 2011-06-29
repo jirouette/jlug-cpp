@@ -39,7 +39,7 @@ namespace jlug
             unsigned int getMapWidth(void);
             unsigned int getMapHeight(void);
 
-        private:
+        protected:
             bool getBase64Tiles(TiXmlElement* child, jlug::Layer& layer);
             bool getTiles(TiXmlElement* child, jlug::Layer& layer);
 

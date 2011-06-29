@@ -42,7 +42,7 @@ namespace jlug
             jlug::Collision& collision(unsigned int x, unsigned int y);
 
 
-        private:
+        protected:
             std::vector< std::vector<unsigned int> > tiles; /*!< GID of tiles in multidimensionnal vector. */
             std::vector< std::vector<jlug::Collision> > collisions; /*!< Collisions states of tiles in multidimensionnal vector. */
 

@@ -36,7 +36,7 @@ namespace jlug
             unsigned int getMouseY(void);
 
 
-        private:
+        protected:
             const sf::Input& input; /*!< attribute which stores inputs. */
     };
 }

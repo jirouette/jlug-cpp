@@ -60,9 +60,12 @@ namespace jlug
 
             void move(jlug::Map& map);
             void display(jlug::Map& map, jlug::Window& win);
-            void animate(void);
 
 
+            virtual void animate(void);
+            virtual bool checkCollisions(jlug::Map& map);
+
+            static int checkTileRow(jlug::Map& map, unsigned int tileZ, int startTileX, int startTileY, int endTileX, int endTileY);
             static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
 
 
@@ -72,9 +75,9 @@ namespace jlug
             std::string name; /*!< Name of the character. May be empty, displayed otherwise. */
 
 
-            unsigned int x; /*!< X-position */
-            unsigned int y; /*!< Y-position */
-            unsigned int z; /*!< Z-position */
+            signed int x; /*!< X-position */
+            signed int y; /*!< Y-position */
+            signed int z; /*!< Z-position */
 
             unsigned int pixX; /*!< X-position in pixels */
             unsigned int pixY; /*!< Y-position in pixels */

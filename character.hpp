@@ -65,9 +65,7 @@ namespace jlug
 
 
             virtual void animate(void);
-            virtual bool checkCollisions(jlug::Map& map);
 
-            static int checkTileRow(jlug::Map& map, unsigned int tileZ, int startTileX, int startTileY, int endTileX, int endTileY);
             static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
 
 

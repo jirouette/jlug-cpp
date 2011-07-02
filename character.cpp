@@ -288,165 +288,6 @@ unsigned int jlug::Character::getSpeed(void)
 
 
 /**
-* \brief check the collision in order to allow or not the character to move
-* \param map : reference to the current map
-*/
-
-bool jlug::Character::checkCollisions(jlug::Map& map)
- {
-     unsigned int tileWidth(map.getTileWidth()), tileHeight(map.getTileHeight());
-     int nextXtile(0), nextYtile(0);//, nextSpeedXtile(0), nextSpeedYtile(0);
-     int newspeed(-1);
-     if (isMoving && direction != jlug::Move::NONE)
-     {
-         switch (direction)
-         {
-             case jlug::Move::LEFT:
-                nextXtile = (static_cast<int>(pixX)- // minus
-                                    (   (speed>tileWidth)
-                                        ?static_cast<int>(speed)
-                                        :static_cast<int>(tileWidth)
-                                        // We use speed if the speed makes character walk several tiles in one time
-                                    )
-                            )/static_cast<int>(tileWidth);
-                nextYtile = y;
-             break;
-
-             case jlug::Move::RIGHT:
-                nextXtile = (static_cast<int>(pixX)+ // plus
-                                    (   (speed>tileWidth)
-                                        ?static_cast<int>(speed)
-                                        :static_cast<int>(tileWidth)
-                                        // We use speed if the speed makes character walk several tiles in one time
-                                    )
-                            )/static_cast<int>(tileWidth);
-                nextYtile = y;
-             break;
-
-             case jlug::Move::DOWN:
-                nextXtile = x;
-                nextYtile = (static_cast<int>(pixY)+ // plus
-                                    (   (speed>tileHeight)
-                                        ?static_cast<int>(speed)
-                                        :static_cast<int>(tileHeight)
-                                        // We use speed if the speed makes character walk several tiles in one time
-                                    )
-                            )/static_cast<int>(tileHeight);
-             break;
-
-             case jlug::Move::UP:
-                nextXtile = x;
-                nextYtile = (static_cast<int>(pixY)+ // minus
-                                    (   (speed>tileHeight)
-                                        ?static_cast<int>(speed)
-                                        :static_cast<int>(tileHeight)
-                                        // We use speed if the speed makes character walk several tiles in one time
-                                    )
-                            )/static_cast<int>(tileHeight);
-             break;
-
-             default:
-                // Nothing to do
-             break;
-         }
-         newspeed = checkTileRow(map, z, x, y, nextXtile, nextYtile);
-         if (newspeed != -1)
-         {
-             newspeed *= (direction == jlug::Move::LEFT || direction == jlug::Move::RIGHT) ? tileWidth : tileHeight;
-             if (speed > newspeed)
-                speed = newspeed;
-         }
-     }
-     return true;
- }
-
-/**
-* \brief read a row of tile in order to check collisions
-* \param map : reference to the current map
-* \param tileZ : Z-position
-* \param startTileX : X-position of the starting tile.
-* \param startTileY : Y-position of the starting tile.
-* \param endTileX : X-position of the ending tile.
-* \param endTileY : Y-position of the ending tile.
-* \return tiles between the starting tile and the first blocking collision occurence. -1 if there is no blocking collision.
-*/
-int jlug::Character::checkTileRow(jlug::Map& map, unsigned int tileZ, int startTileX, int startTileY, int endTileX, int endTileY)
- {
-     if (startTileX == endTileX)
-     {
-         if (startTileY >= endTileY)
-         {
-            if (startTileY < 0)
-                return 0;
-            else if (endTileY < 0)
-                return startTileY;
-            else if (startTileY >= map.getHeight())
-                return 0;
-            else
-                for (int i(startTileY) ; i >= endTileY ; --i)
-                {
-                    if (0)//map.getLayers()[tileZ].collision(startTileX, i) == jlug::WALL)
-                        return startTileY-i;
-                }
-            return -1;
-         }
-        else if (startTileY <= endTileY)
-        {
-            if (startTileY >= map.getHeight()-1)
-                return 0;
-            else if (endTileY >= map.getHeight()-1)
-                return map.getHeight()-1-startTileY;
-            else if (endTileY < 0)
-                return 0;
-            else
-                for (int i(startTileY) ; i <= endTileY ; ++i)
-                {
-                    if (0)//map.getLayers()[tileZ].collision(startTileX, i) == jlug::WALL)
-                        return startTileY+i;
-                }
-            return -1;
-        }
-     }
-     else if (startTileY == endTileY)
-     {
-         if (startTileX >= endTileX)
-         {
-            if (startTileX < 0)
-                return 0;
-            else if (endTileX < 0)
-                return startTileX;
-            else if (startTileX >= map.getWidth())
-                return 0;
-            else
-                for (int i(startTileX) ; i >= endTileX ; --i)
-                {
-                    if (0)//map.getLayers()[tileZ].collision(i, startTileY) == jlug::WALL)
-                        return startTileX-i;
-                }
-            return -1;
-         }
-        else if (startTileX <= endTileX)
-        {
-            if (startTileX >= map.getWidth()-1)
-                return 0;
-            else if (endTileX >= map.getWidth()-1)
-                return map.getWidth()-1-startTileX;
-            else if (endTileX < 0)
-                return 0;
-            else
-                for (int i(startTileX) ; i <= endTileX ; ++i)
-                {
-                    if (0)//map.getLayers()[tileZ].collision(i, startTileY) == jlug::WALL)
-                        return startTileX+i;
-                }
-            return -1;
-        }
-     }
-     else // This method only checks a row of tile.
-        return -1;
- }
-
-/**
 * \brief move the character
 */
 
@@ -457,8 +298,6 @@ void jlug::Character::move(jlug::Map& map)
      unsigned int tileHeight(map.getTileHeight());
      int pixbetween(0);
 
-     if (checkCollisions(map))
-     {
          isMoving = true;
 
          switch (direction)
@@ -484,7 +323,6 @@ void jlug::Character::move(jlug::Map& map)
                 if (pixX%tileWidth != 0)
                 {
                     altSpeed = speed;
-                    std::cout << "X(" << pixX << ":" << x << ")" << std::endl;
 
                     // Pix between the current tile and the next tile
 
@@ -530,7 +368,6 @@ void jlug::Character::move(jlug::Map& map)
                     isMoving = false;
              break;
          }
-     }
 
      // Refreshing tile position with pixel position
 
@@ -539,27 +376,6 @@ void jlug::Character::move(jlug::Map& map)
      if (ABS((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight))
         y = static_cast<int>(pixY)/static_cast<int>(tileHeight);
 
-     if (x < 0 || pixX < 0)
-     {
-        x = 0;
-        pixX = 0;
-     }
-     else if (x >= map.getWidth()-1 || pixX >= (map.getWidth()-1)*tileWidth)
-     {
-        x = map.getWidth()-1;
-        pixX = (map.getWidth()-1)*tileWidth;
-     }
-
-     if (y < 0 || pixX < 0)
-     {
-        y = 0;
-        pixY = 0;
-     }
-     else if (y >= map.getHeight()-1 || pixY >= (map.getHeight()-1)*tileHeight)
-     {
-        y = map.getHeight()-1;
-        pixY = y*tileHeight;
-     }
  }
 
 

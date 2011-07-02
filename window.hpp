@@ -37,6 +37,8 @@ namespace jlug
             void close(void);
             void processEvents(void);
 
+            void debug(const std::string& str);
+
             unsigned int getWidth(void);
             unsigned int getHeight(void);
             jlug::Rect getSize(void);
@@ -46,6 +48,9 @@ namespace jlug
         protected:
             sf::RenderWindow win; /*!< Graphic library's window */
             jlug::Rect blitRect; /*!< rect which delimits the blit */
+            std::string debugStr; /*!< debug-text */
+            sf::String winstr; /*!< Graphic library's string */
+            sf::Font font; /*!< Graphic library's font */
     };
 }
 

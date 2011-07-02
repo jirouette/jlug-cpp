@@ -16,9 +16,9 @@ void game(void)
     {
         //win.processEvents(); // Facultative because isOpen() does processEvents().
         if (input[jlug::KeyCode::Space])
-            perso.setMove(jlug::Move::DOWN, 16);
+            perso.setMove(jlug::Move::DOWN, 8);
         if (input[jlug::KeyCode::Enter])
-            perso.setMove(jlug::Move::LEFT, 16);
+            perso.setMove(jlug::Move::LEFT, 8);
         if (input[jlug::KeyCode::Ctrl])
             perso.setMove(jlug::Move::NONE);
         perso.move(map);

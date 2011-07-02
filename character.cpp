@@ -387,6 +387,8 @@ void jlug::Character::move(jlug::Map& map)
 
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
+    char buffer[10];
+    std::string debug("");
     jlug::Image sprite(IM["4.png"]);
     jlug::Rect rect;
 
@@ -399,6 +401,16 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
             pixX-map.xscroll+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
             pixY-map.yscroll-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
             );
+
+    debug += "(";
+    itoa(x, buffer, 10);
+    debug += buffer;
+    debug += ", ";
+    itoa(y, buffer, 10);
+    debug += buffer;
+    debug += ")";
+
+    win.debug(debug);
  }
 
 

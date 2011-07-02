@@ -9,11 +9,16 @@
 * set blitRect to his max value
 */
 jlug::Window::Window(unsigned int width, unsigned int height, const std::string& name):
-                        win(sf::VideoMode(width, height, 32), name, sf::Style::Close|sf::Style::Titlebar)
+                        win(sf::VideoMode(width, height, 32), name, sf::Style::Close|sf::Style::Titlebar),
+                        debugStr(""), font(), winstr()
  {
      blitRect.x = blitRect.y = 0;
      blitRect.w = width;
      blitRect.h = height;
+
+     font.LoadFromFile("Arial.ttf");
+     winstr.SetFont(font);
+     winstr.SetSize(20);
 
  }
 
@@ -131,6 +136,7 @@ void jlug::Window::blit(jlug::Image& img, const jlug::Rect& pos)
 */
 void jlug::Window::flip(void)
  {
+     win.Draw(winstr);
      win.Display();
  }
 
@@ -186,4 +192,15 @@ bool jlug::Window::isOpen(void)
  {
      processEvents();
      return win.IsOpened();
+ }
+
+/**
+* \brief write a debug-text on the window.
+* \param str : debugging text
+*/
+
+void jlug::Window::debug(const std::string& str)
+ {
+     debugStr = str;
+     winstr.SetText(debugStr);
  }

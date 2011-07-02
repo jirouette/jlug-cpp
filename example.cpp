@@ -4,21 +4,21 @@ void game(void)
  {
     jlug::Window win(800, 600, "hello world ! ");
     jlug::ImageManager IM;
-    jlug::Character perso(4, "", IM);
+    jlug::Character perso(4, "", IM), second(3, "", IM);
     jlug::Input input = win.getInput();
     jlug::Map map("map.tmx", IM);
 
     perso.setCoord(3, 3);
-    perso.setSpeed(5);
+    perso.setSpeed(8);
     perso.setMove(jlug::Move::RIGHT);
     int i = -16;
     while(!input[jlug::KeyCode::Escape] && win.isOpen())
     {
         //win.processEvents(); // Facultative because isOpen() does processEvents().
         if (input[jlug::KeyCode::Space])
-            perso.setMove(jlug::Move::DOWN, 5);
+            perso.setMove(jlug::Move::DOWN, 16);
         if (input[jlug::KeyCode::Enter])
-            perso.setMove(jlug::Move::LEFT, 5);
+            perso.setMove(jlug::Move::LEFT, 16);
         if (input[jlug::KeyCode::Ctrl])
             perso.setMove(jlug::Move::NONE);
         perso.move(map);
@@ -47,6 +47,7 @@ void game(void)
         win.clear();
         for (unsigned int k(0);k<map.getLayersSize();++k)
             map.displayLayer(win, k);
+        second.display(map, win);
         perso.display(map, win);
         win.flip();
     }

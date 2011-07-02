@@ -11,6 +11,8 @@
 #include "map.hpp"
 #include "utils.hpp"
 
+#include <iostream>
+
 
 /**
 * \namespace jlug
@@ -79,8 +81,8 @@ namespace jlug
             signed int y; /*!< Y-position */
             signed int z; /*!< Z-position */
 
-            unsigned int pixX; /*!< X-position in pixels */
-            unsigned int pixY; /*!< Y-position in pixels */
+            int pixX; /*!< X-position in pixels */
+            int pixY; /*!< Y-position in pixels */
 
             jlug::Move::Direction position; /*!< sprite's position */
             jlug::Move::Direction direction; /*!< move direction */

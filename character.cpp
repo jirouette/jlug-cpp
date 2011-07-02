@@ -392,10 +392,10 @@ int jlug::Character::checkTileRow(jlug::Map& map, unsigned int tileZ, int startT
          }
         else if (startTileY <= endTileY)
         {
-            if (startTileY >= map.getHeight())
+            if (startTileY >= map.getHeight()-1)
                 return 0;
-            else if (endTileY >= map.getHeight())
-                return map.getHeight()-startTileY;
+            else if (endTileY >= map.getHeight()-1)
+                return map.getHeight()-1-startTileY;
             else if (endTileY < 0)
                 return 0;
             else
@@ -427,10 +427,10 @@ int jlug::Character::checkTileRow(jlug::Map& map, unsigned int tileZ, int startT
          }
         else if (startTileX <= endTileX)
         {
-            if (startTileX >= map.getWidth())
+            if (startTileX >= map.getWidth()-1)
                 return 0;
-            else if (endTileX >= map.getWidth())
-                return map.getWidth()-startTileX;
+            else if (endTileX >= map.getWidth()-1)
+                return map.getWidth()-1-startTileX;
             else if (endTileX < 0)
                 return 0;
             else
@@ -484,6 +484,7 @@ void jlug::Character::move(jlug::Map& map)
                 if (pixX%tileWidth != 0)
                 {
                     altSpeed = speed;
+                    std::cout << "X(" << pixX << ":" << x << ")" << std::endl;
 
                     // Pix between the current tile and the next tile
 
@@ -538,10 +539,27 @@ void jlug::Character::move(jlug::Map& map)
      if (ABS((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight))
         y = static_cast<int>(pixY)/static_cast<int>(tileHeight);
 
-     if (x < 0)
+     if (x < 0 || pixX < 0)
+     {
         x = 0;
-     if (y < 0)
+        pixX = 0;
+     }
+     else if (x >= map.getWidth()-1 || pixX >= (map.getWidth()-1)*tileWidth)
+     {
+        x = map.getWidth()-1;
+        pixX = (map.getWidth()-1)*tileWidth;
+     }
+
+     if (y < 0 || pixX < 0)
+     {
         y = 0;
+        pixY = 0;
+     }
+     else if (y >= map.getHeight()-1 || pixY >= (map.getHeight()-1)*tileHeight)
+     {
+        y = map.getHeight()-1;
+        pixY = y*tileHeight;
+     }
  }
 
 

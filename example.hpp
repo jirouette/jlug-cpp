@@ -6,6 +6,7 @@
 #include "map.hpp"
 #include "window.hpp"
 #include "character.hpp"
+#include "player.hpp"
 
 void game(void);
 

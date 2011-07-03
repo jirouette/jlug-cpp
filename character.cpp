@@ -285,6 +285,10 @@ unsigned int jlug::Character::getSpeed(void)
  }
 
 
+/**
+* \brief check collisions
+* \param map : reference to the current map
+*/
 
 void jlug::Character::checkCollisions(jlug::Map& map)
  {
@@ -351,6 +355,13 @@ void jlug::Character::checkCollisions(jlug::Map& map)
  }
 
 
+/**
+* \brief check if the character can go on a tile
+* \param map : reference to the current map
+* \param tileX : X-position of the tile
+* \param tileY : Y-position of the tile
+* \return boolean
+*/
 
 bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
  {
@@ -362,6 +373,7 @@ bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
 
 /**
 * \brief move the character
+* \param map : reference to the current map
 */
 
 void jlug::Character::move(jlug::Map& map)

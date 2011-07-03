@@ -60,9 +60,9 @@ namespace jlug
             unsigned int getSpeed(void);
 
 
-            void checkCollisions(jlug::Map& map);
-            void move(jlug::Map& map);
-            void display(jlug::Map& map, jlug::Window& win);
+            virtual void checkCollisions(jlug::Map& map);
+            virtual void move(jlug::Map& map);
+            virtual void display(jlug::Map& map, jlug::Window& win);
 
 
             virtual void animate(void);

@@ -60,12 +60,14 @@ namespace jlug
             unsigned int getSpeed(void);
 
 
+            void checkCollisions(jlug::Map& map);
             void move(jlug::Map& map);
             void display(jlug::Map& map, jlug::Window& win);
 
 
             virtual void animate(void);
 
+            bool checkTile(jlug::Map& map, int tileX, int tileY);
             static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
 
 
@@ -79,13 +81,13 @@ namespace jlug
             signed int y; /*!< Y-position */
             signed int z; /*!< Z-position */
 
-            int pixX; /*!< X-position in pixels */
-            int pixY; /*!< Y-position in pixels */
+            signed int pixX; /*!< X-position in pixels */
+            signed int pixY; /*!< Y-position in pixels */
 
             jlug::Move::Direction position; /*!< sprite's position */
             jlug::Move::Direction direction; /*!< move direction */
             jlug::Move::Direction previousDirection; /*!< previous move direction */
-            unsigned int speed; /*!< Velocity in pixels */
+            int speed; /*!< Velocity in pixels */
 
             bool isMoving;
             unsigned char animation;

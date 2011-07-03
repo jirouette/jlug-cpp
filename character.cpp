@@ -286,6 +286,62 @@ unsigned int jlug::Character::getSpeed(void)
 
 
 
+void jlug::Character::checkCollisions(jlug::Map& map)
+ {
+     int tileWidth(map.getTileWidth()), tileHeight(map.getTileHeight());
+     int tileX(x), tileY(y);
+     int newspeed(speed);
+
+     if (direction != jlug::Move::NONE && speed > 0)
+     {
+         switch (direction)
+         {
+             case jlug::Move::LEFT:
+                tileX = (pixX-speed<0)?-1:(pixX-speed)/tileWidth;
+                for (int i(x) ; i >= tileX ; i--)
+                    if (!checkTile(map, i, y))
+                    {
+                        newspeed = pixX-(i+1)*tileWidth;
+                        i = tileX-1;
+                    }
+                break;
+
+             case jlug::Move::RIGHT:
+                tileX = (pixX+((speed<tileWidth*2)?tileWidth*2:speed))/tileWidth;
+                for (int i(x) ; i <= tileX ; i++)
+                    if (!checkTile(map, i, y))
+                    {
+                        newspeed = (i-1)*tileWidth-pixX;
+                        i = tileX+1;
+                    }
+                break;
+
+
+            default:
+                break;
+
+
+
+
+         }
+     }
+     if (newspeed < 0)
+        newspeed = 0;
+     if (newspeed < speed)
+        speed = newspeed;
+ }
+
+
+
+bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
+ {
+    int width(map.getWidth()), height(map.getHeight());
+    if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
+        return false;
+    if (tileX == 2)
+        return false;
+    return true;
+ }
 
 /**
 * \brief move the character
@@ -297,6 +353,8 @@ void jlug::Character::move(jlug::Map& map)
      unsigned int tileWidth(map.getTileWidth());
      unsigned int tileHeight(map.getTileHeight());
      int pixbetween(0);
+
+         checkCollisions(map);
 
          isMoving = true;
 
@@ -407,6 +465,15 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     debug += buffer;
     debug += ", ";
     itoa(y, buffer, 10);
+    debug += buffer;
+    debug += ") Speed = ";
+    itoa(speed, buffer, 10);
+    debug += buffer;
+    debug += "\n\n(";
+    itoa(pixX, buffer, 10);
+    debug += buffer;
+    debug += ", ";
+    itoa(pixY, buffer, 10);
     debug += buffer;
     debug += ")";
 

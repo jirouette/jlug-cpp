@@ -20,7 +20,7 @@ namespace jlug
     * \class Player
     * \brief Playable Character.
     */
-    class Player : public Character
+    class Player : public virtual Character
     {
         public:
             Player(jlug::ImageManager& imageM, jlug::Input& in);

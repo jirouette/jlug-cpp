@@ -5,11 +5,12 @@ void game(void)
     jlug::Window win(800, 600, "hello world ! ");
     jlug::ImageManager IM;
     jlug::Input input = win.getInput();
-    jlug::Player perso(4, "", IM, input);
-    jlug::Character second(3, "", IM);
+    jlug::AnimatedPlayer perso(4, "", IM, input);
+    jlug::AnimatedCharacter second(3, "", IM);
     jlug::Map map("map.tmx", IM);
 
     perso.setCoord(0, 3);
+    second.setCoord(5, 5);
     //perso.setSpeed(5);
     //perso.setMove(jlug::Move::RIGHT);
     int i = -16;

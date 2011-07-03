@@ -7,6 +7,8 @@
 #include "window.hpp"
 #include "character.hpp"
 #include "player.hpp"
+#include "animatedcharacter.hpp"
+#include "animatedplayer.hpp"
 
 void game(void);
 

@@ -18,7 +18,7 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
 
      font.LoadFromFile("Arial.ttf");
      winstr.SetFont(font);
-     winstr.SetSize(20);
+     winstr.SetSize(12);
 
  }
 

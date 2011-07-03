@@ -9,7 +9,7 @@ void game(void)
     jlug::Map map("map.tmx", IM);
 
     perso.setCoord(3, 3);
-    perso.setSpeed(8);
+    perso.setSpeed(1);
     perso.setMove(jlug::Move::RIGHT);
     int i = -16;
     while(!input[jlug::KeyCode::Escape] && win.isOpen())
@@ -18,7 +18,7 @@ void game(void)
         if (input[jlug::KeyCode::Space])
             perso.setMove(jlug::Move::DOWN, 8);
         if (input[jlug::KeyCode::Enter])
-            perso.setMove(jlug::Move::LEFT, 8);
+            perso.setMove(jlug::Move::LEFT, 1);
         if (input[jlug::KeyCode::Ctrl])
             perso.setMove(jlug::Move::NONE);
         perso.move(map);

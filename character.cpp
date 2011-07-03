@@ -293,38 +293,57 @@ void jlug::Character::checkCollisions(jlug::Map& map)
      int newspeed(speed);
 
      if (direction != jlug::Move::NONE && speed > 0)
-     {
          switch (direction)
          {
              case jlug::Move::LEFT:
-                tileX = (pixX-speed<0)?-1:(pixX-speed)/tileWidth;
+                tileX = (pixX-speed<0)?-1:(pixX-speed)/tileWidth; // checking the previous tile
                 for (int i(x) ; i >= tileX ; i--)
                     if (!checkTile(map, i, y))
                     {
+                         // affecting speed with pixels left between the current position and the last allowed position
                         newspeed = pixX-(i+1)*tileWidth;
                         i = tileX-1;
                     }
                 break;
 
              case jlug::Move::RIGHT:
-                tileX = (pixX+((speed<tileWidth*2)?tileWidth*2:speed))/tileWidth;
+                tileX = (pixX+((speed<tileWidth*2)?tileWidth*2:speed))/tileWidth; // checking the most probable tile
                 for (int i(x) ; i <= tileX ; i++)
                     if (!checkTile(map, i, y))
                     {
+                         // affecting speed with pixels left between the current position and the last allowed position
                         newspeed = (i-1)*tileWidth-pixX;
                         i = tileX+1;
                     }
                 break;
 
+             case jlug::Move::UP:
+                tileY = (pixY-speed<0)?-1:(pixY-speed)/tileHeight; // checking the previous tile
+                for (int j(y) ; j >= tileY ; j--)
+                    if (!checkTile(map, x, j))
+                    {
+                         // affecting speed with pixels left between the current position and the last allowed position
+                        newspeed = pixY-(j+1)*tileHeight;
+                        j = tileY-1;
+                    }
+                break;
 
-            default:
+             case jlug::Move::DOWN:
+                tileY = (pixY+((speed<tileHeight*2)?tileHeight*2:speed))/tileHeight; // check the most probable tile
+                for (int j(y) ; j <= tileY ; j++)
+                    if (!checkTile(map, x, j))
+                    {
+                         // affecting speed with pixels left between the current position and the last allowed position
+                        newspeed = (j-1)*tileHeight-pixY;
+                        j = tileY+1;
+                    }
                 break;
 
 
-
-
+            default:
+                // Nothing to do.
+                break;
          }
-     }
      if (newspeed < 0)
         newspeed = 0;
      if (newspeed < speed)
@@ -337,8 +356,6 @@ bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
  {
     int width(map.getWidth()), height(map.getHeight());
     if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
-        return false;
-    if (tileX == 2)
         return false;
     return true;
  }

@@ -301,7 +301,7 @@ void jlug::Character::checkCollisions(jlug::Map& map)
          {
              case jlug::Move::LEFT:
                 tileX = (pixX-speed<0)?-1:(pixX-speed)/tileWidth; // checking the previous tile
-                for (int i(x) ; i >= tileX ; i--)
+                for (int i(x) ; i >= tileX ; --i)
                     if (!checkTile(map, i, y))
                     {
                          // affecting speed with pixels left between the current position and the last allowed position
@@ -312,7 +312,7 @@ void jlug::Character::checkCollisions(jlug::Map& map)
 
              case jlug::Move::RIGHT:
                 tileX = (pixX+((speed<tileWidth*2)?tileWidth*2:speed))/tileWidth; // checking the most probable tile
-                for (int i(x) ; i <= tileX ; i++)
+                for (int i(x) ; i <= tileX ; ++i)
                     if (!checkTile(map, i, y))
                     {
                          // affecting speed with pixels left between the current position and the last allowed position
@@ -323,7 +323,7 @@ void jlug::Character::checkCollisions(jlug::Map& map)
 
              case jlug::Move::UP:
                 tileY = (pixY-speed<0)?-1:(pixY-speed)/tileHeight; // checking the previous tile
-                for (int j(y) ; j >= tileY ; j--)
+                for (int j(y) ; j >= tileY ; --j)
                     if (!checkTile(map, x, j))
                     {
                          // affecting speed with pixels left between the current position and the last allowed position
@@ -334,7 +334,7 @@ void jlug::Character::checkCollisions(jlug::Map& map)
 
              case jlug::Move::DOWN:
                 tileY = (pixY+((speed<tileHeight*2)?tileHeight*2:speed))/tileHeight; // check the most probable tile
-                for (int j(y) ; j <= tileY ; j++)
+                for (int j(y) ; j <= tileY ; ++j)
                     if (!checkTile(map, x, j))
                     {
                          // affecting speed with pixels left between the current position and the last allowed position
@@ -476,7 +476,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     char buffer[10];
     std::string debug("");
-    jlug::Image sprite(IM["4.png"]);
+    jlug::Image sprite(IM["1.png"]);
     jlug::Rect rect;
 
     animate();

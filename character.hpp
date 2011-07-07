@@ -99,8 +99,7 @@ namespace jlug
             jlug::ImageManager& IM; /*!< image manager */
     };
 
-
-
+    typedef Character NPC;
 }
 
 #endif // CHARACTER_HPP_INCLUDED

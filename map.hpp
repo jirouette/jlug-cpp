@@ -30,8 +30,6 @@ namespace jlug
     {
         public:
 
-            int xscroll, yscroll; // To be changed
-
             Map(jlug::ImageManager& imageM);
             Map(const std::string& filename, jlug::ImageManager& imageM);
             ~Map(void);
@@ -45,6 +43,7 @@ namespace jlug
             bool setTileHeight(unsigned int paramTileHeight);
             bool setTileSize(unsigned int paramTileWidth, unsigned int paramTileHeight);
             bool setTileSize(jlug::Rect tileSize);
+            bool setScroll(int x, int y);
 
 
             unsigned int getWidth(void);
@@ -53,6 +52,7 @@ namespace jlug
             unsigned int getTileWidth(void);
             unsigned int getTileHeight(void);
             jlug::Rect getTileSize(void);
+            jlug::Rect getScroll(void);
             std::vector<jlug::Layer>& getLayers(void);
             unsigned int getLayersSize(void);
             jlug::Tileset* getTilesetByGid(unsigned int gid);
@@ -64,11 +64,11 @@ namespace jlug
         protected:
             unsigned int width; /*!< width in tiles */
             unsigned int height; /*!< height in tiles */
-            unsigned int tileWidth; /*!< width of tiles in px */
-            unsigned int tileHeight; /*!< height of tiles in px */
+            int tileWidth; /*!< width of tiles in px */
+            int tileHeight; /*!< height of tiles in px */
 
-            //int xscroll; /*!< X-position of the camera on the map */
-            //int yscroll; /*!< Y-position of the camera on the map */
+            int xscroll; /*!< X-position of the camera on the map */
+            int yscroll; /*!< Y-position of the camera on the map */
 
             std::vector<jlug::Tileset> tilesets; /*!< tilesets */
             std::vector<jlug::Rect> gidRects; /*!< rect for each GID in their tileset. */

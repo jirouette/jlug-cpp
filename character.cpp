@@ -478,6 +478,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     std::string debug("");
     jlug::Image sprite(IM["1.png"]);
     jlug::Rect rect;
+    jlug::Rect scroll(map.getScroll());
 
     animate();
 
@@ -485,8 +486,8 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     sprite.setBlitRect(rect);
 
     win.blit(sprite,
-            pixX-map.xscroll+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
-            pixY-map.yscroll-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
+            pixX-scroll.x+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
+            pixY-scroll.y-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
             );
 
     debug += "(";

@@ -12,8 +12,8 @@
 *
 * Initialisize everything to default.
 */
-jlug::Player::Player(jlug::ImageManager& imageM, jlug::Input& in):
-                                jlug::Character::Character(imageM), input(in), velocity(5)
+jlug::Player::Player(jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win):
+                                jlug::Character::Character(imageM), input(in), window(win), velocity(5)
 {}
 
 
@@ -26,24 +26,8 @@ jlug::Player::Player(jlug::ImageManager& imageM, jlug::Input& in):
 *
 * Initialisize everything.
 */
-jlug::Player::Player(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM, jlug::Input& in):
-                                jlug::Character::Character(cid, cname, imageM), input(in), velocity(5)
-{}
-
-/**
-* \brief Constructor
-* \param cid : Charset ID
-* \param name : Character's name. May be empty.
-* \param x : X-position of the character.
-* \param y : Y-position of the character.
-* \param imageM : reference to the ImageManager instance.
-* \param in : reference to the Input instance
-*
-* Initialisize everything.
-*/
-
-jlug::Player::Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM, jlug::Input& in):
-                                jlug::Character::Character(cid, cname, posx, posy, imageM), input(in), velocity(5)
+jlug::Player::Player(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win):
+                                jlug::Character::Character(cid, cname, imageM), input(in), window(win), velocity(5)
 {}
 
 /**
@@ -58,8 +42,24 @@ jlug::Player::Player(unsigned int cid, const std::string& cname, unsigned int po
 * Initialisize everything.
 */
 
-jlug::Player::Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM, jlug::Input& in):
-                                jlug::Character::Character(cid, cname, posx, posy, posz, imageM), input(in), velocity(5)
+jlug::Player::Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win):
+                                jlug::Character::Character(cid, cname, posx, posy, imageM), input(in), window(win), velocity(5)
+{}
+
+/**
+* \brief Constructor
+* \param cid : Charset ID
+* \param name : Character's name. May be empty.
+* \param x : X-position of the character.
+* \param y : Y-position of the character.
+* \param imageM : reference to the ImageManager instance.
+* \param in : reference to the Input instance
+*
+* Initialisize everything.
+*/
+
+jlug::Player::Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win):
+                                jlug::Character::Character(cid, cname, posx, posy, posz, imageM), input(in), window(win), velocity(5)
 {}
 
 
@@ -108,4 +108,21 @@ void jlug::Player::move(jlug::Map& map)
      }
 
      jlug::Character::move(map);
+     scroll(map);
+ }
+
+
+/**
+* \brief scroll the window
+* \param map : reference to the current map
+*/
+
+void jlug::Player::scroll(jlug::Map& map)
+ {
+     int xpos(0), ypos(0);
+
+     xpos = pixX-map.getTileWidth()/2-window.getWidth()/2;
+     ypos = pixY-map.getTileHeight()-window.getHeight()/2;
+
+     map.setScroll(xpos, ypos);
  }

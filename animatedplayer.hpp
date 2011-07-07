@@ -25,10 +25,10 @@ namespace jlug
     class AnimatedPlayer : public Player, public AnimatedCharacter
     {
         public:
-            AnimatedPlayer(jlug::ImageManager& imageM, jlug::Input& in);
-            AnimatedPlayer(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM, jlug::Input& in);
-            AnimatedPlayer(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM, jlug::Input& in);
-            AnimatedPlayer(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM, jlug::Input& in);
+            AnimatedPlayer(jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
+            AnimatedPlayer(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
+            AnimatedPlayer(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
+            AnimatedPlayer(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
             ~AnimatedPlayer(void);
     };
 }

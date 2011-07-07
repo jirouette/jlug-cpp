@@ -5,7 +5,7 @@ void game(void)
     jlug::Window win(800, 600, "hello world ! ");
     jlug::ImageManager IM;
     jlug::Input input = win.getInput();
-    jlug::AnimatedPlayer perso(4, "", IM, input);
+    jlug::AnimatedPlayer perso(4, "", IM, input, win);
     jlug::AnimatedCharacter second(3, "", IM);
     jlug::Map map("map.tmx", IM);
 

@@ -206,6 +206,21 @@ bool jlug::Map::setTileSize(jlug::Rect tileSize)
     return true;
 }
 
+/**
+* \brief set X-position and Y-position of the scroll
+* \param x : new X-position scroll
+* \param y : new Y-position scroll
+* \return boolean
+*/
+
+bool jlug::Map::setScroll(int x, int y)
+ {
+    xscroll = x;//(x > 0) ? x : 0;
+    yscroll = y;//(y > 0) ? y : 0;
+     return true;
+ }
+
+
 
 /**
 * \brief get width of the map in tiles
@@ -272,6 +287,21 @@ jlug::Rect jlug::Map::getTileSize(void)
 }
 
 /**
+* \brief get the current position of the scroll
+* \return position of the scroll in a rect
+*/
+
+jlug::Rect jlug::Map::getScroll(void)
+ {
+     jlug::Rect scroll;
+     scroll.x = xscroll;
+     scroll.y = yscroll;
+     scroll.w = 0;
+     scroll.h = 0;
+     return scroll;
+ }
+
+/**
 * \brief get pointer to tileset by GID
 * \param gid : gid of tile in the tileset we're looking for
 * \return pointer to tileset
@@ -318,14 +348,18 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
     jlug::Image tile;
     jlug::Tileset* tileset;
     std::string previousFilename("");
-    const unsigned int MAXW((xscroll+win.getWidth())/tileWidth);
-    const unsigned int MAXH((yscroll+win.getHeight())/tileHeight);
+    const int MAXW((xscroll+win.getWidth())/tileWidth);
+    const int MAXH((yscroll+win.getHeight())/tileHeight);
     unsigned int gid(0);
     tile.setAlpha(layers[index].getOpacity());
-    for (unsigned int j(yscroll/tileHeight);j<MAXH;++j)
-        for(unsigned int i(xscroll/tileWidth);i<MAXW;++i)
+    for (int j(yscroll/tileHeight);j<MAXH;++j)
+        for(int i(xscroll/tileWidth);i<MAXW;++i)
         {
-            gid = layers[index].tile(i, j);
+            if (i < 0 || j < 0) // there is no negative tiles
+                gid = 0;
+            else
+                gid = layers[index].tile(i, j);
+
             if (gid != UINT_MAX && gid != 0) // UINT_MAX and 0 mean that the tile does not exist or must not be displayed.
             {
                 tileset = gidTilesets[gid];

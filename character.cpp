@@ -18,8 +18,13 @@
 jlug::Character::Character(jlug::ImageManager& imageM):
                         charset(0), name(""), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
-{}
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+{
+    char buffer[20] = {0};
+    itoa(charset, buffer, 10);
+    charsetFilename += buffer;
+    charsetFilename += ".png";
+}
 
 /**
 * \brief Constructor
@@ -33,8 +38,13 @@ jlug::Character::Character(jlug::ImageManager& imageM):
 jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM):
                         charset(cid), name(cname), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
-{}
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+{
+    char buffer[20] = {0};
+    itoa(charset, buffer, 10);
+    charsetFilename += buffer;
+    charsetFilename += ".png";
+}
 
 /**
 * \brief Constructor
@@ -50,8 +60,13 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::Ima
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM):
                         charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
-{}
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+{
+    char buffer[20] = {0};
+    itoa(charset, buffer, 10);
+    charsetFilename += buffer;
+    charsetFilename += ".png";
+}
 
 /**
 * \brief Constructor
@@ -67,8 +82,13 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM):
                         charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1)
-{}
+                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+{
+    char buffer[20] = {0};
+    itoa(charset, buffer, 10);
+    charsetFilename += buffer;
+    charsetFilename += ".png";
+}
 
 
 
@@ -476,7 +496,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     char buffer[10];
     std::string debug("");
-    jlug::Image sprite(IM["1.png"]);
+    jlug::Image sprite(IM[charsetFilename]);
     jlug::Rect rect;
     jlug::Rect scroll(map.getScroll());
 

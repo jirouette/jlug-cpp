@@ -75,6 +75,7 @@ namespace jlug
         protected:
             unsigned int charset; /*!< ID of the character's charset */
             std::string name; /*!< Name of the character. May be empty, displayed otherwise. */
+            std::string charsetFilename; /*!< Path to the charset's file */
 
 
             signed int x; /*!< X-position */

@@ -7,15 +7,6 @@
 
 /**
 * \brief Constructor
-*
-* Default constructor. With this constructor, the instance is unusable.
-*/
-jlug::Input::Input()
-            : input()
-{}
-
-/**
-* \brief Constructor
 * \param sfinput : Reference to graphic library's event type variable.
 *
 * Initialize the instance by affecting the reference attribute input with the parameter sfinput.

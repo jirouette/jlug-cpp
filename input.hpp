@@ -23,7 +23,6 @@ namespace jlug
     class Input
     {
         public:
-            Input();
             Input(const sf::Input& sfinput);
             ~Input();
 

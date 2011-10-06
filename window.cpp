@@ -20,6 +20,18 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
      winstr.SetFont(font);
      winstr.SetSize(12);
 
+
+    glEnable(GL_TEXTURE_2D); 
+    glClearDepth(1.f);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(70.f, static_cast<double>(width)/static_cast<double>(height), 1.f, 500.f);
+
  }
 
 /**
@@ -51,6 +63,8 @@ void jlug::Window::processEvents(void)
      while (win.GetEvent(event))
         if (event.Type == sf::Event::Closed)
             win.Close();
+        else if (event.Type == sf::Event::Resized)
+            glViewport(0, 0, event.Size.Width, event.Size.Height);
  }
 
 /**
@@ -97,8 +111,8 @@ void jlug::Window::blit(jlug::Image& img)
 
     img.image.SetSubRect(sf::IntRect(img.blitRect.x, img.blitRect.y, img.blitRect.x+img.blitRect.w, img.blitRect.y+img.blitRect.h));
     img.image.SetPosition(blitRect.x, blitRect.y);
-    win.Draw(img.image);
-    win.Draw(img.image);
+    //win.Draw(img.image);
+    //win.Draw(img.image);
  }
 
 /**
@@ -136,7 +150,8 @@ void jlug::Window::blit(jlug::Image& img, const jlug::Rect& pos)
 */
 void jlug::Window::flip(void)
  {
-     win.Draw(winstr);
+     //win.Draw(winstr);
+        glFlush();
      win.Display();
  }
 
@@ -146,6 +161,11 @@ void jlug::Window::flip(void)
 void jlug::Window::clear(void)
  {
      win.Clear();
+     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+     glMatrixMode(GL_MODELVIEW);
+     glLoadIdentity();
+     gluLookAt(0, -0.5, 1, 0, 0, 0, 0, 1, 0);
  }
 
 /**

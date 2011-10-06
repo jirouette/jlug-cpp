@@ -13,6 +13,17 @@ jlug::ImageManager::ImageManager(void):
                         images()
 {}
 
+
+/**
+* \brief get the only instance of the ImageManager class
+*/
+
+jlug::ImageManager& jlug::ImageManager::getInstance(void)
+{
+    static jlug::ImageManager* instance(new ImageManager());
+    return *instance;
+}
+
 /**
 * \brief Destructor
 * Nothing to do.
@@ -46,6 +57,23 @@ sf::Image& jlug::ImageManager::getImage(const std::string& filename)
     return images[filename]; // Returns the new image.
 }
 
+GLuint& jlug::ImageManager::getTexture(const std::string& filename)
+ {
+     std::map<std::string, GLuint>::iterator it(textures.find(filename));
+
+     if (it != textures.end())
+        return it->second;
+
+     textures.insert(std::pair<std::string, GLuint>(filename, 0));
+     {
+         GLuint& texture(getTexture(filename));
+         sf::Image& img(getImage(filename));
+         glGenTextures(1, &texture);
+         glBindTexture(GL_TEXTURE_2D, texture);
+         gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,img.GetWidth(),img.GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,img.GetPixelsPtr());
+         return texture;
+     }
+ }
 /**
 * \brief get an image by his file name.
 * \param filename : file name of the images relative to the executable

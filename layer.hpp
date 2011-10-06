@@ -38,7 +38,7 @@ namespace jlug
             bool isVisible(void);
             std::string getName(void);
 
-            unsigned int& tile(unsigned int x, unsigned int y);
+            unsigned int tile(unsigned int x, unsigned int y);
             jlug::Collision& collision(unsigned int x, unsigned int y);
 
 

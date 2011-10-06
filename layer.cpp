@@ -96,7 +96,7 @@ std::string jlug::Layer::getName(void)
 * \param y : Y-position of the tile
 * \return Value of the GID. If the tile does not exist or if the tile is forbidden, returns UINT_MAX or 0.
 */
-unsigned int& jlug::Layer::tile(unsigned int x, unsigned int y)
+unsigned int jlug::Layer::tile(unsigned int x, unsigned int y)
 {
     unsigned int gid(UINT_MAX);
     try

@@ -20,9 +20,9 @@ jlug::Character::Character(jlug::ImageManager& imageM):
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
                         lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
 {
-    char buffer[20] = {0};
-    itoa(charset, buffer, 10);
-    charsetFilename += buffer;
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
 
@@ -40,9 +40,9 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::Ima
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
                         lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
 {
-    char buffer[20] = {0};
-    itoa(charset, buffer, 10);
-    charsetFilename += buffer;
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
 
@@ -62,9 +62,9 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
                         lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
 {
-    char buffer[20] = {0};
-    itoa(charset, buffer, 10);
-    charsetFilename += buffer;
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
 
@@ -84,9 +84,9 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
                         direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
                         lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
 {
-    char buffer[20] = {0};
-    itoa(charset, buffer, 10);
-    charsetFilename += buffer;
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
 
@@ -494,8 +494,7 @@ void jlug::Character::move(jlug::Map& map)
 
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
-    char buffer[10];
-    std::string debug("");
+    std::ostringstream buffer;
     jlug::Image sprite(IM[charsetFilename]);
     jlug::Rect rect;
     jlug::Rect scroll(map.getScroll());
@@ -510,24 +509,8 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
             pixY-scroll.y-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
             );
 
-    debug += "(";
-    itoa(x, buffer, 10);
-    debug += buffer;
-    debug += ", ";
-    itoa(y, buffer, 10);
-    debug += buffer;
-    debug += ") Speed = ";
-    itoa(speed, buffer, 10);
-    debug += buffer;
-    debug += "\n\n(";
-    itoa(pixX, buffer, 10);
-    debug += buffer;
-    debug += ", ";
-    itoa(pixY, buffer, 10);
-    debug += buffer;
-    debug += ")";
-
-    win.debug(debug);
+    buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
+    win.debug(buffer.str());
  }
 
 

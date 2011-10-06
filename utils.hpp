@@ -35,6 +35,19 @@ namespace jlug
     };
 
     /**
+    * \struct Point
+    * \brief 3D-Point
+    */
+
+    struct Point
+    {
+        double
+        x, /*!< X-value */
+        y, /*!< Y-value */
+        z; /*!< Z-value */
+    };
+
+    /**
     * \enum Collision
     * \brief Type of collision on each tiles
     */

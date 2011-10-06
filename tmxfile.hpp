@@ -9,8 +9,7 @@
 #include <cstdlib>
 #include "utils.hpp"
 #include "layer.hpp"
-#include "tinyxml/tinyxml.h"
-#include "tinyxml/tinystr.h"
+#include <tinyxml.h>
 
 /**
 * \namespace jlug

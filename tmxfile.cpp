@@ -7,7 +7,7 @@
 * If the file couldn't be loaded, the running attribute is set to false.
 */
 jlug::TmxFile::TmxFile(const std::string& filename):
-                        doc(filename.c_str()), layers(), tilesets()
+                        doc(filename.c_str()), tilesets(), layers()
 {
     if (!doc.LoadFile())
         running = false;
@@ -228,8 +228,8 @@ bool jlug::TmxFile::getBase64Tiles(TiXmlElement* child, jlug::Layer& layer)
 {
     unsigned char* data = new unsigned char[strlen(child->GetText())+1]; // allocate because decode64 is a C-function which does not accept std::string
     jlug::Rect mapSize = getMapSize();
-    unsigned int gid(0), x(0), y(0);
-    int i(0), max(0);
+    unsigned int gid(0);
+    int x(0), y(0), i(0), max(0);
 
     sprintf(reinterpret_cast<char*>(data), "%s", child->GetText()); // place the text in our allocated variable
     max = decode64(data); // decoding 64 it. max is the length of decoded characters directly modified in data.
@@ -262,7 +262,7 @@ bool jlug::TmxFile::getTiles(TiXmlElement* child, jlug::Layer& layer)
 {
     TiXmlElement* node = child->FirstChildElement();
     jlug::Rect mapSize = getMapSize();
-    unsigned int x(0), y(0);
+    int x(0), y(0);
     while(node)
     {
         if (x == mapSize.w)

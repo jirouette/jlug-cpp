@@ -6,11 +6,10 @@
 *
 * Initialize everything to default.
 */
-jlug::Map::Map(jlug::ImageManager& imageM):
+jlug::Map::Map(void):
                 width(0), height(0), tileWidth(0), tileHeight(0),
-                tilesets(), gidRects(), IM(imageM),
-                mapFilename(""), layers(), weather(NORMAL),
-                xscroll(0), yscroll(0)
+                xscroll(0), yscroll(0), tilesets(), gidRects(), 
+                gidTilesets(), mapFilename(""), layers(), weather(NORMAL)
 {}
 
 /**
@@ -20,11 +19,10 @@ jlug::Map::Map(jlug::ImageManager& imageM):
 *
 * Initialize everything to default and then, load the map.
 */
-jlug::Map::Map(const std::string& filename, jlug::ImageManager& imageM):
+jlug::Map::Map(const std::string& filename):
                 width(0), height(0), tileWidth(0), tileHeight(0),
-                tilesets(), gidRects(), IM(imageM),
-                mapFilename(filename), layers(), weather(NORMAL),
-                xscroll(0), yscroll(0)
+                xscroll(0), yscroll(0), tilesets(), gidRects(), 
+                gidTilesets(), mapFilename(filename), layers(), weather(NORMAL)
 {
     loadMap(mapFilename);
 }
@@ -221,6 +219,12 @@ bool jlug::Map::setScroll(int x, int y)
  }
 
 
+bool jlug::Map::setCamera(int x, int y)
+{
+    gluLookAt(x-5, y+2, 5, x-5, y, 0, 0, 1, 0);
+     return true;
+}
+
 
 /**
 * \brief get width of the map in tiles
@@ -312,9 +316,9 @@ jlug::Tileset* jlug::Map::getTilesetByGid(unsigned int gid)
      jlug::Tileset* tileset = &(tilesets[0]);
      for(it = tilesets.begin() ; it != tilesets.end() ; ++it)
      {
-        if (it->firstgid <= gid)
+        if (it->firstgid <= static_cast<int>(gid))
             tileset = &(*it);
-        else if (it->firstgid > gid)
+        else if (it->firstgid > static_cast<int>(gid))
             return tileset;
      }
      return tileset;
@@ -345,13 +349,19 @@ jlug::Rect jlug::Map::getRectByGid(unsigned int gid, const jlug::Tileset* tilese
 */
 bool jlug::Map::displayLayer(jlug::Window& win, int index)
 {
-    jlug::Image tile;
+    //jlug::Image tile;
     jlug::Tileset* tileset;
     std::string previousFilename("");
+    jlug::Square square;
+
     const int MAXW((xscroll+win.getWidth())/tileWidth);
     const int MAXH((yscroll+win.getHeight())/tileHeight);
     unsigned int gid(0);
-    tile.setAlpha(layers[index].getOpacity());
+    //tile.setAlpha(layers[index].getOpacity());
+
+    square.setPixelTranslation(tileWidth, tileHeight);
+
+
     for (int j(yscroll/tileHeight);j<MAXH;++j)
         for(int i(xscroll/tileWidth);i<MAXW;++i)
         {
@@ -362,10 +372,17 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
 
             if (gid != UINT_MAX && gid != 0) // UINT_MAX and 0 mean that the tile does not exist or must not be displayed.
             {
+                jlug::Image& tile(jlug::ImageManager::getInstance()[gidTilesets[gid]->filename]);
                 tileset = gidTilesets[gid];
-                tile = IM[tileset->filename];
-                tile.setBlitRect(gidRects[gid].x*tileWidth, gidRects[gid].y*tileHeight, tileWidth, tileHeight);
-                win.blit(tile, i*tileWidth-xscroll, j*tileHeight-yscroll);
+
+                square.setPosition(i, j, index*0.011);
+                //square.setColor(255, 0, 0);
+
+                square.setTexture(jlug::ImageManager::getInstance().getTexture(tileset->filename));
+                square.setTextureSize(0, 0, tile.getRealWidth(), tile.getRealHeight());
+                square.setTextureZone(gidRects[gid].x*tileWidth, gidRects[gid].y*tileHeight, tileWidth, tileHeight);
+
+                square.draw();
             }
         }
 

@@ -13,6 +13,8 @@
 #include "tmxfile.hpp"
 #include "imagemanager.hpp"
 #include "window.hpp"
+#include "shape.hpp"
+#include "square.hpp"
 
 
 /**
@@ -30,8 +32,8 @@ namespace jlug
     {
         public:
 
-            Map(jlug::ImageManager& imageM);
-            Map(const std::string& filename, jlug::ImageManager& imageM);
+            Map(void);
+            Map(const std::string& filename);
             ~Map(void);
 
             bool loadMap(const std::string& filename);
@@ -44,6 +46,7 @@ namespace jlug
             bool setTileSize(unsigned int paramTileWidth, unsigned int paramTileHeight);
             bool setTileSize(jlug::Rect tileSize);
             bool setScroll(int x, int y);
+            bool setCamera(int x, int y);
 
 
             unsigned int getWidth(void);
@@ -77,7 +80,6 @@ namespace jlug
             std::string mapFilename; /*!< path to map file */
             std::vector<jlug::Layer> layers; /*!< layers of tiles */
             jlug::Weather weather; /*!< weather */
-            jlug::ImageManager& IM; /*!< image manager */
 
 
 

@@ -23,10 +23,10 @@ namespace jlug
     class Player : public virtual Character
     {
         public:
-            Player(jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
-            Player(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
-            Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
-            Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM, jlug::Input& in, jlug::Window& win);
+            Player(jlug::Input& in, jlug::Window& win);
+            Player(unsigned int cid, const std::string& cname, jlug::Input& in, jlug::Window& win);
+            Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::Input& in, jlug::Window& win);
+            Player(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::Input& in, jlug::Window& win);
             ~Player(void);
 
             virtual void move(jlug::Map& map);

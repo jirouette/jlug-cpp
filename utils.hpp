@@ -11,7 +11,7 @@
 #include <climits>
 #include <ctime>
 #include "utils/base64.h" // <- base64 functions by Bernard Chardonneau
-#define ABS(x) ((x<0)?(-(x)):(x))
+#define ABS(x) ((x<0)?(-(x)):(x)) // define in C++ :( ... 
 
 /**
 * \namespace jlug
@@ -25,14 +25,17 @@ namespace jlug
     * \brief Rectangle with upper-left corner and downer-right corner defined.
     * May be used as a vector.
     */
-    struct Rect
+    template <typename T>
+    struct Rectangle
     {
-        int
+        T
         x, /*!< X-value */
         y, /*!< Y-value */
         w, /*!< Width of the rectangle. */
         h;  /*!< Height of the rectangle. */
     };
+
+    typedef Rectangle<int> Rect;
 
     /**
     * \struct Point

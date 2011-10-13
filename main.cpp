@@ -2,7 +2,7 @@
 #include <fstream>
 #include "example.hpp"
 
-int main(int argc, char* argv[])
+int main(void)
 {
     game();
     return 0;

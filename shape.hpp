@@ -9,17 +9,62 @@ namespace jlug
     class Shape
     {
         public:
-            //static void cube(const jlug::Point& center, double size, const jlug::Rect& textureSize, const jlug::Rect& rawSize, GLuint* texture = NULL);
-            //static void sphere(const jlug::Point& center, double ray, const jlug::Rect& textureSize, const jlug::Rect& rawSize, GLuint* texture = NULL);
+            enum Transformation {TRANSLATION, ROTATION, SCALING};
+            
+        protected:
+            jlug::Point centerAxes;
+            jlug::Point color;
+            GLuint texture;
+
+            jlug::Rectangle<double> textureSize;
+            jlug::Rectangle<double> textureZone;
+
+            jlug::Point pixelTranslation;
+
+            std::queue< std::pair<jlug::Shape::Transformation, jlug::Point> > transformations;
 
 
-            //static void triangle(const jlug::Point& center, double size, const jlug::Rect& textureSize, const jlug::Rect& rawSize, GLuint* texture = NULL);
-            static void square(const jlug::Point& center, double size, const jlug::Rect& textureSize, const jlug::Rect& rawSize, GLuint* texture = NULL);
-
-
-        private:
+            void applyTransformations(void);
+        
+        public:
             Shape(void);
             ~Shape(void);
+
+            void translate(const jlug::Point& tAxes);
+            void rotate(const jlug::Point& rAxes);
+            void scale(const jlug::Point& sAxes);
+
+            void translate(const double& x, const double& y, const double& z);
+            void rotate(const double& x, const double& y, const double& z);
+            void scale(const double& x, const double& y, const double& z);
+
+            void cancelTransformations(void);
+
+            void setPosition(const jlug::Point& pAxes);
+            void setPosition(const double& x, const double& y, const double& z);
+            jlug::Point getPosition(void);
+
+            void setColor(const jlug::Point& colors);
+            void setColor(const double& r, const double& g, const double& b);
+            jlug::Point getColor(void);
+
+            void setTexture(GLuint id);
+            GLuint getTexture(void);
+
+            void setTextureSize(const jlug::Rectangle<double>& size);
+            void setTextureSize(const double& x, const double& y, const double& w, const double& h);
+            jlug::Rectangle<double> getTextureSize(void);
+
+            void setTextureZone(const jlug::Rectangle<double>& zone);
+            void setTextureZone(const double& x, const double& y, const double& w, const double& h);
+            jlug::Rectangle<double> getTextureZone(void);
+
+            void setPixelTranslation(double x, double y);
+            jlug::Point getPixelTranslation(void);
+
+
+
+            virtual void draw(void) = 0; // Must be implemanted in daughter class
 
 
 

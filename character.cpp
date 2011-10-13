@@ -15,10 +15,10 @@
 * Initialisize everything to default.
 */
 
-jlug::Character::Character(jlug::ImageManager& imageM):
-                        charset(0), name(""), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
-                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+jlug::Character::Character(void):
+                        charset(0), name(""), charsetFilename(""), x(0), y(0), z(0), pixX(x*16), pixY(y*16),
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), 
+                        isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
     buffer << charset;
@@ -35,32 +35,10 @@ jlug::Character::Character(jlug::ImageManager& imageM):
 * Initialisize everything.
 */
 
-jlug::Character::Character(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(0), y(0), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
-                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
-{
-    std::ostringstream buffer;
-    buffer << charset;
-    charsetFilename += buffer.str();
-    charsetFilename += ".png";
-}
-
-/**
-* \brief Constructor
-* \param cid : Charset ID
-* \param name : Character's name. May be empty.
-* \param x : X-position of the character.
-* \param y : Y-position of the character.
-* \param imageM : reference to the ImageManager instance.
-*
-* Initialisize everything.
-*/
-
-jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(0), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
-                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+jlug::Character::Character(unsigned int cid, const std::string& cname):
+                        charset(cid), name(cname), charsetFilename(""), x(0), y(0), z(0), pixX(x*16), pixY(y*16),
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), 
+                        isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
     buffer << charset;
@@ -79,10 +57,32 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 * Initialisize everything.
 */
 
-jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM):
-                        charset(cid), name(cname), x(posx), y(posy), z(posz), IM(imageM), pixX(x*16), pixY(y*16), position(jlug::Move::DOWN),
-                        direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), isMoving(false), animation(0),
-                        lastAnimation(clock()), animationTime(0.2), previousAnimation(1), charsetFilename("")
+jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy):
+                        charset(cid), name(cname), charsetFilename(""), x(posx), y(posy), z(0), pixX(x*16), pixY(y*16),
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4),
+                        isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
+{
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename += buffer.str();
+    charsetFilename += ".png";
+}
+
+/**
+* \brief Constructor
+* \param cid : Charset ID
+* \param name : Character's name. May be empty.
+* \param x : X-position of the character.
+* \param y : Y-position of the character.
+* \param imageM : reference to the ImageManager instance.
+*
+* Initialisize everything.
+*/
+
+jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz):
+                        charset(cid), name(cname), charsetFilename(""), x(posx), y(posy), z(posz), pixX(x*16), pixY(y*16), 
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), 
+                        speed(4), isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
     buffer << charset;
@@ -439,7 +439,7 @@ void jlug::Character::move(jlug::Map& map)
                         pixbetween = ABS(((x-1)*16)-static_cast<int>(pixX));
 
 
-                    while (pixbetween < altSpeed) // If speed is too big, we reduce it.
+                    while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
                         altSpeed /= 2;
 
                     // Then, we go to this next tile
@@ -461,7 +461,7 @@ void jlug::Character::move(jlug::Map& map)
                         pixbetween = ABS(((y-1)*16)-static_cast<int>(pixY));
 
 
-                    while (pixbetween < altSpeed) // If speed is too big, we reduce it.
+                    while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
                         altSpeed /= 2;
 
                     // Then, we go to this next tile
@@ -495,19 +495,30 @@ void jlug::Character::move(jlug::Map& map)
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     std::ostringstream buffer;
-    jlug::Image sprite(IM[charsetFilename]);
-    jlug::Rect rect;
-    jlug::Rect scroll(map.getScroll());
+    jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
+    jlug::Rect rect, scroll(map.getScroll());
+    jlug::Point point;
+    jlug::Square square;
 
     animate();
 
     rect = getCharsetRect(position, animation, sprite.getWidth(), sprite.getHeight());
     sprite.setBlitRect(rect);
 
-    win.blit(sprite,
-            pixX-scroll.x+map.getTileWidth()/2-sprite.getWidth()/2/2, // Location - Scroll on X + centering ( tilewidth/2 - spritewidth/2 )
-            pixY-scroll.y-sprite.getHeight()/6+map.getTileHeight() // Location - Scroll on Y + putting character's feet on the tile ( tileheight - spriteheight )
-            );
+    point.x = static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth());
+    point.y = static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1);
+    point.z = 0.01;
+
+    square.setPixelTranslation(map.getTileWidth(), map.getTileHeight());
+    square.setPosition(point);
+    square.rotate(0, 0, 0);
+    square.scale(rect.w, rect.h, 1);
+
+    square.setTextureSize(0, 0, sprite.getRealWidth(), sprite.getRealHeight());
+    square.setTextureZone(rect.x, rect.y, rect.w, rect.h);
+    square.setTexture(jlug::ImageManager::getInstance().getTexture(charsetFilename));
+
+    square.draw();
 
     buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
     win.debug(buffer.str());

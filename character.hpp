@@ -30,10 +30,10 @@ namespace jlug
     {
 
         public:
-            Character(jlug::ImageManager& imageM);
-            Character(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM);
-            Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM);
-            Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM);
+            Character(void);
+            Character(unsigned int cid, const std::string& cname);
+            Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy);
+            Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz);
             ~Character(void);
 
             void setX(unsigned int posx);
@@ -95,9 +95,6 @@ namespace jlug
             unsigned char previousAnimation;
             clock_t lastAnimation;
             double animationTime;
-
-
-            jlug::ImageManager& IM; /*!< image manager */
     };
 
     typedef Character NPC;

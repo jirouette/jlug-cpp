@@ -12,9 +12,32 @@
 * Creates an Image predefined with the parameter img.
 * Sets also the blitRect as default (Min X, Max Width, Min Y, Max Height).
 */
-jlug::Image::Image(const sf::Image& img)
+jlug::Image::Image(const std::string& filename)
  {
-     image.SetImage(img);
+
+
+     if (!raw.LoadFromFile(filename.c_str()))
+        throw std::runtime_error("could not open image"); // Loading failure
+
+     raw.SetSmooth(false); // SFML set smooth default to true which leads to problems.
+
+     width = raw.GetWidth();
+     height = raw.GetHeight();
+
+
+     {
+          sf::Image tempImage(getTextureSize(raw.GetWidth()), 
+                              getTextureSize(raw.GetHeight()),
+                              sf::Color(0, 255, 0)
+                              );
+          tempImage.Copy(raw, 0, 0);
+          tempImage.SetSmooth(false);
+          raw = tempImage;
+     }
+
+     raw.CreateMaskFromColor(sf::Color(0, 255, 0)); // Color #00FF00 is used as transparence color.
+
+     image.SetImage(raw);
      blitRect.x = 0;
      blitRect.y = 0;
      blitRect.w = getWidth();
@@ -27,7 +50,7 @@ jlug::Image::Image(const sf::Image& img)
 * Creates an empty Image with default blitRect.
 */
 jlug::Image::Image(void)
-            :image(), blitRect()
+            :image(), raw(), blitRect(), width(0), height(0)
  {}
 
 /**
@@ -46,16 +69,78 @@ jlug::Image::~Image()
 *
 * Changes or sets an image.
 */
-jlug::Image& jlug::Image::operator=(const sf::Image& img)
+jlug::Image& jlug::Image::operator=(const std::string& filename)
  {
-     image.SetSubRect(sf::IntRect(0, 0, img.GetWidth(), img.GetHeight()));
-     // To avoid some problems, it is better to changes the SubRect before setting the image.
-     image.SetImage(img);
+     if (!raw.LoadFromFile(filename.c_str()))
+        throw std::runtime_error("could not open image"); // Loading failure
+
+     raw.SetSmooth(false); // SFML set smooth default to true which leads to problems.
+
+     width = raw.GetWidth();
+     height = raw.GetHeight();
+
+
+     {
+          sf::Image tempImage(getTextureSize(raw.GetWidth()), 
+                              getTextureSize(raw.GetHeight()),
+                              sf::Color(0, 255, 0)
+                              );
+          
+          tempImage.Copy(raw, 0, 0);
+          tempImage.SetSmooth(false);
+          raw = tempImage;
+     }
+
+     raw.CreateMaskFromColor(sf::Color(0, 255, 0)); // Color #00FF00 is used as transparence color.
+
+     image.SetImage(raw);
      blitRect.x = 0;
      blitRect.y = 0;
      blitRect.w = getWidth();
      blitRect.h = getHeight();
+
      return *this;
+ }
+
+/**
+* \brief Get the real width.
+* \return width (first real inaccessible X-value)
+*
+* Gets the real width of the image and returns it.
+*/
+unsigned int jlug::Image::getRealWidth(void)
+ {
+     sf::Vector2f size = image.GetSize();
+     return size.x;
+ }
+
+/**
+* \brief Get the real height.
+* \return height (first real inaccessible Y-value)
+*
+* Gets the real height of the image and returns it.
+*/
+unsigned int jlug::Image::getRealHeight(void)
+ {
+     sf::Vector2f size = image.GetSize();
+     return size.y;
+ }
+
+/**
+* \brief Get the real size.
+* \return Rect with
+*        w datafield as real width (first real inaccessible X-value)
+*        h datafield as real height (first real inacessible Y-value)
+*
+* Gets the real size (real width, real height) of the image and returns it.
+*/
+jlug::Rect jlug::Image::getRealSize(void)
+ {
+     sf::Vector2f size = image.GetSize();
+     jlug::Rect rect = {0, 0, 0, 0};
+     rect.w = size.x;
+     rect.h = size.y;
+     return rect;
  }
 
 /**
@@ -66,8 +151,7 @@ jlug::Image& jlug::Image::operator=(const sf::Image& img)
 */
 unsigned int jlug::Image::getWidth(void)
  {
-     sf::Vector2f size = image.GetSize();
-     return size.x;
+     return width;
  }
 
 /**
@@ -78,8 +162,7 @@ unsigned int jlug::Image::getWidth(void)
 */
 unsigned int jlug::Image::getHeight(void)
  {
-     sf::Vector2f size = image.GetSize();
-     return size.y;
+     return height;
  }
 
 /**
@@ -92,10 +175,9 @@ unsigned int jlug::Image::getHeight(void)
 */
 jlug::Rect jlug::Image::getSize(void)
  {
-     sf::Vector2f size = image.GetSize();
      jlug::Rect rect = {0, 0, 0, 0};
-     rect.w = size.x;
-     rect.h = size.y;
+     rect.w = width;
+     rect.h = height;
      return rect;
  }
 
@@ -118,10 +200,10 @@ jlug::Rect jlug::Image::getBlitRect(void)
 */
 void jlug::Image::setBlitRect(const jlug::Rect& rect)
  {
-     blitRect.x = (rect.x >= 0 && rect.x < getWidth()) ? rect.x : blitRect.x; // negative or superior to width rect.x is not allowed.
-     blitRect.y = (rect.y >= 0 && rect.y < getHeight()) ? rect.y : blitRect.y; // negative or superior to height rect.y is not allowed.
-     blitRect.w = (rect.w > 0 && rect.w <= getWidth()-blitRect.x) ? rect.w : blitRect.w; // negative or null or inferior to the left width rect.w is not allowed.
-     blitRect.h = (rect.h > 0 && rect.h <= getHeight()-blitRect.y) ? rect.h : blitRect.h; // negative or null or inferior to the left height rect.h is not allowed.
+     blitRect.x = (rect.x >= 0 && rect.x < static_cast<int>(getWidth())) ? rect.x : blitRect.x; // negative or superior to width rect.x is not allowed.
+     blitRect.y = (rect.y >= 0 && rect.y < static_cast<int>(getHeight())) ? rect.y : blitRect.y; // negative or superior to height rect.y is not allowed.
+     blitRect.w = (rect.w > 0 && rect.w <= static_cast<int>(getWidth())-blitRect.x) ? rect.w : blitRect.w; // negative or null or inferior to the left width rect.w is not allowed.
+     blitRect.h = (rect.h > 0 && rect.h <= static_cast<int>(getHeight())-blitRect.y) ? rect.h : blitRect.h; // negative or null or inferior to the left height rect.h is not allowed.
  }
 
 /**
@@ -139,6 +221,11 @@ void jlug::Image::setBlitRect(unsigned int x, unsigned int y, unsigned int w, un
      setBlitRect(rect);
  }
 
+const sf::Image& jlug::Image::getRaw(void)
+{
+     return raw;
+}
+
 /**
 * \brief Set the alpha transparence
 * \param alpha : alpha value. Must be between 0 and 1 as max possible values.
@@ -149,4 +236,12 @@ void jlug::Image::setAlpha(float alpha)
  {
     if (alpha >= 0.0 && alpha <= 1.0)
         image.SetColor(sf::Color(255, 255, 255, alpha*255));
+ }
+
+
+unsigned int jlug::Image::getTextureSize(unsigned int size)
+ {
+     unsigned int i(1);
+     for (i = 1 ; i < size ; i <<= 1);
+     return i;
  }

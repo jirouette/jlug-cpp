@@ -23,10 +23,10 @@ namespace jlug
     class AnimatedCharacter : public virtual Character
     {
         public:
-            AnimatedCharacter(jlug::ImageManager& imageM);
-            AnimatedCharacter(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM);
-            AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM);
-            AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM);
+            AnimatedCharacter(void);
+            AnimatedCharacter(unsigned int cid, const std::string& cname);
+            AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy);
+            AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz);
             ~AnimatedCharacter(void);
 
             virtual void animate(void);

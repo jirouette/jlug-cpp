@@ -12,8 +12,8 @@
 *
 * Initialisize everything to default.
 */
-jlug::AnimatedCharacter::AnimatedCharacter(jlug::ImageManager& imageM):
-                                jlug::Character::Character(imageM)
+jlug::AnimatedCharacter::AnimatedCharacter(void):
+                                jlug::Character::Character()
 {}
 
 
@@ -25,23 +25,8 @@ jlug::AnimatedCharacter::AnimatedCharacter(jlug::ImageManager& imageM):
 *
 * Initialisize everything.
 */
-jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname, jlug::ImageManager& imageM):
-                                jlug::Character::Character(cid, cname, imageM)
-{}
-
-/**
-* \brief Constructor
-* \param cid : Charset ID
-* \param name : Character's name. May be empty.
-* \param x : X-position of the character.
-* \param y : Y-position of the character.
-* \param imageM : reference to the ImageManager instance.
-*
-* Initialisize everything.
-*/
-
-jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, jlug::ImageManager& imageM):
-                                jlug::Character::Character(cid, cname, posx, posy, imageM)
+jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname):
+                                jlug::Character::Character(cid, cname)
 {}
 
 /**
@@ -55,8 +40,23 @@ jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& 
 * Initialisize everything.
 */
 
-jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz, jlug::ImageManager& imageM):
-                                jlug::Character::Character(cid, cname, posx, posy, posz, imageM)
+jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy):
+                                jlug::Character::Character(cid, cname, posx, posy)
+{}
+
+/**
+* \brief Constructor
+* \param cid : Charset ID
+* \param name : Character's name. May be empty.
+* \param x : X-position of the character.
+* \param y : Y-position of the character.
+* \param imageM : reference to the ImageManager instance.
+*
+* Initialisize everything.
+*/
+
+jlug::AnimatedCharacter::AnimatedCharacter(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz):
+                                jlug::Character::Character(cid, cname, posx, posy, posz)
 {}
 
 

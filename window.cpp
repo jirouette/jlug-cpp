@@ -9,8 +9,8 @@
 * set blitRect to his max value
 */
 jlug::Window::Window(unsigned int width, unsigned int height, const std::string& name):
-                        win(sf::VideoMode(width, height, 32), name, sf::Style::Close|sf::Style::Titlebar),
-                        debugStr(""), font(), winstr()
+                        win(sf::VideoMode(width, height, 32), name, sf::Style::Close|sf::Style::Titlebar, sf::WindowSettings(24, 8, 4)),
+                        debugStr(""), winstr(), font()
  {
      blitRect.x = blitRect.y = 0;
      blitRect.w = width;
@@ -31,6 +31,7 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(70.f, static_cast<double>(width)/static_cast<double>(height), 1.f, 500.f);
+
 
  }
 
@@ -75,10 +76,10 @@ void jlug::Window::processEvents(void)
 */
 void jlug::Window::setBlitRect(const jlug::Rect& rect)
  {
-     blitRect.x = (rect.x >= 0 && rect.x < win.GetWidth()) ? rect.x : blitRect.x; // negative or superior to width rect.x is not allowed.
-     blitRect.y = (rect.y >= 0 && rect.y < win.GetHeight()) ? rect.y : blitRect.y; // negative or superior to height rect.y is not allowed.
-     blitRect.w = (rect.w > 0 && rect.w <= win.GetWidth()-blitRect.x) ? rect.w : blitRect.w; // negative or null or inferior to the left width rect.w is not allowed.
-     blitRect.h = (rect.h > 0 && rect.h <= win.GetHeight()-blitRect.y) ? rect.h : blitRect.h; // negative or null or inferior to the left height rect.h is not allowed.
+     blitRect.x = (rect.x >= 0 && rect.x < static_cast<int>(win.GetWidth())) ? rect.x : blitRect.x; // negative or superior to width rect.x is not allowed.
+     blitRect.y = (rect.y >= 0 && rect.y < static_cast<int>(win.GetHeight())) ? rect.y : blitRect.y; // negative or superior to height rect.y is not allowed.
+     blitRect.w = (rect.w > 0 && rect.w <= static_cast<int>(win.GetWidth())-blitRect.x) ? rect.w : blitRect.w; // negative or null or inferior to the left width rect.w is not allowed.
+     blitRect.h = (rect.h > 0 && rect.h <= static_cast<int>(win.GetHeight())-blitRect.y) ? rect.h : blitRect.h; // negative or null or inferior to the left height rect.h is not allowed.
  }
 
 /**
@@ -111,7 +112,23 @@ void jlug::Window::blit(jlug::Image& img)
 
     img.image.SetSubRect(sf::IntRect(img.blitRect.x, img.blitRect.y, img.blitRect.x+img.blitRect.w, img.blitRect.y+img.blitRect.h));
     img.image.SetPosition(blitRect.x, blitRect.y);
-    //win.Draw(img.image);
+
+    glMatrixMode(GL_MODELVIEW); 
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING); 
+
+    win.Draw(img.image);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glPopAttrib();
     //win.Draw(img.image);
  }
 
@@ -150,9 +167,26 @@ void jlug::Window::blit(jlug::Image& img, const jlug::Rect& pos)
 */
 void jlug::Window::flip(void)
  {
+    glMatrixMode(GL_MODELVIEW); 
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING); 
+
+    win.Draw(winstr);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glPopAttrib();
+
      //win.Draw(winstr);
         glFlush();
-     win.Display();
+    win.Display();
  }
 
 /**
@@ -165,7 +199,8 @@ void jlug::Window::clear(void)
 
      glMatrixMode(GL_MODELVIEW);
      glLoadIdentity();
-     gluLookAt(0, -0.5, 1, 0, 0, 0, 0, 1, 0);
+     //gluLookAt(18, -13, 30, 15, -13, 0, 0, 1, 0);
+     gluLookAt(5, -15, 10, 5, 0, -5, 0, 1, 0);
  }
 
 /**
@@ -173,7 +208,7 @@ void jlug::Window::clear(void)
 */
 unsigned int jlug::Window::getWidth(void)
  {
-     return win.GetWidth();
+     return 550;//win.GetWidth();
  }
 
 /**
@@ -181,7 +216,7 @@ unsigned int jlug::Window::getWidth(void)
 */
 unsigned int jlug::Window::getHeight(void)
  {
-     return win.GetHeight();
+     return 400;//win.GetHeight();
  }
 
 /**

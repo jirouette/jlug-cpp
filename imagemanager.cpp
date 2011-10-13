@@ -40,20 +40,17 @@ jlug::ImageManager::~ImageManager(void)
 * Then, returns it or, if it isn't, try to load it and returns it.
 * Throw a std::runtime_error if the loading has failed.
 */
-sf::Image& jlug::ImageManager::getImage(const std::string& filename)
+jlug::Image& jlug::ImageManager::getImage(const std::string& filename)
 {
-    sf::Image image;
-    std::map<std::string, sf::Image>::iterator it(images.find(filename));
+    jlug::Image image;
+    std::map<std::string, jlug::Image>::iterator it(images.find(filename));
 
     if (it != images.end())
         return it->second; // An image with this filename is found, so, we return it
 
-    if (!image.LoadFromFile(filename.c_str()))
-        throw std::runtime_error("could not open image"); // Loading failure
+    image = filename;
 
-    image.SetSmooth(false); // SFML set smooth default to true which leads to problems.
-    image.CreateMaskFromColor(sf::Color(0, 255, 0)); // Color #00FF00 is used as transparence color.
-    images.insert(std::pair<std::string, sf::Image>(filename, image)); // We store the new image.
+    images.insert(std::pair<std::string, jlug::Image>(filename, image)); // We store the new image.
     return images[filename]; // Returns the new image.
 }
 
@@ -67,10 +64,12 @@ GLuint& jlug::ImageManager::getTexture(const std::string& filename)
      textures.insert(std::pair<std::string, GLuint>(filename, 0));
      {
          GLuint& texture(getTexture(filename));
-         sf::Image& img(getImage(filename));
+         jlug::Image& img(getImage(filename));
          glGenTextures(1, &texture);
          glBindTexture(GL_TEXTURE_2D, texture);
-         gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,img.GetWidth(),img.GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,img.GetPixelsPtr());
+         std::cout << filename << " -> " << img.getRealWidth() << "/" << img.getRealHeight();
+         std::cout << " VS " << img.getWidth() << "/" << img.getHeight() << std::endl;
+         gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,img.getRealWidth(), img.getRealHeight(),GL_RGBA,GL_UNSIGNED_BYTE,img.getRaw().GetPixelsPtr());
          return texture;
      }
  }
@@ -81,7 +80,7 @@ GLuint& jlug::ImageManager::getTexture(const std::string& filename)
 *
 * Operator [] overloaded. Calls getImage(const std::string& filename) method and returns it.
 */
-sf::Image& jlug::ImageManager::operator[](const std::string& filename)
+jlug::Image& jlug::ImageManager::operator[](const std::string& filename)
 {
     return getImage(filename);
 }
@@ -93,7 +92,7 @@ sf::Image& jlug::ImageManager::operator[](const std::string& filename)
 *
 * Operator () overloaded. Calls getImage(const std::string& filename) method and returns it.
 */
-sf::Image& jlug::ImageManager::operator()(const std::string& filename)
+jlug::Image& jlug::ImageManager::operator()(const std::string& filename)
 {
     return getImage(filename);
 }
@@ -105,12 +104,14 @@ sf::Image& jlug::ImageManager::operator()(const std::string& filename)
 * \param g : Green value. Between 0 and 255.
 * \param b : Blue value. Between 0 and 255.
 * \return true
+* \deprecated
 *
 * Simply sets the transparence mask.
 */
 bool jlug::ImageManager::setMask(const std::string& filename, unsigned int r, unsigned int g, unsigned int b)
 {
-    getImage(filename).CreateMaskFromColor(sf::Color(r, g, b));
+    std::cerr << "ImageManager::setMask(" << filename << ", " << r << ", " << g << ", " << b << ") does not work. " << std::endl;
+    //getImage(filename).CreateMaskFromColor(sf::Color(r, g, b));
     return true;
 }
 
@@ -126,6 +127,7 @@ bool jlug::ImageManager::setMask(const std::string& filename, unsigned int r, un
 */
 bool jlug::ImageManager::setAlpha(const std::string& filename, unsigned int a)
 {
+    std::cerr << "ImageManager::setAlpha(" << filename << ", " << a << ") does not work. " << std::endl;
     //getImage(filename).SetColor(sf::Color(255, 255, 255, a));
     return true;
 }
@@ -139,7 +141,7 @@ bool jlug::ImageManager::setAlpha(const std::string& filename, unsigned int a)
 */
 bool jlug::ImageManager::deleteImage(const std::string& filename)
 {
-    std::map<std::string, sf::Image>::iterator it(images.find(filename));
+    std::map<std::string, jlug::Image>::iterator it(images.find(filename));
     if (it != images.end())
     {
         images.erase(it);

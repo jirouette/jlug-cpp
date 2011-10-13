@@ -11,6 +11,7 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
+#include "image.hpp"
 
 /**
 * \namespace jlug
@@ -31,9 +32,9 @@ namespace jlug
         public:
             static ImageManager& getInstance(void);
             ~ImageManager(void);
-            sf::Image& getImage(const std::string& filename);
-            sf::Image& operator[](const std::string& filename);
-            sf::Image& operator()(const std::string& filename);
+            jlug::Image& getImage(const std::string& filename);
+            jlug::Image& operator[](const std::string& filename);
+            jlug::Image& operator()(const std::string& filename);
             GLuint& getTexture(const std::string& filename);
             bool setMask(const std::string& filename, unsigned int r, unsigned int g, unsigned int b);
             bool setAlpha(const std::string& filename, unsigned int a);
@@ -43,7 +44,7 @@ namespace jlug
             ImageManager(void);
             //ImageManager(const ImageManager&);
 
-            std::map<std::string, sf::Image> images; /*!< Images stored by filename */
+            std::map<std::string, jlug::Image> images; /*!< Images stored by filename */
             std::map<std::string, GLuint> textures; /*!< Textures stored by filename */
     };
 }

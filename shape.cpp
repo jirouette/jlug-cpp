@@ -40,7 +40,8 @@ void jlug::Shape::translate(const double& x, const double& y, const double& z)
     tAxes.y = -y*pixelTranslation.y;
     tAxes.z = z*pixelTranslation.z;
 
-    transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::TRANSLATION, tAxes));
+    if (tAxes.x != 0 || tAxes.y != 0 || tAxes.z != 0)
+        transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::TRANSLATION, tAxes));
 }
 
 void jlug::Shape::rotate(const double& x, const double& y, const double& z)
@@ -51,7 +52,8 @@ void jlug::Shape::rotate(const double& x, const double& y, const double& z)
     rAxes.y = -y;//*pixelTranslation.y;
     rAxes.z = z;//*pixelTranslation.z;
 
-    transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::ROTATION, rAxes));
+    if (rAxes.x != 0 || rAxes.y != 0 || rAxes.z != 0)
+        transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::ROTATION, rAxes));
 }
 
 void jlug::Shape::scale(const double& x, const double& y, const double& z)
@@ -62,7 +64,8 @@ void jlug::Shape::scale(const double& x, const double& y, const double& z)
     sAxes.y = y*pixelTranslation.y;
     sAxes.z = z*pixelTranslation.z;
 
-    transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::SCALING, sAxes));
+    if (sAxes.x != 0 || sAxes.y != 0 || sAxes.z != 0)
+        transformations.push(std::pair<jlug::Shape::Transformation, jlug::Point>(jlug::Shape::SCALING, sAxes));
 }
 
 void jlug::Shape::cancelTransformations(void)

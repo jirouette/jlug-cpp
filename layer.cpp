@@ -4,7 +4,7 @@
 * \brief Constructor
 */
 jlug::Layer::Layer():
-                tiles(), collisions(), opacity(1.0), visible(true), name("")
+                tiles(), opacity(1.0), visible(true), name("")
 {}
 
 /**
@@ -56,7 +56,6 @@ bool jlug::Layer::setName(const std::string& paramName)
 bool jlug::Layer::clear(void)
 {
     tiles.clear();
-    collisions.clear();
     opacity = 1.0;
     visible = true;
     name = "";
@@ -96,19 +95,23 @@ std::string jlug::Layer::getName(void)
 * \param y : Y-position of the tile
 * \return Value of the GID. If the tile does not exist or if the tile is forbidden, returns UINT_MAX or 0.
 */
-unsigned int jlug::Layer::tile(unsigned int x, unsigned int y)
+jlug::Layer::TileProp& jlug::Layer::tile(unsigned int x, unsigned int y)
 {
-    unsigned int gid(UINT_MAX);
     try
     {
-        gid = tiles.at(x).at(y);
+        return tiles.at(x).at(y);
     }
     catch (const std::exception& e)
     {
-        // we don't care this exception.
-        // but this means gid = UINT_MAX.
+        static jlug::Layer::TileProp tilep;
+        if (x != 0 || y != 0)
+            return tile(0,0);
+        else
+        {
+            tilep.gid = 0;
+            return tilep;
+        }
     }
-    return gid;
 }
 
 /**
@@ -118,10 +121,10 @@ unsigned int jlug::Layer::tile(unsigned int x, unsigned int y)
 * \return Value of the collision state.
 * \bug This method does not work yet.
 */
-jlug::Collision& jlug::Layer::collision(unsigned int x, unsigned int y)
+/*jlug::Collision& jlug::Layer::collision(unsigned int x, unsigned int y)
 {
     return collisions.at(x).at(y);
-}
+}*/
 
 
 /**
@@ -133,14 +136,22 @@ jlug::Collision& jlug::Layer::collision(unsigned int x, unsigned int y)
 *
 * Set a GID to a tile. If the tile does not exist, it is created.
 */
-bool jlug::Layer::setTile(unsigned int x, unsigned int y, unsigned int gid)
+bool jlug::Layer::setTile(unsigned int x, unsigned int y, const jlug::Layer::TileProp& tileprop)
 {
+    jlug::Layer::TileProp tile;
+    tile.gid = 0;
+    tile.rotation.x = tile.rotation.y = tile.rotation.z = 0;
+    tile.scaling.x = tile.scaling.y = tile.scaling.z = 0;
+    tile.translation.x = tile.translation.y = tile.translation.z = 0;
+    tile.translationAfterRotation.x = tile.translationAfterRotation.y = tile.translationAfterRotation.z = 0;
+    tile.collision = jlug::WALKABLE;
+
     if (tiles.size() < (x+1)) // If row is not large enough, we resize it.
         tiles.resize(x+1);
     if (tiles[x].size() < (y+1)) // If column is not large enough, we resize it.
-        tiles[x].resize(y+1, UINT_MAX); // We fill blank values created by resizing with UINT_MAX
+        tiles[x].resize(y+1, tile); // We fill blank values created by resizing with an empty tileprop
 
-    tiles[x][y] = gid;
+    tiles[x][y] = tileprop;
     return true;
 }
 

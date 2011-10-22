@@ -25,12 +25,27 @@ namespace jlug
     class Layer
     {
         public:
+            struct TileProp
+            {
+                unsigned int gid;
+                jlug::Collision collision;
+                jlug::Point scaling;
+                jlug::Point rotation;
+                jlug::Point translation;
+                jlug::Point translationAfterRotation;
+
+                jlug::Point upperLeftCorner;
+                jlug::Point upperRightCorner;
+                jlug::Point downerLeftCorner;
+                jlug::Point downerRightCorner;
+            };
+
             Layer();
             ~Layer(void);
 
             bool setOpacity(double paramOpacity);
             bool setVisible(bool paramVisible);
-            bool setTile(unsigned int x, unsigned int y, unsigned int gid);
+            bool setTile(unsigned int x, unsigned int y, const jlug::Layer::TileProp& tileprop);
             bool setName(const std::string& paramName);
             bool clear(void);
 
@@ -38,13 +53,11 @@ namespace jlug
             bool isVisible(void);
             std::string getName(void);
 
-            unsigned int tile(unsigned int x, unsigned int y);
-            jlug::Collision& collision(unsigned int x, unsigned int y);
+            jlug::Layer::TileProp& tile(unsigned int x, unsigned int y);
 
 
         protected:
-            std::vector< std::vector<unsigned int> > tiles; /*!< GID of tiles in multidimensionnal vector. */
-            std::vector< std::vector<jlug::Collision> > collisions; /*!< Collisions states of tiles in multidimensionnal vector. */
+            std::vector< std::vector<jlug::Layer::TileProp> > tiles; /*!< propeties (such as GID, collisions...) of tiles in multidimensionnal vector. */
 
             double opacity; /*!< Opacity of the layer */
             bool visible; /*!< If layer is visible or not */

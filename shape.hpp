@@ -10,7 +10,7 @@ namespace jlug
     {
         public:
             enum Transformation {TRANSLATION, ROTATION, SCALING};
-            
+
         protected:
             jlug::Point centerAxes;
             jlug::Point color;
@@ -24,7 +24,7 @@ namespace jlug
             std::queue< std::pair<jlug::Shape::Transformation, jlug::Point> > transformations;
 
 
-            void applyTransformations(void);
+            virtual void applyTransformations(void);
         
         public:
             Shape(void);
@@ -38,7 +38,7 @@ namespace jlug
             void rotate(const double& x, const double& y, const double& z);
             void scale(const double& x, const double& y, const double& z);
 
-            void cancelTransformations(void);
+            virtual void cancelTransformations(void);
 
             void setPosition(const jlug::Point& pAxes);
             void setPosition(const double& x, const double& y, const double& z);

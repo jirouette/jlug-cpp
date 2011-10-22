@@ -99,6 +99,9 @@ std::vector<jlug::Layer>& jlug::TmxFile::getLayers(void)
             }
             else if (elem->Value() == std::string("objectgroup")) // Objectgroup will be used for collisions and something else.
             {
+                child = elem->FirstChildElement();
+                if (child && !layers.empty())
+                    getTileProp(child, layers[layers.size()-1]);
                 //child = hdlChild.FirstChildElement().Element();
                 /*if (child)
                     getCollisions(child, layers[layers.size()-1]);*/
@@ -179,6 +182,160 @@ unsigned int jlug::TmxFile::getMapHeight(void)
     return 0;
 }
 
+
+bool jlug::TmxFile::getTileProp(TiXmlElement* child, jlug::Layer& layer)
+{
+    jlug::Rect tileSize(getTileSize());
+    jlug::Rect object;
+    std::string property("");
+
+    object.x = object.y = object.w = object.h = 0;
+
+    while(child)
+    {
+        if (child->Value() == std::string("object"))
+        {
+            if (child->Attribute("type"))
+            {
+                object.x = atoi(child->Attribute("x"))/tileSize.w;
+                object.y = atoi(child->Attribute("y"))/tileSize.h;
+
+                object.w = atoi(child->Attribute("width"));
+                object.h = atoi(child->Attribute("height"));
+
+                if (object.w%tileSize.w == 0)
+                    object.w /= tileSize.w;
+                else
+                    object.w = object.w/tileSize.w + 1;
+                    
+                if (object.h%tileSize.h == 0)
+                    object.h /= tileSize.h;
+                else
+                    object.h = object.h/tileSize.h + 1;
+
+                object.w += object.x;
+                object.h += object.y;
+                if (child->Attribute("type") == std::string("transform"))
+                    lookforTileProp(child->FirstChildElement(), layer, object, tileSize);
+                else if (child->Attribute("type") == std::string("modifyVertex"))
+                    lookforModifyVertex(child->FirstChildElement(), layer, object);
+            }
+        }
+
+        child = child->NextSiblingElement();
+    }
+    return true;
+}
+
+bool jlug::TmxFile::lookforTileProp(TiXmlElement* child, jlug::Layer& layer, const jlug::Rect& tiles, const jlug::Rect& tileSize)
+{
+    TiXmlElement* prop;
+    std::string property("");
+
+    if (child)
+        if (child->Value() == std::string("properties"))
+        {
+            prop = child->FirstChildElement();
+            while (prop)
+            {
+                if (prop->Value() == std::string("property"))
+                    if (prop->Attribute("name") != NULL && prop->Attribute("value") != NULL)
+                        for (int x(tiles.x) ; x < tiles.w ; x += 1)
+                            for (int y(tiles.h-1) ; y >= tiles.y ; y -= 1)
+                            {
+                                property = prop->Attribute("name");
+                                if(property == "rotateX" || property == "rotateXbottom" || property == "rotateXbottomAxis")
+                                {
+                                    layer.tile(x,y).rotation.x = atof(prop->Attribute("value"));
+                                    if (y != tiles.h-1)
+                                    {
+                                        layer.tile(x,y).translation.y += (tiles.h-1 - y)*tileSize.h;
+                                        layer.tile(x,y).translationAfterRotation.y += -(tiles.h-1 - y)*tileSize.h;
+                                    }
+                                }
+
+                                else if (property == "rotateY" || property == "rotateYleft" || property == "rotateYleftAxis")
+                                {
+                                    layer.tile(x,y).rotation.y += atof(prop->Attribute("value"));
+                                    if (x != tiles.x)
+                                    {
+                                        layer.tile(x,y).translation.x += (x - tiles.w)*tileSize.w;
+                                        layer.tile(x,y).translationAfterRotation.x += -(x - tiles.w)*tileSize.w;
+                                    }
+                                }
+
+                                else if (property == "rotateZ")
+                                    layer.tile(x,y).rotation.z += atof(prop->Attribute("value"));
+                                else if (property == "translateX")
+                                    layer.tile(x,y).translation.x += atof(prop->Attribute("value"));
+                                else if (property == "translateY")
+                                    layer.tile(x,y).translation.y += atof(prop->Attribute("value"));
+                                else if (property == "translateZ")
+                                    layer.tile(x,y).translation.z += atof(prop->Attribute("value"));
+                                else if (property == "scaleX")
+                                    layer.tile(x,y).scaling.x += atof(prop->Attribute("value"));
+                                else if (property == "scaleY")
+                                    layer.tile(x,y).scaling.y += atof(prop->Attribute("value"));
+                                else if (property == "scaleZ")
+                                    layer.tile(x,y).scaling.z += atof(prop->Attribute("value"));
+                            }
+                prop = prop->NextSiblingElement();
+            }
+        }
+    return true;
+}
+
+bool jlug::TmxFile::lookforModifyVertex(TiXmlElement* child, jlug::Layer& layer, const jlug::Rect& tiles)
+ {
+    TiXmlElement* prop;
+    std::string property("");
+
+    if (child)
+        if (child->Value() == std::string("properties"))
+        {
+            prop = child->FirstChildElement();
+            while (prop)
+            {
+                if (prop->Value() == std::string("property"))
+                    if (prop->Attribute("name") != NULL && prop->Attribute("value") != NULL)
+                        for (int x(tiles.x) ; x < tiles.w ; x += 1)
+                            for (int y(tiles.h-1) ; y >= tiles.y ; y -= 1)
+                            {
+                                property = prop->Attribute("name");
+                                if(property == "ULX" || property == "LUX" || property == "upperLeftX")
+                                    layer.tile(x,y).upperLeftCorner.x = atof(prop->Attribute("value"));
+                                else if (property == "ULY" || property == "LUY" || property == "upperLeftY")
+                                    layer.tile(x,y).upperLeftCorner.y = atof(prop->Attribute("value"));
+                                else if (property == "ULZ" || property == "LUZ" || property == "upperLeftZ")
+                                    layer.tile(x,y).upperLeftCorner.z = atof(prop->Attribute("value"));
+
+                                else if(property == "URX" || property == "RUX" || property == "upperRightX")
+                                    layer.tile(x,y).upperRightCorner.x = atof(prop->Attribute("value"));
+                                else if (property == "URY" || property == "RUY" || property == "upperRightY")
+                                    layer.tile(x,y).upperRightCorner.y = atof(prop->Attribute("value"));
+                                else if (property == "URZ" || property == "RUZ" || property == "upperRightZ")
+                                    layer.tile(x,y).upperRightCorner.z = atof(prop->Attribute("value"));
+
+                                else if(property == "DLX" || property == "LDX" || property == "downerLeftX")
+                                    layer.tile(x,y).downerLeftCorner.x = atof(prop->Attribute("value"));
+                                else if (property == "DLY" || property == "LDY" || property == "downerLeftY")
+                                    layer.tile(x,y).downerLeftCorner.y = atof(prop->Attribute("value"));
+                                else if (property == "DLZ" || property == "LDZ" || property == "downerLeftZ")
+                                    layer.tile(x,y).downerLeftCorner.z = atof(prop->Attribute("value"));
+
+                                else if(property == "DRX" || property == "RDX" || property == "downerRightX")
+                                    layer.tile(x,y).downerRightCorner.x = atof(prop->Attribute("value"));
+                                else if (property == "DRY" || property == "RDY" || property == "downerRightY")
+                                    layer.tile(x,y).downerRightCorner.y = atof(prop->Attribute("value"));
+                                else if (property == "DRZ" || property == "RDZ" || property == "downerRightZ")
+                                    layer.tile(x,y).downerRightCorner.z = atof(prop->Attribute("value"));
+                            }
+                prop = prop->NextSiblingElement();
+            }
+        }
+    return true;
+ }
+
 /**
 * \brief get tilesets from the *.tmx file
 * \return reference to tilesets
@@ -228,14 +385,38 @@ bool jlug::TmxFile::getBase64Tiles(TiXmlElement* child, jlug::Layer& layer)
 {
     unsigned char* data = new unsigned char[strlen(child->GetText())+1]; // allocate because decode64 is a C-function which does not accept std::string
     jlug::Rect mapSize = getMapSize();
-    unsigned int gid(0);
+    jlug::Layer::TileProp tile;
     int x(0), y(0), i(0), max(0);
+
+    tile.rotation.x = tile.rotation.y = tile.rotation.z = 0;
+    tile.scaling.x = tile.scaling.y = tile.scaling.z = 0;
+    tile.translation.x = tile.translation.y = tile.translation.z = 0;
+    tile.translationAfterRotation.x = tile.translationAfterRotation.y = tile.translationAfterRotation.z = 0;
+    tile.collision = jlug::WALKABLE;
+
+    tile.downerLeftCorner.x = 0.f;
+    tile.downerLeftCorner.y = 0.f;
+    tile.downerLeftCorner.z = 0.f;
+
+    tile.downerRightCorner.x = 1.f;
+    tile.downerRightCorner.y = 0.f;
+    tile.downerRightCorner.z = 0.f;
+
+    tile.upperLeftCorner.x = 0.f;
+    tile.upperLeftCorner.y = 1.f;
+    tile.upperLeftCorner.z = 0.f;
+
+    tile.upperRightCorner.x = 1.f;
+    tile.upperRightCorner.y = 1.f;
+    tile.upperRightCorner.z = 0.f;
+
+    tile.gid = 0;
 
     sprintf(reinterpret_cast<char*>(data), "%s", child->GetText()); // place the text in our allocated variable
     max = decode64(data); // decoding 64 it. max is the length of decoded characters directly modified in data.
     for (i = 3 ; i < max ; i+=4)
     {
-        gid = data[i-3] | data[i-2] << 8 | data[i-1] << 16 | data[i] << 24;
+        tile.gid = data[i-3] | data[i-2] << 8 | data[i-1] << 16 | data[i] << 24;
         // see http://sourceforge.net/apps/mediawiki/tiled/index.php?title=Examining_the_map_format
         if (x == mapSize.w)
         {
@@ -245,7 +426,7 @@ bool jlug::TmxFile::getBase64Tiles(TiXmlElement* child, jlug::Layer& layer)
         }
 
         if (x < mapSize.w && y < mapSize.h)
-            layer.setTile(x, y, gid);
+            layer.setTile(x, y, tile);
         ++x;
     }
     delete[] data; // desallocating :D
@@ -262,7 +443,33 @@ bool jlug::TmxFile::getTiles(TiXmlElement* child, jlug::Layer& layer)
 {
     TiXmlElement* node = child->FirstChildElement();
     jlug::Rect mapSize = getMapSize();
+    jlug::Layer::TileProp tile;
     int x(0), y(0);
+
+    tile.rotation.x = tile.rotation.y = tile.rotation.z = 0;
+    tile.scaling.x = tile.scaling.y = tile.scaling.z = 0;
+    tile.translation.x = tile.translation.y = tile.translation.z = 0;
+    tile.translationAfterRotation.x = tile.translationAfterRotation.y = tile.translationAfterRotation.z = 0;
+    tile.collision = jlug::WALKABLE;
+
+    tile.downerLeftCorner.x = 0.f;
+    tile.downerLeftCorner.y = 0.f;
+    tile.downerLeftCorner.z = 0.f;
+
+    tile.downerRightCorner.x = 1.f;
+    tile.downerRightCorner.y = 0.f;
+    tile.downerRightCorner.z = 0.f;
+
+    tile.upperLeftCorner.x = 0.f;
+    tile.upperLeftCorner.y = 1.f;
+    tile.upperLeftCorner.z = 0.f;
+
+    tile.upperRightCorner.x = 1.f;
+    tile.upperRightCorner.y = 1.f;
+    tile.upperRightCorner.z = 0.f;
+
+    tile.gid = 0;
+
     while(node)
     {
         if (x == mapSize.w)
@@ -273,7 +480,10 @@ bool jlug::TmxFile::getTiles(TiXmlElement* child, jlug::Layer& layer)
         }
 
         if (x < mapSize.w && y < mapSize.h)
-            layer.setTile(x, y, atoi(node->Attribute("gid"))); // XML Tiles format is far more simply than base64 ;o
+        {
+            tile.gid = atoi(node->Attribute("gid"));
+            layer.setTile(x, y, tile); // XML Tiles format is far more simply than base64 ;o
+        }
 
 
         ++x;

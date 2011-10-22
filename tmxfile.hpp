@@ -41,6 +41,9 @@ namespace jlug
         protected:
             bool getBase64Tiles(TiXmlElement* child, jlug::Layer& layer);
             bool getTiles(TiXmlElement* child, jlug::Layer& layer);
+            bool getTileProp(TiXmlElement* child, jlug::Layer& layer);
+            bool lookforTileProp(TiXmlElement* child, jlug::Layer& layer, const jlug::Rect& tiles, const jlug::Rect& tileSize);
+            bool lookforModifyVertex(TiXmlElement* child, jlug::Layer& layer, const jlug::Rect& tiles);
 
 
             TiXmlDocument doc; /*!< XML Tree of the TMX file. */

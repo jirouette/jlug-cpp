@@ -353,34 +353,57 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
     jlug::Tileset* tileset;
     std::string previousFilename("");
     jlug::Square square;
+    jlug::Layer::TileProp tile;
+    jlug::Point vertex;
 
     const int MAXW((xscroll+win.getWidth())/tileWidth);
     const int MAXH((yscroll+win.getHeight())/tileHeight);
-    unsigned int gid(0);
     //tile.setAlpha(layers[index].getOpacity());
 
     square.setPixelTranslation(tileWidth, tileHeight);
+
+    tile.rotation.x = tile.rotation.y = tile.rotation.z = 0;
+    tile.scaling.x = tile.scaling.y = tile.scaling.z = 0;
+    tile.translation.x = tile.translation.y = tile.translation.z = 0;
+    tile.collision = jlug::WALKABLE;
+    tile.gid = 0;
+
+    vertex.x = 1.f;
+    vertex.y = 1.f;
+    vertex.z = 0.f;
 
 
     for (int j(yscroll/tileHeight);j<MAXH;++j)
         for(int i(xscroll/tileWidth);i<MAXW;++i)
         {
             if (i < 0 || j < 0) // there is no negative tiles
-                gid = 0;
+                tile.gid = 0;
             else
-                gid = layers[index].tile(i, j);
+                tile = layers[index].tile(i, j);
 
-            if (gid != UINT_MAX && gid != 0) // UINT_MAX and 0 mean that the tile does not exist or must not be displayed.
+            if (tile.gid != UINT_MAX && tile.gid != 0) // UINT_MAX and 0 mean that the tile does not exist or must not be displayed.
             {
-                jlug::Image& tile(jlug::ImageManager::getInstance()[gidTilesets[gid]->filename]);
-                tileset = gidTilesets[gid];
+                jlug::Image& tileTexture(jlug::ImageManager::getInstance()[gidTilesets[tile.gid]->filename]);
+                tileset = gidTilesets[tile.gid];
 
                 square.setPosition(i, j, index*0.011);
                 //square.setColor(255, 0, 0);
 
+
+
+                square.translate(tile.translation);
+                square.rotate(tile.rotation);
+                square.scale(tile.scaling);
+                square.translate(tile.translationAfterRotation);
+
                 square.setTexture(jlug::ImageManager::getInstance().getTexture(tileset->filename));
-                square.setTextureSize(0, 0, tile.getRealWidth(), tile.getRealHeight());
-                square.setTextureZone(gidRects[gid].x*tileWidth, gidRects[gid].y*tileHeight, tileWidth, tileHeight);
+                square.setTextureSize(0, 0, tileTexture.getRealWidth(), tileTexture.getRealHeight());
+                square.setTextureZone(gidRects[tile.gid].x*tileWidth, gidRects[tile.gid].y*tileHeight, tileWidth, tileHeight);
+
+                square.setVertex(false, false, tile.downerLeftCorner);
+                square.setVertex(false, true, tile.upperLeftCorner);
+                square.setVertex(true, false, tile.downerRightCorner);
+                square.setVertex(true, true, tile.upperRightCorner);
 
                 square.draw();
             }

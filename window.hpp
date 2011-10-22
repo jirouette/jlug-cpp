@@ -32,6 +32,7 @@ namespace jlug
             void blit(jlug::Image& img);
             void blit(jlug::Image& img, int x, int y);
             void blit(jlug::Image& img, const jlug::Rect& pos);
+            void text(const std::string& sentence, int x, int y);
             void flip(void);
             void clear(void);
             void close(void);
@@ -46,10 +47,14 @@ namespace jlug
 
             bool isOpen(void);
         protected:
+            void beforeDisplaying(void);
+            void afterDisplaying(void);
+
             sf::RenderWindow win; /*!< Graphic library's window */
             jlug::Rect blitRect; /*!< rect which delimits the blit */
             std::string debugStr; /*!< debug-text */
-            sf::String winstr; /*!< Graphic library's string */
+            sf::String debugWinstr; /*!< Graphic library's string */
+            sf::String winstr;
             sf::Font font; /*!< Graphic library's font */
     };
 }

@@ -10,7 +10,7 @@
 */
 jlug::Window::Window(unsigned int width, unsigned int height, const std::string& name):
                         win(sf::VideoMode(width, height, 32), name, sf::Style::Close|sf::Style::Titlebar, sf::WindowSettings(24, 8, 4)),
-                        debugStr(""), winstr(), font()
+                        debugStr(""), debugWinstr(), winstr(), font()
  {
      blitRect.x = blitRect.y = 0;
      blitRect.w = width;
@@ -19,6 +19,8 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
      font.LoadFromFile("Arial.ttf");
      winstr.SetFont(font);
      winstr.SetSize(12);
+     debugWinstr.SetFont(font);
+     debugWinstr.SetSize(12);
 
 
     glEnable(GL_TEXTURE_2D); 
@@ -113,22 +115,11 @@ void jlug::Window::blit(jlug::Image& img)
     img.image.SetSubRect(sf::IntRect(img.blitRect.x, img.blitRect.y, img.blitRect.x+img.blitRect.w, img.blitRect.y+img.blitRect.h));
     img.image.SetPosition(blitRect.x, blitRect.y);
 
-    glMatrixMode(GL_MODELVIEW); 
-    glPushMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING); 
+    beforeDisplaying();
+        win.Draw(img.image);
+    afterDisplaying();
 
-    win.Draw(img.image);
 
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glPopAttrib();
     //win.Draw(img.image);
  }
 
@@ -162,30 +153,28 @@ void jlug::Window::blit(jlug::Image& img, const jlug::Rect& pos)
      blit(img, pos.x, pos.y);
  }
 
+
+void jlug::Window::text(const std::string& sentence, int x, int y)
+{
+    winstr.SetText(sentence);
+    winstr.Move(x, y);
+
+    beforeDisplaying();
+        win.Draw(winstr);
+    afterDisplaying();
+}
+
 /**
 * \brief refresh the screen
 */
 void jlug::Window::flip(void)
  {
-    glMatrixMode(GL_MODELVIEW); 
-    glPushMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING); 
 
-    win.Draw(winstr);
+    beforeDisplaying();
+        win.Draw(debugWinstr);
+    afterDisplaying();
 
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glPopAttrib();
-
-     //win.Draw(winstr);
-        glFlush();
+    glFlush();
     win.Display();
  }
 
@@ -200,6 +189,7 @@ void jlug::Window::clear(void)
      glMatrixMode(GL_MODELVIEW);
      glLoadIdentity();
      //gluLookAt(18, -13, 30, 15, -13, 0, 0, 1, 0);
+     //gluLookAt(5, -10, 1, 5, 0, 0, 0, 1, 0);
      gluLookAt(5, -15, 10, 5, 0, -5, 0, 1, 0);
  }
 
@@ -257,5 +247,27 @@ bool jlug::Window::isOpen(void)
 void jlug::Window::debug(const std::string& str)
  {
      debugStr = str;
-     winstr.SetText(debugStr);
+     debugWinstr.SetText(debugStr);
  }
+
+
+void jlug::Window::beforeDisplaying(void)
+{
+    glMatrixMode(GL_MODELVIEW); 
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING); 
+}
+
+void jlug::Window::afterDisplaying(void)
+{
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glPopAttrib();
+}

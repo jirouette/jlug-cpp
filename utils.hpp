@@ -93,6 +93,16 @@ namespace jlug
         b; /*!< blue components of the transparence of the tileset. Between 0 and 255. */
     };
 
+    namespace Axis
+    {
+        enum AxisName
+        {
+            X,
+            Y,
+            Z
+        };
+    }
+
     /**
     * \namespace jlug::KeyCode
     * \brief Contains key codes.

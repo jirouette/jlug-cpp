@@ -6,15 +6,13 @@
 * \author JirialMovie
 */
 
-#include <SFML/Graphics.hpp>
-
 #include "utils.hpp"
-#include "layer.hpp"
-#include "tmxfile.hpp"
 #include "imagemanager.hpp"
 #include "window.hpp"
 #include "shape.hpp"
 #include "square.hpp"
+
+#include "TmxParser/Tmx.h"
 
 
 /**
@@ -28,6 +26,7 @@ namespace jlug
     * \class Map
     * \brief Orthogonal tiles format displaying
     */
+    
     class Map
     {
         public:
@@ -36,50 +35,47 @@ namespace jlug
             Map(const std::string& filename);
             ~Map(void);
 
-            bool loadMap(const std::string& filename);
-            bool setWidth(unsigned int paramWidth);
-            bool setHeight(unsigned int paramHeight);
-            bool setSize(unsigned int paramWidth, unsigned int paramHeight);
-            bool setSize(jlug::Rect size);
-            bool setTileWidth(unsigned int paramTileWidth);
-            bool setTileHeight(unsigned int paramTileHeight);
-            bool setTileSize(unsigned int paramTileWidth, unsigned int paramTileHeight);
-            bool setTileSize(jlug::Rect tileSize);
-            bool setScroll(int x, int y);
-            bool setCamera(int x, int y);
-
-
-            unsigned int getWidth(void);
-            unsigned int getHeight(void);
-            jlug::Rect getSize(void);
+            void loadMap(const std::string& filename);
             unsigned int getTileWidth(void);
             unsigned int getTileHeight(void);
-            jlug::Rect getTileSize(void);
+            unsigned int getWidth(void);
+            unsigned int getHeight(void);
+            unsigned int getDepth(void);
             jlug::Rect getScroll(void);
-            std::vector<jlug::Layer>& getLayers(void);
-            unsigned int getLayersSize(void);
-            jlug::Tileset* getTilesetByGid(unsigned int gid);
-            jlug::Rect getRectByGid(unsigned int gid, const jlug::Tileset* tileset);
+
+            void setScroll(int x, int y);
+            void setCamera(int x, int y);
+
+            void createTile(unsigned int x, unsigned int y, unsigned int z, unsigned int gid);
+
+            void initTile(TileProp& tile);
+            void setTile(TileProp& tile, unsigned int gid);
+            void setTransformations(unsigned int layer, const std::string& objectLayerName);
+            void insertTile(unsigned int x, unsigned int y, unsigned int z, unsigned int gid, const std::string& objectLayerName);
+
+            void setTransformation(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties);
+            void setVertex(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties, bool add = true);
+
+            void setPoint(jlug::Point& point, const std::string& values);
+            void addToPoint(jlug::Point& point, const std::string& values);
+
+            void setRotation(TileProp& tile, /*const jlug::Point& current, const jlug::Point& max,*/ const std::string& prop);
 
             bool displayLayer(jlug::Window& win, int index);
 
 
         protected:
-            unsigned int width; /*!< width in tiles */
-            unsigned int height; /*!< height in tiles */
-            int tileWidth; /*!< width of tiles in px */
-            int tileHeight; /*!< height of tiles in px */
-
             int xscroll; /*!< X-position of the camera on the map */
             int yscroll; /*!< Y-position of the camera on the map */
 
-            std::vector<jlug::Tileset> tilesets; /*!< tilesets */
-            std::vector<jlug::Rect> gidRects; /*!< rect for each GID in their tileset. */
-            std::vector<jlug::Tileset*> gidTilesets;/*!< tileset for each GID */
+            unsigned int tileWidth;
+            unsigned int tileHeight;
 
             std::string mapFilename; /*!< path to map file */
-            std::vector<jlug::Layer> layers; /*!< layers of tiles */
             jlug::Weather weather; /*!< weather */
+            Tmx::Map map;
+
+            std::vector< std::vector< std::vector < jlug::TileProp > > > tiles;
 
 
 

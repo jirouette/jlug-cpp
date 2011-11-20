@@ -137,7 +137,7 @@ unsigned int jlug::Image::getRealHeight(void)
 jlug::Rect jlug::Image::getRealSize(void)
  {
      sf::Vector2f size = image.GetSize();
-     jlug::Rect rect = {0, 0, 0, 0};
+     jlug::Rect rect(0,0,0,0);
      rect.w = size.x;
      rect.h = size.y;
      return rect;
@@ -175,7 +175,7 @@ unsigned int jlug::Image::getHeight(void)
 */
 jlug::Rect jlug::Image::getSize(void)
  {
-     jlug::Rect rect = {0, 0, 0, 0};
+     jlug::Rect rect(0, 0, 0, 0);
      rect.w = width;
      rect.h = height;
      return rect;
@@ -217,7 +217,7 @@ void jlug::Image::setBlitRect(const jlug::Rect& rect)
 */
 void jlug::Image::setBlitRect(unsigned int x, unsigned int y, unsigned int w, unsigned int h)
  {
-     jlug::Rect rect = {x, y, w, h};
+     jlug::Rect rect(x, y, w, h);
      setBlitRect(rect);
  }
 

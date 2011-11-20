@@ -155,6 +155,6 @@ unsigned int jlug::Input::getMouseY(void)
 */
 jlug::Rect jlug::Input::getMousePos(void)
  {
-     jlug::Rect rect = {getMouseX(), getMouseY(), 1, 1};
+     jlug::Rect rect(getMouseX(), getMouseY(), 1, 1);
      return rect;
  }

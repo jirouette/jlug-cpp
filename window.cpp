@@ -95,7 +95,7 @@ void jlug::Window::setBlitRect(const jlug::Rect& rect)
 */
 void jlug::Window::setBlitRect(unsigned int x, unsigned int y, unsigned int w, unsigned int h)
  {
-     jlug::Rect rect = {x, y, w, h};
+     jlug::Rect rect(x, y, w, h);
      setBlitRect(rect);
  }
 
@@ -214,7 +214,7 @@ unsigned int jlug::Window::getHeight(void)
 */
 jlug::Rect jlug::Window::getSize(void)
  {
-     jlug::Rect rect = {0, 0, getWidth(), getHeight()};
+     jlug::Rect rect(0, 0, getWidth(), getHeight());
      return rect;
  }
 

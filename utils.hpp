@@ -6,10 +6,14 @@
 * \author JirialMovie
 */
 
+#include <istream>
+#include <ostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <climits>
 #include <ctime>
+#include <SFML/Graphics.hpp>
 #include "utils/base64.h" // <- base64 functions by Bernard Chardonneau
 #define ABS(x) ((x<0)?(-(x)):(x)) // define in C++ :( ... 
 
@@ -21,18 +25,25 @@
 namespace jlug
 {
     /**
-    * \struct Rect
+    * \class Rectangle
     * \brief Rectangle with upper-left corner and downer-right corner defined.
     * May be used as a vector.
     */
     template <typename T>
-    struct Rectangle
+    class Rectangle
     {
+        public:
         T
         x, /*!< X-value */
         y, /*!< Y-value */
         w, /*!< Width of the rectangle. */
         h;  /*!< Height of the rectangle. */
+
+        Rectangle(T pX, T pY, T pW, T pH);
+        Rectangle(T pX, T pY, T pW);
+        Rectangle(T pX, T pY);
+        Rectangle(T pX);
+        Rectangle(void);
     };
 
     typedef Rectangle<int> Rect;
@@ -42,13 +53,22 @@ namespace jlug
     * \brief 3D-Point
     */
 
-    struct Point
+    template <typename T>
+    class Point3D
     {
-        double
+        public:
+        T
         x, /*!< X-value */
         y, /*!< Y-value */
         z; /*!< Z-value */
+
+        Point3D(T pX, T pY, T pZ);
+        Point3D(T pX, T pY);
+        Point3D(T pX);
+        Point3D(void);
     };
+
+    typedef Point3D<double> Point;
 
     /**
     * \enum Collision
@@ -61,6 +81,26 @@ namespace jlug
         SURF, /*!< character have to surf to walk on the tile */
         LAYERUP, /*!< character which walks on this tile goes to the upper layer */
         LAYERDOWN /*!< character which walks on this tile goes to the downer layer */
+    };
+
+    class Image;
+    struct TileProp
+    {
+      unsigned int gid;
+      jlug::Image* image;
+      GLuint texture;
+      jlug::Rectangle<double> limit;
+      
+      jlug::Collision collision;
+      jlug::Point scaling;
+      jlug::Point rotation;
+      jlug::Point translation;
+      jlug::Point translationAfterRotation;
+
+      jlug::Point upperLeftCorner;
+      jlug::Point upperRightCorner;
+      jlug::Point downerLeftCorner;
+      jlug::Point downerRightCorner;
     };
 
     /**
@@ -196,5 +236,5 @@ namespace jlug
     }
 }
 
-
+#include "utils.cpp"
 #endif // UTILS_HPP_INCLUDED

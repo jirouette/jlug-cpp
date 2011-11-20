@@ -67,8 +67,6 @@ GLuint& jlug::ImageManager::getTexture(const std::string& filename)
          jlug::Image& img(getImage(filename));
          glGenTextures(1, &texture);
          glBindTexture(GL_TEXTURE_2D, texture);
-         std::cout << filename << " -> " << img.getRealWidth() << "/" << img.getRealHeight();
-         std::cout << " VS " << img.getWidth() << "/" << img.getHeight() << std::endl;
          gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,img.getRealWidth(), img.getRealHeight(),GL_RGBA,GL_UNSIGNED_BYTE,img.getRaw().GetPixelsPtr());
          return texture;
      }

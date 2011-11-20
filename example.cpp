@@ -1,6 +1,7 @@
 #include "example.hpp"
 #include "shape.hpp"
 #include "square.hpp"
+#include "imagemanager.hpp"
 
 void game(void)
  {
@@ -8,7 +9,7 @@ void game(void)
     jlug::Input input = win.getInput();
     jlug::Player player(4, "", input, win);
     jlug::AnimatedCharacter second(1, "");
-    jlug::Map map("map.tmx");
+    jlug::Map map("neomap.tmx");
 
     player.setCoord(0, 3);
     second.setCoord(5, 5);
@@ -19,8 +20,9 @@ void game(void)
         win.clear();
 
         player.move(map); // hi ! 
-        for (unsigned int k(0);k<map.getLayersSize();++k)
+        for (unsigned int k(0);k<map.getDepth();++k)
             map.displayLayer(win, k);
+        
         second.display(map, win);
         player.display(map, win);
         

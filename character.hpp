@@ -11,8 +11,6 @@
 #include "map.hpp"
 #include "utils.hpp"
 
-#include <iostream>
-
 
 /**
 * \namespace jlug
@@ -63,6 +61,7 @@ namespace jlug
             virtual void checkCollisions(jlug::Map& map);
             virtual void move(jlug::Map& map);
             virtual void display(jlug::Map& map, jlug::Window& win);
+            virtual void displayUsername(jlug::Window& win);
 
 
             virtual void animate(void);
@@ -95,6 +94,8 @@ namespace jlug
             unsigned char previousAnimation;
             clock_t lastAnimation;
             double animationTime;
+
+            jlug::Point worldCoordinates; /*! < Coordinates in a 3D world */
     };
 
     typedef Character NPC;

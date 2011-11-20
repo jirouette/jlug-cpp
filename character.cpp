@@ -250,7 +250,7 @@ unsigned int jlug::Character::getZ(void)
 
 jlug::Rect jlug::Character::getCoord(void)
  {
-     jlug::Rect coord = {x, y, 0, 0};
+     jlug::Rect coord(x, y, 0, 0);
      return coord;
  }
 
@@ -496,8 +496,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
     std::ostringstream buffer;
     jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
-    jlug::Rect rect, scroll(map.getScroll());
-    jlug::Point point;
+    jlug::Rect rect;
     jlug::Square square;
 
     animate();
@@ -505,13 +504,13 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     rect = getCharsetRect(position, animation, sprite.getWidth(), sprite.getHeight());
     sprite.setBlitRect(rect);
 
-    point.x = static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth());
-    point.y = static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1);
-    point.z = 0.01;
+    worldCoordinates.x = static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth());
+    worldCoordinates.y = static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1);
+    worldCoordinates.z = 0.01;
 
     square.setPixelTranslation(map.getTileWidth(), map.getTileHeight());
-    square.setPosition(point);
-    square.rotate(0, 0, 0);
+    square.setPosition(worldCoordinates);
+    square.rotate(30, 0, 0);
     square.scale(rect.w, rect.h, 1);
 
     square.setTextureSize(0, 0, sprite.getRealWidth(), sprite.getRealHeight());
@@ -523,6 +522,23 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
     win.debug(buffer.str());
  }
+
+void jlug::Character::displayUsername(jlug::Window& win)
+{
+    win.getWidth();
+    /*GLdouble projectionMatrix[16], modelviewMatrix[16], screenCoordinates[3];
+
+    glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelviewMatrix);
+
+    gluProject(worldCoordinates.x, worldCoordinates.y, worldCoordinates.z,
+    modelviewMatrix, projectionMatrix, 0,
+    (screenCoordinates), &(screenCoordinates[1]), &(screenCoordinates[2]));
+
+    win.text("Patate", screenCoordinates[0], screenCoordinates[1]);*/
+    // Yeah, this method does absolutely nothing. 
+
+}
 
 
 /**
@@ -581,7 +597,7 @@ void jlug::Character::setMove(const jlug::Move::Direction& dir, unsigned int spe
 
 jlug::Rect jlug::Character::getCharsetRect(const jlug::Move::Direction& pos, unsigned int move, unsigned int width, unsigned int height)
  {
-     jlug::Rect rect = {0, 0, 1, 1};
+     jlug::Rect rect(0, 0, 1, 1);
 
      // The following values are all constants.
 

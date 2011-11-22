@@ -42,6 +42,7 @@ namespace jlug
             unsigned int getHeight(void);
             unsigned int getDepth(void);
             jlug::Rect getScroll(void);
+            const jlug::TileProp& getTile(unsigned int x, unsigned int y, unsigned int z);
 
             void setScroll(int x, int y);
             void setCamera(int x, int y);

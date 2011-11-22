@@ -138,6 +138,28 @@ void jlug::Map::createTile(unsigned int x, unsigned int y, unsigned int z, unsig
 
 
 /**
+* \brief get properties of a tile
+* \param x : X-coordinates
+* \param y : Y-coordinates
+* \param z : Z-coordinates
+* \return constant reference to the tile properties (TileProp)
+*/
+const jlug::TileProp& jlug::Map::getTile(unsigned int x, unsigned int y, unsigned int z)
+{
+    if (tiles.empty())
+    {
+        createTile(0,0,0,1);
+        return tiles[0][0][0];
+    }
+    else if (tiles.size() <= x)
+        return getTile(0,0,0);
+    else if (tiles[x].size() <= y)
+        return getTile(x,0,0);
+    else if (tiles[x][y].size() <= z)
+        return getTile(x,y,0);
+    return tiles[x][y][z];
+}
+/**
 * \brief set X-position and Y-position of the scroll
 * \param x : new X-position scroll
 * \param y : new Y-position scroll

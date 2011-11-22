@@ -68,14 +68,11 @@ namespace jlug
             int xscroll; /*!< X-position of the camera on the map */
             int yscroll; /*!< Y-position of the camera on the map */
 
-            unsigned int tileWidth;
-            unsigned int tileHeight;
-
             std::string mapFilename; /*!< path to map file */
             jlug::Weather weather; /*!< weather */
-            Tmx::Map map;
+            Tmx::Map map; /*!< Tmx-file parser */
 
-            std::vector< std::vector< std::vector < jlug::TileProp > > > tiles;
+            std::vector< std::vector< std::vector < jlug::TileProp > > > tiles; /*!< tiles */
 
 
 

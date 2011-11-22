@@ -1,10 +1,23 @@
 #ifndef SQUARE_HPP_INCLUDED
 #define SQUARE_HPP_INCLUDED
 
-#include "shape.hpp"
+/**
+* \file square.hpp
+* \author JirialMovie
+*/
 
+#include "shape.hpp"
+/**
+* \namespace jlug
+* \brief All jLug components.
+* All jLug components.
+*/
 namespace jlug
 {
+    /**
+    * \class Square
+    * \brief Display a Rect-shape in a 3D context
+    */
     class Square : public Shape
     {
         public:
@@ -15,10 +28,10 @@ namespace jlug
             virtual void draw(void);
 
         protected:
-            jlug::Point upperLeftCorner;
-            jlug::Point upperRightCorner;
-            jlug::Point downerLeftCorner;
-            jlug::Point downerRightCorner;
+            jlug::Point upperLeftCorner; /*!< vertex of the upper left corner of the rect-shape */
+            jlug::Point upperRightCorner; /*!< vertex of the upper right corner of the rect-shape */
+            jlug::Point downerLeftCorner; /*!< vertex of the downer left corner of the rect-shape */
+            jlug::Point downerRightCorner; /*!< vertex of the downer right corner of the rect-shape */
     };
 }
 

@@ -1,6 +1,11 @@
 #include "window.hpp"
 
 /**
+* \file window.cpp
+* \author JirialMovie
+*/
+
+/**
 * \brief Constructor
 * \param width : width of the window in pixels
 * \param height : width of the window in pixels

@@ -1,27 +1,45 @@
 #ifndef SHAPE_HPP_INCLUDED
 #define SHAPE_HPP_INCLUDED
 
+/**
+* \file shape.hpp
+* \author JirialMovie
+*/
+
 #include "utils.hpp"
 #include <SFML/Graphics.hpp>
 
+/**
+* \namespace jlug
+* \brief All jLug components.
+* All jLug components.
+*/
 namespace jlug
 {
+      /**
+      * \class Shape
+      * \brief Abstract class which sets 3D context
+      */
     class Shape
     {
         public:
+            /**
+            * \enum Transformation
+            * \brief type of the transformation
+            */
             enum Transformation {TRANSLATION, ROTATION, SCALING};
 
         protected:
-            jlug::Point centerAxes;
-            jlug::Point color;
-            GLuint texture;
+            jlug::Point centerAxes; /*!< point of the center of the shape */
+            jlug::Point color; /*!< color of the shape */
+            GLuint texture; /*!< texture */
 
-            jlug::Rectangle<double> textureSize;
-            jlug::Rectangle<double> textureZone;
+            jlug::Rectangle<double> textureSize; /*!< size of the texture source */
+            jlug::Rectangle<double> textureZone; /*!< position of the wanted texture in the texture source */
 
-            jlug::Point pixelTranslation;
+            jlug::Point pixelTranslation; /*!< translates vertex into pixels */
 
-            std::queue< std::pair<jlug::Shape::Transformation, jlug::Point> > transformations;
+            std::queue< std::pair<jlug::Shape::Transformation, jlug::Point> > transformations; /*!< transformations */
 
 
             virtual void applyTransformations(void);

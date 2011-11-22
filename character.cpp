@@ -499,6 +499,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     jlug::Rect rect;
     jlug::Square square;
 
+    // Roll the animation before displaying an only frame
     animate();
 
     rect = getCharsetRect(position, animation, sprite.getWidth(), sprite.getHeight());
@@ -509,14 +510,22 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     worldCoordinates.z = 0.01;
 
     square.setPixelTranslation(map.getTileWidth(), map.getTileHeight());
+
+    // Initial position
     square.setPosition(worldCoordinates);
+
+    // Transformations
+
     square.rotate(30, 0, 0);
     square.scale(rect.w, rect.h, 1);
+
+    //Texturing
 
     square.setTextureSize(0, 0, sprite.getRealWidth(), sprite.getRealHeight());
     square.setTextureZone(rect.x, rect.y, rect.w, rect.h);
     square.setTexture(jlug::ImageManager::getInstance().getTexture(charsetFilename));
 
+    // Finally ! 
     square.draw();
 
     buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
@@ -550,7 +559,6 @@ void jlug::Character::animate(void)
      clock_t now(clock());
      if (isMoving)
      {
-         //std::cout << "now-lastAnimation/CLOCK(" << static_cast<double>(static_cast<double>(now-lastAnimation)/CLOCKS_PER_SEC) << ") > " << animationTime << std::endl;
          if (static_cast<double>(static_cast<double>(now-lastAnimation)/CLOCKS_PER_SEC) > animationTime)
          {
              if (animation != 0)
@@ -566,7 +574,6 @@ void jlug::Character::animate(void)
                     animation = 1;
              }
              lastAnimation = now;
-             //std::cout << "OK" << std::endl;
          }
      }
      else

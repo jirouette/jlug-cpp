@@ -9,7 +9,7 @@
 #include <istream>
 #include <ostream>
 #include <string>
-#include <sstream>
+#include <sstream> // What ? SS ? GTFO !
 #include <vector>
 #include <climits>
 #include <ctime>
@@ -49,7 +49,7 @@ namespace jlug
     typedef Rectangle<int> Rect;
 
     /**
-    * \struct Point
+    * \class Point3D
     * \brief 3D-Point
     */
 
@@ -83,7 +83,7 @@ namespace jlug
         LAYERDOWN /*!< character which walks on this tile goes to the downer layer */
     };
 
-    class Image;
+    class Image; // predeclaration
     struct TileProp
     {
       unsigned int gid;
@@ -236,5 +236,5 @@ namespace jlug
     }
 }
 
-#include "utils.cpp"
+#include "utils.cpp" // needed by template-classes
 #endif // UTILS_HPP_INCLUDED

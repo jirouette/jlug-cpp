@@ -67,6 +67,7 @@ namespace jlug
             virtual void animate(void);
 
             bool checkTile(jlug::Map& map, int tileX, int tileY);
+            double getDepthByTile(jlug::Map& map);
             static jlug::Rect getCharsetRect(const jlug::Move::Direction& pos, unsigned int move = 0, unsigned int width = 2, unsigned int height = 6);
 
 

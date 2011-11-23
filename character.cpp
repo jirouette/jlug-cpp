@@ -485,6 +485,19 @@ void jlug::Character::move(jlug::Map& map)
 
  }
 
+/**
+* \brief calculate depth of the character with his position on the map
+* \param map : reference to the Map
+* \return depth
+*/
+double jlug::Character::getDepthByTile(jlug::Map& map)
+{
+    const jlug::TileProp& tile(map.getTile(static_cast<int>(pixX/map.getTileWidth()),
+                                     static_cast<int>(pixY/map.getTileHeight()),
+                                     static_cast<int>(z)));
+    return 0.0;
+}
+
 
 /**
 * \brief display the character on the screen
@@ -507,7 +520,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
 
     worldCoordinates.x = static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth());
     worldCoordinates.y = static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1);
-    worldCoordinates.z = 0.01;
+    worldCoordinates.z = getDepthByTile(map);
 
     square.setPixelTranslation(map.getTileWidth(), map.getTileHeight());
 

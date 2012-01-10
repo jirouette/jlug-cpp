@@ -478,9 +478,9 @@ void jlug::Character::move(jlug::Map& map)
 
      // Refreshing tile position with pixel position
 
-     if (ABS((x*static_cast<int>(tileWidth))-static_cast<int>(pixX)) >= static_cast<int>(tileWidth))
+     if (ABS((x*static_cast<int>(tileWidth))-static_cast<int>(pixX)) >= static_cast<int>(tileWidth) || static_cast<int>(pixX)%static_cast<int>(tileWidth) == 0)
         x = static_cast<int>(pixX)/static_cast<int>(tileWidth);
-     if (ABS((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight))
+     if (ABS((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight)  || static_cast<int>(pixY)%static_cast<int>(tileHeight) == 0)
         y = static_cast<int>(pixY)/static_cast<int>(tileHeight);
 
  }
@@ -495,6 +495,50 @@ double jlug::Character::getDepthByTile(jlug::Map& map)
     const jlug::TileProp& tile(map.getTile(static_cast<int>(pixX/map.getTileWidth()),
                                      static_cast<int>(pixY/map.getTileHeight()),
                                      static_cast<int>(z)));
+    const int posX(pixX%map.getTileWidth()), posY(pixY%map.getTileHeight());
+    const int middleX(map.getTileWidth()/2), middleY(map.getTileHeight()/2);
+
+    // PosY is center
+    if (posX == middleX && posY == middleY)
+        return ((tile.upperLeftCorner.z + tile.upperRightCorner.z)+
+               (tile.downerLeftCorner.z +tile.downerRightCorner.z))
+               /4.0;
+    else if (posX < middleX && posY == middleY)
+        return ((tile.upperLeftCorner.z + tile.downerLeftCorner.z)+
+               (tile.upperRightCorner.z + tile.downerRightCorner.z)/2.0)
+               /3.0;
+    else if (posX > middleX && posY == middleY)
+        return ((tile.upperRightCorner.z + tile.downerRightCorner.z)+
+               (tile.upperLeftCorner.z + tile.downerLeftCorner.z)/2.0)
+               /3.0;
+    
+    // PosY is upper part
+    else if (posX == middleX && posY > middleY)
+        return ((tile.upperLeftCorner.z + tile.upperRightCorner.z)+
+               (tile.downerLeftCorner.z +tile.downerRightCorner.z)/2.0)
+               /3.0;
+    else if (posX < middleX && posY > middleY)
+        return ((tile.upperLeftCorner.z + tile.upperRightCorner.z)+
+               (tile.downerLeftCorner.z))
+               /3.0;
+    else if (posX > middleX && posY > middleY)
+        return ((tile.upperLeftCorner.z + tile.upperRightCorner.z)+
+               (tile.downerRightCorner.z))
+               /3.0;
+
+    // PosY is downer part
+    else if (posX == middleX && posY < middleY)
+        return ((tile.downerLeftCorner.z + tile.downerRightCorner.z)+
+               (tile.upperLeftCorner.z +tile.upperRightCorner.z)/2.0)
+               /3.0;
+    else if (posX < middleX && posY < middleY)
+        return ((tile.downerLeftCorner.z + tile.downerRightCorner.z)+
+               (tile.upperLeftCorner.z))
+               /3.0;
+    else if (posX > middleX && posY < middleY)
+        return ((tile.downerLeftCorner.z + tile.downerRightCorner.z)+
+               (tile.upperRightCorner.z))
+               /3.0;
     return 0.0;
 }
 
@@ -542,6 +586,9 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     square.draw();
 
     buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
+    buffer << std::endl;
+    buffer << "worldCoordinates(" << worldCoordinates.x << ", " << worldCoordinates.y;
+    buffer << ", " << worldCoordinates.z << ")" << std::endl;
     win.debug(buffer.str());
  }
 

@@ -7,7 +7,7 @@
 */
 
 #include "utils.hpp"
-#include "imagemanager.hpp"
+#include "utils/resourcemanager.hpp"
 #include "window.hpp"
 #include "shape.hpp"
 #include "square.hpp"

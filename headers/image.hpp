@@ -29,6 +29,7 @@ namespace jlug
     class Image
     {
         protected:
+            GLuint texture; /*!< OpenGL's texture ID */
             sf::Sprite image; /*!< Graphic library's variable. Core of the image. */
             sf::Image raw; /*!< SFML raw */
             jlug::Rect blitRect; /*!< Rect which sets limits of blitting an Image. */
@@ -41,6 +42,7 @@ namespace jlug
             Image(void);
             ~Image(void);
             Image& operator=(const std::string& filename);
+            Image& operator()(const std::string& filename);
 
             unsigned int getRealWidth(void);
             unsigned int getRealHeight(void);
@@ -52,7 +54,7 @@ namespace jlug
 
 
             jlug::Rect getBlitRect(void);
-            const sf::Image& getRaw(void);
+            GLuint& getTexture(void);
 
             void setBlitRect(const jlug::Rect& rect);
             void setBlitRect(unsigned int x, unsigned int y, unsigned int w, unsigned int h);

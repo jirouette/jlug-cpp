@@ -13,35 +13,9 @@
 * Sets also the blitRect as default (Min X, Max Width, Min Y, Max Height).
 */
 jlug::Image::Image(const std::string& filename)
+               :texture(0), image(), raw(), blitRect(), width(0), height(0)
  {
-
-
-     if (!raw.LoadFromFile(filename.c_str()))
-        throw std::runtime_error("could not open image"); // Loading failure
-
-     raw.SetSmooth(false); // SFML set smooth default to true which leads to problems.
-
-     width = raw.GetWidth();
-     height = raw.GetHeight();
-
-
-     {
-          sf::Image tempImage(getTextureSize(raw.GetWidth()), 
-                              getTextureSize(raw.GetHeight()),
-                              sf::Color(0, 255, 0)
-                              );
-          tempImage.Copy(raw, 0, 0);
-          tempImage.SetSmooth(false);
-          raw = tempImage;
-     }
-
-     raw.CreateMaskFromColor(sf::Color(0, 255, 0)); // Color #00FF00 is used as transparence color.
-
-     image.SetImage(raw);
-     blitRect.x = 0;
-     blitRect.y = 0;
-     blitRect.w = getWidth();
-     blitRect.h = getHeight();
+     jlug::Image::operator=(filename);
  }
 
 /**
@@ -50,7 +24,7 @@ jlug::Image::Image(const std::string& filename)
 * Creates an empty Image with default blitRect.
 */
 jlug::Image::Image(void)
-            :image(), raw(), blitRect(), width(0), height(0)
+            :texture(0), image(), raw(), blitRect(), width(0), height(0)
  {}
 
 /**
@@ -63,8 +37,8 @@ jlug::Image::~Image()
 
 
 /**
-* \brief Operator = overloaded with graphic library's type variable
-* \param img : Reference to a constant graphic library's type variable.
+* \brief Operator = overloaded with filename
+* \param filename : path to file
 * \return Reference to the current Image instance.
 *
 * Changes or sets an image.
@@ -85,7 +59,6 @@ jlug::Image& jlug::Image::operator=(const std::string& filename)
                               getTextureSize(raw.GetHeight()),
                               sf::Color(0, 255, 0)
                               );
-          
           tempImage.Copy(raw, 0, 0);
           tempImage.SetSmooth(false);
           raw = tempImage;
@@ -99,6 +72,26 @@ jlug::Image& jlug::Image::operator=(const std::string& filename)
      blitRect.w = getWidth();
      blitRect.h = getHeight();
 
+         glGenTextures(1, &texture);
+         glBindTexture(GL_TEXTURE_2D, texture);
+         gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,
+                           getRealWidth(), 
+                           getRealHeight(),
+                           GL_RGBA,GL_UNSIGNED_BYTE,
+                           raw.GetPixelsPtr());
+     return *this;
+ }
+
+/**
+* \brief Operator () overloaded with filename
+* \param filename : path to file
+* \return Reference to the current Image instance.
+*
+* Changes or sets an image.
+*/
+jlug::Image& jlug::Image::operator()(const std::string& filename)
+ {
+     jlug::Image::operator=(filename);
      return *this;
  }
 
@@ -221,9 +214,9 @@ void jlug::Image::setBlitRect(unsigned int x, unsigned int y, unsigned int w, un
      setBlitRect(rect);
  }
 
-const sf::Image& jlug::Image::getRaw(void)
+GLuint& jlug::Image::getTexture(void)
 {
-     return raw;
+     return texture;
 }
 
 /**

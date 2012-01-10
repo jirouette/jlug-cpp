@@ -229,7 +229,7 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
                 if (img) // The tileset has an image
                 {
                     tile.image = &(ImageManager::getInstance()[img->GetSource()]); // Calling ImageManager instance
-                    tile.texture = ImageManager::getInstance().getTexture(img->GetSource()); 
+                    tile.texture = tile.image->getTexture(); 
 
                     // Coordinates of the tile in the tileset
 

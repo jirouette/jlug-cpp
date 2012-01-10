@@ -6,7 +6,7 @@
 * \author JirialMovie
 */
 
-#include "imagemanager.hpp"
+#include "utils/resourcemanager.hpp"
 #include "window.hpp"
 #include "map.hpp"
 #include "utils.hpp"

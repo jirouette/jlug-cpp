@@ -1,7 +1,7 @@
 #include "example.hpp"
 #include "shape.hpp"
 #include "square.hpp"
-#include "imagemanager.hpp"
+#include "utils/resourcemanager.hpp"
 
 void game(void)
  {

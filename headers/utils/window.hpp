@@ -8,8 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "utils.hpp"
-#include "image.hpp"
-#include "input.hpp"
+#include "loadable/image.hpp"
+#include "utils/input.hpp"
 #include "utils/constants.hpp"
 
 /**

@@ -1,4 +1,4 @@
-#include "shape.hpp"
+#include "models/shape.hpp"
 
 /**
 * \file shape.cpp

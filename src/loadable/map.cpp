@@ -1,4 +1,4 @@
-#include "map.hpp"
+#include "loadable/map.hpp"
 
 /**
 * \file map.cpp

@@ -1,12 +1,12 @@
 #ifndef EXAMPLE_HPP_INCLUDED
 #define EXAMPLE_HPP_INCLUDED
 
-#include "map.hpp"
-#include "window.hpp"
-#include "character.hpp"
-#include "player.hpp"
-#include "animatedcharacter.hpp"
-#include "animatedplayer.hpp"
+#include "loadable/map.hpp"
+#include "utils/window.hpp"
+#include "entities/character.hpp"
+#include "entities/player.hpp"
+#include "entities/animatedcharacter.hpp"
+#include "entities/animatedplayer.hpp"
 
 void game(void);
 

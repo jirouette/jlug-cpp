@@ -1,4 +1,4 @@
-#include "animatedplayer.hpp"
+#include "entities/animatedplayer.hpp"
 
 /**
 * \file animatedplayer.cpp

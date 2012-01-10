@@ -1,4 +1,4 @@
-#include "image.hpp"
+#include "loadable/image.hpp"
 
 /**
 * \file image.cpp

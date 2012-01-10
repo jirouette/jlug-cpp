@@ -10,9 +10,9 @@
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
 #include "utils/dir.hpp"
-#include "window.hpp"
-#include "shape.hpp"
-#include "square.hpp"
+#include "utils/window.hpp"
+#include "models/shape.hpp"
+#include "models/square.hpp"
 
 #include "TmxParser/Tmx.h"
 

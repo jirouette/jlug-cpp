@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "utils/window.hpp"
 
 /**
 * \file window.cpp

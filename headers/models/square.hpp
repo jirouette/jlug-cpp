@@ -6,7 +6,7 @@
 * \author JirialMovie
 */
 
-#include "shape.hpp"
+#include "models/shape.hpp"
 /**
 * \namespace jlug
 * \brief All jLug components.

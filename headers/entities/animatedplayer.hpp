@@ -6,10 +6,10 @@
 * \author JirialMovie
 */
 
-#include "character.hpp"
-#include "player.hpp"
-#include "animatedcharacter.hpp"
-#include "input.hpp"
+#include "entities/character.hpp"
+#include "entities/player.hpp"
+#include "entities/animatedcharacter.hpp"
+#include "utils/input.hpp"
 
 /**
 * \namespace jlug

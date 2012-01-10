@@ -6,8 +6,8 @@
 * \author JirialMovie
 */
 
-#include "character.hpp"
-#include "input.hpp"
+#include "entities/character.hpp"
+#include "utils/input.hpp"
 
 /**
 * \namespace jlug

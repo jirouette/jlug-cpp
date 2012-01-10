@@ -1,4 +1,4 @@
-#include "square.hpp"
+#include "models/square.hpp"
 
 /**
 * \file square.cpp

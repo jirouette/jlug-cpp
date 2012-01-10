@@ -8,8 +8,8 @@
 
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
-#include "window.hpp"
-#include "map.hpp"
+#include "utils/window.hpp"
+#include "loadable/map.hpp"
 #include "utils.hpp"
 
 

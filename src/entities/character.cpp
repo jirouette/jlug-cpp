@@ -1,4 +1,4 @@
-#include "character.hpp"
+#include "entities/character.hpp"
 
 /**
 * \file character.cpp

@@ -10,7 +10,7 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
-#include "image.hpp"
+#include "loadable/image.hpp"
 
 /**
 * \namespace jlug

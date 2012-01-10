@@ -1,6 +1,6 @@
 #include "example.hpp"
-#include "shape.hpp"
-#include "square.hpp"
+#include "models/shape.hpp"
+#include "models/square.hpp"
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
 #include <iostream>

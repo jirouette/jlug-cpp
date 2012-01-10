@@ -72,7 +72,7 @@ T& jlug::ResourceManager<T>::operator()(const std::string& filename)
 template<typename T>
 T& jlug::ResourceManager<T>::getFile(const std::string& filename)
 {
-    std::map<std::string, jlug::Image>::iterator it(files.find(filename));
+    typename std::map<std::string, T>::iterator it(files.find(filename));
 
     if (it != files.end())
         return it->second; // A file with this filename is found, so, we return it

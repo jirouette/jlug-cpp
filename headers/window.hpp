@@ -10,6 +10,7 @@
 #include "utils.hpp"
 #include "image.hpp"
 #include "input.hpp"
+#include "utils/constants.hpp"
 
 /**
 * \namespace jlug

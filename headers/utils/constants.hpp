@@ -33,7 +33,7 @@ namespace jlug
             double getNumeric(const std::string& name);
             std::string get(const std::string& name);
 
-            Constants& getInstance(void);
+            static Constants& getInstance(void);
 
             ~Constants();
         protected:

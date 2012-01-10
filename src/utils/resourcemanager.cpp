@@ -7,6 +7,7 @@
 * \author JirialMovie
 */
 
+
 /**
 * \brief get the only instance of the ImageManager class
 */

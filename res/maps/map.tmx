@@ -2,10 +2,10 @@
 <!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
 <map version="1.0" orientation="orthogonal" width="70" height="70" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="First Tileset" tilewidth="16" tileheight="16">
-  <image source="../res/tilesets/spritebank1.png" trans="00ff00"/>
+  <image source="../tilesets/spritebank1.png" trans="00ff00"/>
  </tileset>
  <tileset firstgid="371" name="Second tileset" tilewidth="16" tileheight="16">
-  <image source="../res/tilesets/spritebank2.png" trans="00ff00"/>
+  <image source="../tilesets/spritebank2.png" trans="00ff00"/>
  </tileset>
  <layer name="first layer" width="70" height="70">
   <properties>

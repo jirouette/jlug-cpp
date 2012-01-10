@@ -32,7 +32,8 @@ jlug::Map::~Map(void)
 */
 void jlug::Map::loadMap(const std::string& filename)
 {
-    mapFilename = filename;
+    mapFilename = jlug::Constants::getInstance().get("path")+
+                  filename;
     map.ParseFile(filename); // Getting a usable data structure of the map
 
     for (int z(0) ; z < map.GetNumLayers() ; ++z)
@@ -228,7 +229,11 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
                 const Tmx::Image *img(tileset->GetImage());
                 if (img) // The tileset has an image
                 {
-                    tile.image = &(ImageManager::getInstance()[img->GetSource()]); // Calling ImageManager instance
+                    tile.image = &(ImageManager::getInstance()
+                                [
+                                    jlug::getDir(mapFilename)+
+                                    img->GetSource()
+                                ]); // Calling ImageManager instance
                     tile.texture = tile.image->getTexture(); 
 
                     // Coordinates of the tile in the tileset

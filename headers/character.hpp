@@ -7,6 +7,7 @@
 */
 
 #include "utils/resourcemanager.hpp"
+#include "utils/constants.hpp"
 #include "window.hpp"
 #include "map.hpp"
 #include "utils.hpp"

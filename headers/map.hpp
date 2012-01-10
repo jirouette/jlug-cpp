@@ -8,6 +8,8 @@
 
 #include "utils.hpp"
 #include "utils/resourcemanager.hpp"
+#include "utils/constants.hpp"
+#include "utils/dir.hpp"
 #include "window.hpp"
 #include "shape.hpp"
 #include "square.hpp"

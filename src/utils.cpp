@@ -109,4 +109,5 @@ jlug::Point3D<T>::Point3D(T pX)
     Point3D<T>::Point3D(pX, static_cast<T>(0));
 }
 
+
 #endif // UTILS_CPP_INCLUDED

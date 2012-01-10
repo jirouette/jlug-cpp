@@ -23,7 +23,7 @@ jlug::Constants::~Constants()
 */
 jlug::Constants& jlug::Constants::getInstance(void)
 {
-    jlug::Constants* instance(new jlug::Constants());
+    static jlug::Constants* instance(new jlug::Constants());
     return *instance;
 }
 

@@ -2,6 +2,8 @@
 #include "shape.hpp"
 #include "square.hpp"
 #include "utils/resourcemanager.hpp"
+#include "utils/constants.hpp"
+#include <iostream>
 
 void game(void)
  {

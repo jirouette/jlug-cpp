@@ -2,4 +2,4 @@
 *.bmp
 *.o
 .*
-bin/jlug
+jlug

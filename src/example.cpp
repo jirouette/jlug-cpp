@@ -9,7 +9,7 @@ void game(void)
     jlug::Input input = win.getInput();
     jlug::Player player(4, "", input, win);
     jlug::AnimatedCharacter second(1, "");
-    jlug::Map map("neomap.tmx");
+    jlug::Map map("../res/maps/map.tmx");
 
     player.setCoord(0, 3);
     second.setCoord(5, 5);

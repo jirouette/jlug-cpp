@@ -22,6 +22,7 @@ jlug::Character::Character(void):
 {
     std::ostringstream buffer;
     buffer << charset;
+    charsetFilename += "../res/charsets/";
     charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
@@ -42,6 +43,7 @@ jlug::Character::Character(unsigned int cid, const std::string& cname):
 {
     std::ostringstream buffer;
     buffer << charset;
+    charsetFilename += "../res/charsets/";
     charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
@@ -64,6 +66,7 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 {
     std::ostringstream buffer;
     buffer << charset;
+    charsetFilename += "../res/charsets/";
     charsetFilename += buffer.str();
     charsetFilename += ".png";
 }
@@ -86,6 +89,7 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 {
     std::ostringstream buffer;
     buffer << charset;
+    charsetFilename += "../res/charset/";
     charsetFilename += buffer.str();
     charsetFilename += ".png";
 }

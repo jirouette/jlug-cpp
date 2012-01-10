@@ -21,7 +21,7 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
      blitRect.w = width;
      blitRect.h = height;
 
-     font.LoadFromFile("Arial.ttf");
+     font.LoadFromFile("../res/fonts/Arial.ttf");
      winstr.SetFont(font);
      winstr.SetSize(12);
      debugWinstr.SetFont(font);

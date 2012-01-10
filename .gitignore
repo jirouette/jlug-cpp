@@ -1,0 +1,5 @@
+*.xml
+*.bmp
+*.o
+.*
+bin/jlug

@@ -16,9 +16,17 @@ int main(int argc, char* argv[])
                     path.substr(0, filePos)+'/');
         else
             jlug::Constants::getInstance().set("path", "./");
+        
+        for (int i(0); i < argc ; ++i)
+        {
+            std::ostringstream oss;
+            oss << "argv[" << i << "]";
+            jlug::Constants::getInstance().set(oss.str(), argv[i]);
+        }
     }
     else
     {
+        jlug::Constants::getInstance().set("argv[0]", "");
         jlug::Constants::getInstance().set("exec", "");
         jlug::Constants::getInstance().set("path", "./");
     }

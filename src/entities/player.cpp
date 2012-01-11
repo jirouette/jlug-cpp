@@ -77,35 +77,21 @@ jlug::Player::~Player()
 
 void jlug::Player::move(jlug::Map& map)
  {
-     int tileWidth(map.getTileWidth()), tileHeight(map.getTileHeight());
-     jlug::Move::Direction dir(direction);
      if (input[jlug::KeyCode::Ctrl])
         velocity = 8;
      else
         velocity = 5;
 
-     setMove(jlug::Move::NONE);
-
      if (input[jlug::KeyCode::Left])
-     {
-        if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::LEFT))
-            setMove(jlug::Move::LEFT, velocity);
-     }
+            setMove(map, jlug::Move::LEFT, velocity);
      else if (input[jlug::KeyCode::Right])
-     {
-        if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::RIGHT))
-            setMove(jlug::Move::RIGHT, velocity);
-     }
+            setMove(map, jlug::Move::RIGHT, velocity);
      else if (input[jlug::KeyCode::Up])
-     {
-        if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::UP))
-            setMove(jlug::Move::UP, velocity);
-     }
+            setMove(map, jlug::Move::UP, velocity);
      else if (input[jlug::KeyCode::Down])
-     {
-        if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::DOWN))
-            setMove(jlug::Move::DOWN, velocity);
-     }
+            setMove(map, jlug::Move::DOWN, velocity);
+     else
+            setMove(map, jlug::Move::NONE);
 
      jlug::Character::move(map);
      scroll(map);
@@ -120,14 +106,14 @@ void jlug::Player::move(jlug::Map& map)
 void jlug::Player::scroll(jlug::Map& map)
  {
      int xpos(0), ypos(0);
-     jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
+     //jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
 
      xpos = pixX-map.getTileWidth()/2-window.getWidth()/2;
      ypos = pixY-map.getTileHeight()-window.getHeight()/2;
 
-     map.setScroll(xpos, ypos);
+     /*map.setScroll(xpos, ypos);
 
      map.setCamera( static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth()),
                     -static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1)
-                    );
+                    );*/
  }

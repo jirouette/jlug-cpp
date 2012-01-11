@@ -46,7 +46,7 @@ namespace jlug
             void setDirection(const jlug::Move::Direction& dir);
             void setSpeed(unsigned int speedParam);
 
-            void setMove(const jlug::Move::Direction& dir, unsigned int speedParam = 0);
+            void setMove(jlug::Map& map, const jlug::Move::Direction& dir, unsigned int speedParam = 0);
 
             unsigned int getX(void);
             unsigned int getY(void);

@@ -588,7 +588,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
 
     square.setTextureSize(0, 0, sprite.getRealWidth(), sprite.getRealHeight());
     square.setTextureZone(rect.x, rect.y, rect.w, rect.h);
-    square.setTexture(jlug::ImageManager::getInstance()[charsetFilename].getTexture());
+    square.setTexture(sprite.getTexture());
 
     // Finally ! 
     square.draw();

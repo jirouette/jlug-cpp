@@ -47,7 +47,7 @@ namespace jlug
             const jlug::TileProp& getTile(unsigned int x, unsigned int y, unsigned int z);
 
             void setScroll(int x, int y);
-            void setCamera(int x, int y);
+            void setCamera(double x, double y);
 
             void createTile(unsigned int x, unsigned int y, unsigned int z, unsigned int gid);
 

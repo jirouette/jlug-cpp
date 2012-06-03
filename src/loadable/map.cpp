@@ -176,7 +176,7 @@ void jlug::Map::setScroll(int x, int y)
 * \param x : X-coordinates
 * \param y : Y-coordinates
 */
-void jlug::Map::setCamera(int x, int y)
+void jlug::Map::setCamera(double x, double y)
 {
     gluLookAt(x-5, y+2, 5, x-5, y, 0, 0, 1, 0);
 }

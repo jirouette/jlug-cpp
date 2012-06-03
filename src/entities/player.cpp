@@ -80,9 +80,9 @@ void jlug::Player::move(jlug::Map& map)
      int tileWidth(map.getTileWidth()), tileHeight(map.getTileHeight());
      jlug::Move::Direction dir(direction);
      if (input[jlug::KeyCode::Ctrl])
-        velocity = 8;
+        velocity = 16;
      else
-        velocity = 5;
+        velocity = 12;
 
      setMove(jlug::Move::NONE);
 
@@ -127,7 +127,7 @@ void jlug::Player::scroll(jlug::Map& map)
 
      map.setScroll(xpos, ypos);
 
-     map.setCamera( static_cast<int>(pixX/map.getTileWidth()-(sprite.getWidth()/2/2)*1.0/map.getTileWidth()),
-                    -static_cast<int>(pixY/map.getTileHeight()-sprite.getHeight()/6*1.0/map.getTileHeight()+1)
+     map.setCamera( pixX/static_cast<double>(map.getTileWidth()),
+                    -pixY/static_cast<double>(map.getTileHeight())
                     );
  }

@@ -1,7 +1,7 @@
 CXX=g++
-CFLAGS=-W -Wall -Wextra -ansi -pedantic -s -O2 -Werror -DTIXML_USE_STL $(INCLUDE)
+CFLAGS=-W -Wall -Wextra -ansi -pedantic -s -O2 -DTIXML_USE_STL -DGL_GLEXT_PROTOTYPES $(INCLUDE)
 INCLUDE=-Iheaders/ -Iheaders/utils -Iheaders/loadable -Iheaders/models -Iheaders/entities -Isrc/entities -Isrc/loadable -Isrc/models -Isrc/ -Isrc/utils -Ilib/ -Ilib/utils/ -Ilib/TmxParser/ -Ilib/TmxParser/base64/
-LDFLAGS=-lsfml-system -lsfml-graphics -lsfml-window -ltinyxml
+LDFLAGS=-lsfml-system -lsfml-graphics -lsfml-window -ltinyxml -lGL -lglut -lGLU
 EXEC=bin/jlug
 SRC= $(wildcard src/entities/*.cpp) $(wildcard src/loadable/*.cpp) $(wildcard src/models/*.cpp) $(wildcard src/utils/*.cpp) $(wildcard src/*.cpp) $(wildcard lib/*.cpp) $(wildcard lib/utils/*.cpp) $(wildcard lib/TmxParser/*.cpp) $(wildcard lib/TmxParser/base64/*.cpp)
 OBJ= $(SRC:.cpp=.o)

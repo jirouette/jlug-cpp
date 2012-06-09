@@ -8,14 +8,14 @@
 /**
 * \brief default constructor
 */
-jlug::Map::Map(void):xscroll(0), yscroll(0), mapFilename(""), weather(jlug::NORMAL), map()
+jlug::Map::Map(void):xscroll(0), yscroll(0), depth(0), mapFilename(""), weather(jlug::NORMAL), map()
 {}
 
 /**
 * \brief constructor which loads a map
 * \param filename : path to the map.tmx (relative to executable)
 */
-jlug::Map::Map(const std::string& filename):xscroll(0), yscroll(0), mapFilename(filename), weather(jlug::NORMAL), map()
+jlug::Map::Map(const std::string& filename):xscroll(0), yscroll(0), depth(0), mapFilename(filename), weather(jlug::NORMAL), map()
 {
     loadMap(mapFilename);
 }
@@ -39,17 +39,20 @@ void jlug::Map::loadMap(const std::string& filename)
     for (int z(0) ; z < map.GetNumLayers() ; ++z)
     {
         const Tmx::Layer *layer(map.GetLayer(z));
-        if (layer) // layer exists
+        if (layer && layer->IsVisible()) // layer exists and is visible
         {
             for (int x(0) ; x < layer->GetWidth() ; ++x)
                 for (int y(0) ; y < layer->GetHeight() ; ++y)
-                {
-                        createTile(x,y,z, layer->GetTileGid(x, y)); // graphics settings
-                }
+                        createTile(x,y,depth, layer->GetTileGid(x, y)); // graphics settings
             
             // Is the tile layer associated with a transformations layer ? 
-            if (!layer->GetProperties().Empty()) 
-                setTransformations(z, layer->GetProperties().GetLiteralProperty("transformations"));
+            if (!layer->GetProperties().Empty())
+            {
+                setTransformations(depth, layer->GetProperties().GetLiteralProperty("transformations"));
+                setVertex(depth, jlug::Rect(0, 0, getWidth(), getHeight()), layer->GetProperties().GetList(), true);
+            }
+
+            ++depth;
         }
     }
 }
@@ -96,7 +99,7 @@ unsigned int jlug::Map::getHeight(void)
 */
 unsigned int jlug::Map::getDepth(void)
 {
-    return map.GetNumLayers();
+    return depth;
 }
 
 /**
@@ -258,51 +261,85 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
 * \param layer : index of the receiver layer
 * \param objectLayerName : object layer name which gets transformations data
 */
-void jlug::Map::setTransformations(unsigned int layer, const std::string& objectLayerName)
+void jlug::Map::setTransformations(unsigned int index, const std::string& layerName)
 {
-    const Tmx::ObjectGroup *objectLayer(0);
-
-    /*
-    * This method looks for an object layer which matches
-    * to the associated object layer that the tile layer
-    * provided. 
-    * If there is one, so, check every object the layer contains
-    * in order to apply transformations or vertex settings. 
-    */
-
-    for (int i(0); i < map.GetNumObjectGroups(); ++i)
+    const char DELIM(';');
+    size_t begin(0);
+    for (size_t end(layerName.find(DELIM)) ; begin != std::string::npos ; end = layerName.find(DELIM, begin))
     {
-        const Tmx::ObjectGroup *currentObjectLayer = map.GetObjectGroup(i);
-        if (currentObjectLayer) // the object layer exists
-            if(currentObjectLayer->GetName() == objectLayerName) // and matches ! 
-            {
-                objectLayer = currentObjectLayer;
-                break; // we don't need to continue since we found our object layer
-            }
-    }
+        const Tmx::ObjectGroup *objectLayer(0);
+        const Tmx::Layer *layer(0);
+        const std::string name(layerName.substr(begin, end));
+        if(end != std::string::npos)
+            begin = end+1;
+        else
+            begin = end;
 
-    if (!objectLayer) // the loop has ended without having found our object layer...
-        return; // let's go back to the map loading
-    
-    for (int i(0); i < objectLayer->GetNumObjects() ; ++i)
-    {
-        const Tmx::Object *object = objectLayer->GetObject(i);
-        const Tmx::Tileset *tileset(map.GetTileset(0));
-        if (object && tileset) // both object and tileset exist
-            if(!object->GetProperties().Empty())
+        /*
+        * This method looks for an object layer which matches
+        * to the associated object/tile layer that the tile layer
+        * provided. 
+        * If there is one, so, check every object/tile the layer contains
+        * in order to apply transformations or vertex settings. 
+        */
+
+
+
+        for (int i(0); i < map.GetNumObjectGroups(); ++i)
+        {
+            const Tmx::ObjectGroup *currentObjectLayer = map.GetObjectGroup(i);
+            if (currentObjectLayer) // the object layer exists
+                if(currentObjectLayer->GetName() == name) // and matches ! 
+                {
+                    objectLayer = currentObjectLayer;
+                    break; // we don't need to continue since we found our object layer
+                }
+        }
+
+        if (objectLayer) // An object layer is found ! 
+            for (int i(0); i < objectLayer->GetNumObjects() ; ++i)
             {
-                jlug::Rect selectedTiles(object->GetX()/tileset->GetTileWidth(),
-                                         object->GetY()/tileset->GetTileHeight(),
-                                         (object->GetX()+object->GetWidth())/tileset->GetTileWidth(),
-                                         (object->GetY()+object->GetHeight())/tileset->GetTileHeight());
-                
-                if (object->GetType() == "transform")
-                    setTransformation(layer, selectedTiles, object->GetProperties().GetList());
-                else if (object->GetType() == "modifyVertex")
-                    setVertex(layer, selectedTiles, object->GetProperties().GetList(), false);
-                else if (object->GetType() == "addVertex")
-                    setVertex(layer, selectedTiles, object->GetProperties().GetList(), true);
+                const Tmx::Object *object = objectLayer->GetObject(i);
+                const Tmx::Tileset *tileset(map.GetTileset(0));
+                if (object && tileset) // both object and tileset exist
+                    if(!object->GetProperties().Empty())
+                    {
+                        jlug::Rect selectedTiles(object->GetX()/tileset->GetTileWidth(),
+                                                 object->GetY()/tileset->GetTileHeight(),
+                                                 (object->GetX()+object->GetWidth())/tileset->GetTileWidth(),
+                                                 (object->GetY()+object->GetHeight())/tileset->GetTileHeight());
+                        
+                        if (object->GetType() == "transform")
+                            setTransformation(index, selectedTiles, object->GetProperties().GetList());
+                        else if (object->GetType() == "modifyVertex")
+                            setVertex(index, selectedTiles, object->GetProperties().GetList(), false);
+                        else if (object->GetType() == "addVertex")
+                            setVertex(index, selectedTiles, object->GetProperties().GetList(), true);
+                    }
             }
+        else // Let's check tile layers... 
+        {
+            for (int i(0) ; i < map.GetNumLayers() ; ++i)
+            {
+                const Tmx::Layer *currentLayer = map.GetLayer(i);
+                if (currentLayer) // the layer exists
+                    if (currentLayer->GetName() == name) // and matches ! 
+                    {
+                        layer = currentLayer;
+                        break;
+                    }
+            }
+
+            if (layer) // A tile layer is found ! 
+            {
+                if (!layer->GetProperties().Empty()) // Whole vertex setting ! 
+                    setVertex(index, jlug::Rect(0, 0, getWidth(), getHeight()), layer->GetProperties().GetList(), true);
+
+                for (int i(0) ; i < layer->GetWidth() ; ++i)
+                    for (int j(0) ; j < layer->GetHeight() ; ++j)
+                        setVertex(index, i, j, layer->GetTileGid(i, j));
+            }
+        }
     }
 }
 
@@ -465,6 +502,111 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 }
 
 /**
+* \brief applies vertex data
+* \param layer : index of the receiver layer
+* \param x : the X coordinate of the tile
+* \param y : the Y coordinate of the tile
+* \param gid : data
+*/
+void jlug::Map::setVertex(unsigned int layer, int x, int y, unsigned int gid)
+{
+    unsigned int localGid(0);
+    jlug::TileProp& tile(tiles[x][y][layer]);
+    const std::string data("0 0 1");
+    const unsigned int DR(50), DOWN(51), DL(52),
+                       RGT(60), CENTER(61), LFT(62),
+                       UR(70), UP(71), UL(72),
+
+                       DaR(54), DaL(55),
+                       UaR(64), UaL(65);
+
+    for (int i(0) ; i < map.GetNumTilesets() ; ++i)
+    {
+        const Tmx::Tileset *tileset(map.GetTileset(i));
+        if (tileset) // tileset exists
+            if (tileset->GetFirstGid() <= static_cast<int>(gid)) // the tileset may match with our GID
+                localGid = gid - tileset->GetFirstGid();
+    }
+
+    if (!localGid)
+        return;
+
+    switch(localGid)
+    {
+        case DR:
+            addToPoint(tile.downerRightCorner, data);
+            break;
+
+        case DOWN:
+            addToPoint(tile.downerRightCorner, data);
+            addToPoint(tile.downerLeftCorner, data);
+            break;
+
+        case DL:
+            addToPoint(tile.downerLeftCorner, data);
+            break;
+
+        case RGT:
+            addToPoint(tile.downerRightCorner, data);
+            addToPoint(tile.upperRightCorner, data);
+            break;
+
+        case CENTER:
+            addToPoint(tile.downerRightCorner, data);
+            addToPoint(tile.downerLeftCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            addToPoint(tile.upperRightCorner, data);
+            break;
+
+        case LFT:
+            addToPoint(tile.downerLeftCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            break;
+
+        case UR:
+            addToPoint(tile.upperRightCorner, data);
+            break;
+
+        case UP:
+            addToPoint(tile.upperRightCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            break;
+
+        case UL:
+            addToPoint(tile.upperLeftCorner, data);
+            break;
+
+
+        case DaR:
+            addToPoint(tile.downerRightCorner, data);
+            addToPoint(tile.downerLeftCorner, data);
+            addToPoint(tile.upperRightCorner, data);
+            break;
+
+        case DaL:
+            addToPoint(tile.downerRightCorner, data);
+            addToPoint(tile.downerLeftCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            break;
+
+        case UaR:
+            addToPoint(tile.upperRightCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            addToPoint(tile.downerRightCorner, data);
+            break;
+
+        case UaL:
+            addToPoint(tile.upperRightCorner, data);
+            addToPoint(tile.upperLeftCorner, data);
+            addToPoint(tile.downerLeftCorner, data);
+            break;
+
+        default:
+            break;
+    }
+}
+
+/**
 * \brief parse a string to extract numeric datas and fill a Point with it
 * \param point : receiver Point
 * \param values : data to extract
@@ -585,6 +727,9 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
 
     const unsigned int tileWidth(getTileWidth());
     const unsigned int tileHeight(getTileHeight());
+
+    if (index >= depth || index < 0)
+        return false;
 
     square.setPixelTranslation(tileWidth, tileHeight);
 

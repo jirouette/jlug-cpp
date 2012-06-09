@@ -58,6 +58,7 @@ namespace jlug
 
             void setTransformation(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties);
             void setVertex(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties, bool add = true);
+            void setVertex(unsigned int layer, int x, int y, unsigned int gid);
 
             void setPoint(jlug::Point& point, const std::string& values);
             void addToPoint(jlug::Point& point, const std::string& values);
@@ -70,6 +71,8 @@ namespace jlug
         protected:
             int xscroll; /*!< X-position of the camera on the map */
             int yscroll; /*!< Y-position of the camera on the map */
+
+            int depth; /*!< Depth of the map */
 
             std::string mapFilename; /*!< path to map file */
             jlug::Weather weather; /*!< weather */

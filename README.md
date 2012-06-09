@@ -23,7 +23,7 @@ then, simply do
 
 The executable lies in __bin/__. 
 
-`bin/jlug`
+`bin/jlug` or `make run`
 
 
 __Important :__ You'll need those different packages : 

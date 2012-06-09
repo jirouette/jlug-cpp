@@ -1,5 +1,4 @@
 #include "entities/character.hpp"
-#include <cmath>
 
 /**
 * \file character.cpp
@@ -443,9 +442,9 @@ void jlug::Character::move(jlug::Map& map)
                     // Pix between the current tile and the next tile
 
                     if (previousDirection == jlug::Move::RIGHT)
-                        pixbetween = ABS(((x+1)*16)-static_cast<int>(pixX));
+                        pixbetween = std::abs(((x+1)*16)-static_cast<int>(pixX));
                     else if (previousDirection == jlug::Move::LEFT)
-                        pixbetween = ABS(((x-1)*16)-static_cast<int>(pixX));
+                        pixbetween = std::abs(((x-1)*16)-static_cast<int>(pixX));
 
 
                     while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
@@ -465,9 +464,9 @@ void jlug::Character::move(jlug::Map& map)
                     // Pix between the current tile and the next tile
 
                     if (previousDirection == jlug::Move::DOWN)
-                        pixbetween = ABS(((y+1)*16)-static_cast<int>(pixY));
+                        pixbetween = std::abs(((y+1)*16)-static_cast<int>(pixY));
                     else if (previousDirection == jlug::Move::UP)
-                        pixbetween = ABS(((y-1)*16)-static_cast<int>(pixY));
+                        pixbetween = std::abs(((y-1)*16)-static_cast<int>(pixY));
 
 
                     while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
@@ -487,9 +486,9 @@ void jlug::Character::move(jlug::Map& map)
 
      // Refreshing tile position with pixel position
 
-     if (ABS((x*static_cast<int>(tileWidth))-static_cast<int>(pixX)) >= static_cast<int>(tileWidth) || static_cast<int>(pixX)%static_cast<int>(tileWidth) == 0)
+     if (std::abs((x*static_cast<int>(tileWidth))-static_cast<int>(pixX)) >= static_cast<int>(tileWidth) || static_cast<int>(pixX)%static_cast<int>(tileWidth) == 0)
         x = static_cast<int>(pixX)/static_cast<int>(tileWidth);
-     if (ABS((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight)  || static_cast<int>(pixY)%static_cast<int>(tileHeight) == 0)
+     if (std::abs((y*static_cast<int>(tileHeight))-static_cast<int>(pixY)) >= static_cast<int>(tileHeight)  || static_cast<int>(pixY)%static_cast<int>(tileHeight) == 0)
         y = static_cast<int>(pixY)/static_cast<int>(tileHeight);
 
  }

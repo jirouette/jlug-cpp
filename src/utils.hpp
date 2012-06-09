@@ -15,7 +15,8 @@
 #include <ctime>
 #include <SFML/Graphics.hpp>
 #include "utils/base64.h" // <- base64 functions by Bernard Chardonneau
-#define ABS(x) ((x<0)?(-(x)):(x)) // define in C++ :( ... 
+#include "geom/point.hpp"
+#include "geom/rectangle.hpp"
 
 /**
 * \namespace jlug
@@ -24,52 +25,6 @@
 */
 namespace jlug
 {
-    /**
-    * \class Rectangle
-    * \brief Rectangle with upper-left corner and downer-right corner defined.
-    * May be used as a vector.
-    */
-    template <typename T>
-    class Rectangle
-    {
-        public:
-        T
-        x, /*!< X-value */
-        y, /*!< Y-value */
-        w, /*!< Width of the rectangle. */
-        h;  /*!< Height of the rectangle. */
-
-        Rectangle(T pX, T pY, T pW, T pH);
-        Rectangle(T pX, T pY, T pW);
-        Rectangle(T pX, T pY);
-        Rectangle(T pX);
-        Rectangle(void);
-    };
-
-    typedef Rectangle<int> Rect;
-
-    /**
-    * \class Point3D
-    * \brief 3D-Point
-    */
-
-    template <typename T>
-    class Point3D
-    {
-        public:
-        T
-        x, /*!< X-value */
-        y, /*!< Y-value */
-        z; /*!< Z-value */
-
-        Point3D(T pX, T pY, T pZ);
-        Point3D(T pX, T pY);
-        Point3D(T pX);
-        Point3D(void);
-    };
-
-    typedef Point3D<double> Point;
-
     /**
     * \enum Collision
     * \brief Type of collision on each tiles
@@ -132,16 +87,6 @@ namespace jlug
         g, /*!< green components of the transparence of the tileset. Between 0 and 255. */
         b; /*!< blue components of the transparence of the tileset. Between 0 and 255. */
     };
-
-    namespace Axis
-    {
-        enum AxisName
-        {
-            X,
-            Y,
-            Z
-        };
-    }
 
     /**
     * \namespace jlug::KeyCode
@@ -208,33 +153,6 @@ namespace jlug
             Count
         };
     }
-
-
-    /**
-    * \namespace jlug::Move
-    * \brief Contains directions.
-    */
-    namespace Move
-    {
-        /**
-        * \enum Direction
-        * \brief Character's directions.
-        */
-        enum Direction
-        {
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT,
-            NONE,
-
-            Count
-        };
-
-
-
-    }
 }
 
-#include "utils.cpp" // needed by template-classes
 #endif // UTILS_HPP_INCLUDED

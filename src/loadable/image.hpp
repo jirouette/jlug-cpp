@@ -7,7 +7,7 @@
 */
 
 #include <SFML/Graphics.hpp>
-#include "utils.hpp"
+#include "geom/rectangle.hpp"
 #include <exception>
 #include <stdexcept>
 #include <iostream>

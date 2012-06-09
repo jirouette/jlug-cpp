@@ -6,6 +6,7 @@
 * \author JirialMovie
 */
 
+#include <cmath>
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
 #include "utils/window.hpp"

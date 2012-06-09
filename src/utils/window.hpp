@@ -8,6 +8,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "utils.hpp"
+#include "geom/utils.hpp"
+#include "geom/point.hpp"
+#include "geom/rectangle.hpp"
 #include "loadable/image.hpp"
 #include "utils/input.hpp"
 #include "utils/constants.hpp"

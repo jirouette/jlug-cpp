@@ -7,6 +7,7 @@
 */
 
 #include <SFML/Window.hpp>
+#include "geom/rectangle.hpp"
 #include "utils.hpp"
 
 /**

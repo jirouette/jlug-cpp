@@ -80,9 +80,9 @@ void jlug::Player::move(jlug::Map& map)
      int tileWidth(map.getTileWidth()), tileHeight(map.getTileHeight());
      jlug::Move::Direction dir(direction);
      if (input[jlug::KeyCode::Ctrl])
-        velocity = 16;
+        velocity = 8;
      else
-        velocity = 12;
+        velocity = 5;
 
      setMove(jlug::Move::NONE);
 

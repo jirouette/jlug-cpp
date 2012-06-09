@@ -91,6 +91,10 @@ namespace Tmx
 		bool IsTileFlippedVertically(int x, int y) const 
 		{ return tile_map[y * width + x].flippedVertically; }
 
+		// Get whether the layer is visible
+		bool IsVisible() const
+		{ return visible; }
+
 		// Get the tile specific to the map.
 		MapTile GetTile(int x, int y) const { return tile_map[y * width + x]; }
 

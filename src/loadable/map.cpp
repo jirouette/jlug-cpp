@@ -50,6 +50,8 @@ void jlug::Map::loadMap(const std::string& filename)
             {
                 setTransformations(depth, layer->GetProperties().GetLiteralProperty("transformations"));
                 setVertex(depth, jlug::Rect(0, 0, getWidth(), getHeight()), layer->GetProperties().GetList(), true);
+
+                setCollisions(depth, layer->GetProperties().GetLiteralProperty("collisions"));
             }
 
             ++depth;
@@ -257,9 +259,59 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
 }
 
 /**
-* \brief applies transformations by a object layer name
+* \brief applies collisions by a tile layer name
+* \param z : index of the receiver layer
+* \param layerName : tile layer name which gets collisions data
+*/
+void jlug::Map::setCollisions(unsigned int z, const std::string& layerName)
+{
+    const Tmx::Layer* layer(0);
+    const unsigned int WLK(10), WLL(11), WTR(12);
+
+    for (int i(0) ; i < map.GetNumLayers() ; ++i)
+    {
+        const Tmx::Layer *currentLayer = map.GetLayer(i);
+        if (currentLayer) // the layer exists
+            if (currentLayer->GetName() == layerName) // and matches ! 
+            {
+                layer = currentLayer;
+                break;
+            }
+    }
+
+    if (!layer)
+        return;
+
+    for (unsigned int i(0) ; i < getWidth() ; ++i)
+        for (unsigned int j(0) ; j < getHeight() ; ++j)
+        {
+            unsigned int gid(layer->GetTileGid(i, j)), localGid(0);
+            for (int k(0) ; k < map.GetNumTilesets() ; ++k)
+            {
+                const Tmx::Tileset *tileset(map.GetTileset(k));
+                if (tileset) // tileset exists
+                    if (tileset->GetFirstGid() <= static_cast<int>(gid)) // the tileset may match with our GID
+                        localGid = gid - tileset->GetFirstGid();
+            }
+
+            if (!localGid)
+                continue;
+
+            switch (localGid)
+            {
+                case WLL:
+                    tiles[i][j][z].collision = jlug::WALL;
+                    break;
+                default:
+                    break;
+            }
+        }
+}
+
+/**
+* \brief applies transformations by a layer name
 * \param layer : index of the receiver layer
-* \param objectLayerName : object layer name which gets transformations data
+* \param layerName : layer name which gets transformations data
 */
 void jlug::Map::setTransformations(unsigned int index, const std::string& layerName)
 {

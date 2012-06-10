@@ -53,7 +53,8 @@ namespace jlug
 
             void initTile(TileProp& tile);
             void setTile(TileProp& tile, unsigned int gid);
-            void setTransformations(unsigned int layer, const std::string& objectLayerName);
+            void setTransformations(unsigned int layer, const std::string& layerName);
+            void setCollisions(unsigned int z, const std::string& layerName);
             void insertTile(unsigned int x, unsigned int y, unsigned int z, unsigned int gid, const std::string& objectLayerName);
 
             void setTransformation(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties);

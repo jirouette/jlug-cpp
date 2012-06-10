@@ -396,7 +396,26 @@ bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
     int width(map.getWidth()), height(map.getHeight());
     if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
         return false;
-    return true;
+
+    switch (map.getTile(tileX, tileY, z).collision)
+    {
+        case jlug::WALKABLE:
+            return true;
+            break;
+
+        case jlug::LAYERUP:
+            z += map.getNextGap(z);
+            return true;
+            break;
+
+        case jlug::LAYERDOWN:
+            z -= map.getPreviousGap(z);
+            return true;
+            break;
+
+        default:
+            return false;
+    }
  }
 
 /**

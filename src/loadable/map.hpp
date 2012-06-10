@@ -43,6 +43,8 @@ namespace jlug
             unsigned int getWidth(void);
             unsigned int getHeight(void);
             unsigned int getDepth(void);
+            unsigned int getNextGap(unsigned int z);
+            unsigned int getPreviousGap(unsigned int z);
             jlug::Rect getScroll(void);
             const jlug::TileProp& getTile(unsigned int x, unsigned int y, unsigned int z);
 
@@ -80,6 +82,7 @@ namespace jlug
             Tmx::Map map; /*!< Tmx-file parser */
 
             std::vector< std::vector< std::vector < jlug::TileProp > > > tiles; /*!< tiles */
+            std::vector< std::pair<unsigned int, unsigned int> > gaps; // <== SEGFAULT
 
 
 

@@ -53,6 +53,8 @@ void jlug::Map::loadMap(const std::string& filename)
 
                 setCollisions(depth, layer->GetProperties().GetLiteralProperty("collisions"));
             }
+            else
+                gaps.push_back(std::pair<unsigned int, unsigned int>(1, 1));
 
             ++depth;
         }
@@ -111,6 +113,28 @@ unsigned int jlug::Map::getDepth(void)
 jlug::Rect jlug::Map::getScroll(void)
 {
     return jlug::Rect(xscroll, yscroll, xscroll, yscroll);
+}
+
+/**
+* \brief get the gap between the current layer and the next
+* \param z : current layer
+*/
+unsigned int jlug::Map::getNextGap(unsigned int z)
+{
+    if (z >= gaps.size())
+        return 0;
+    return gaps[z].second;
+}
+
+/**
+* \brief get the gap between the current layer and the previous
+* \param z : current layer
+*/
+unsigned int jlug::Map::getPreviousGap(unsigned int z)
+{
+    if (z >= gaps.size())
+        return 0;
+    return gaps[z].first;
 }
 
 /**
@@ -266,7 +290,7 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
 void jlug::Map::setCollisions(unsigned int z, const std::string& layerName)
 {
     const Tmx::Layer* layer(0);
-    const unsigned int WLK(10), WLL(11), WTR(12);
+    const unsigned int WLL(11), WTR(12), LUP(13), LDWN(14);
 
     for (int i(0) ; i < map.GetNumLayers() ; ++i)
     {
@@ -278,6 +302,13 @@ void jlug::Map::setCollisions(unsigned int z, const std::string& layerName)
                 break;
             }
     }
+
+    if (layer && !layer->GetProperties().Empty())
+        gaps.push_back(std::pair<unsigned int, unsigned int>(layer->GetProperties().GetNumericProperty("previousGap"),
+                                                             layer->GetProperties().GetNumericProperty("nextGap")
+                                                            ));
+    else
+        gaps.push_back(std::pair<unsigned int, unsigned int>(1, 1));
 
     if (!layer)
         return;
@@ -302,6 +333,19 @@ void jlug::Map::setCollisions(unsigned int z, const std::string& layerName)
                 case WLL:
                     tiles[i][j][z].collision = jlug::WALL;
                     break;
+
+                case WTR:
+                    tiles[i][j][z].collision = jlug::SURF;
+                    break;
+
+                case LUP:
+                    tiles[i][j][z].collision = jlug::LAYERUP;
+                    break;
+
+                case LDWN:
+                    tiles[i][j][z].collision = jlug::LAYERDOWN;
+                    break;
+
                 default:
                     break;
             }
@@ -321,7 +365,7 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
     {
         const Tmx::ObjectGroup *objectLayer(0);
         const Tmx::Layer *layer(0);
-        const std::string name(layerName.substr(begin, end));
+        const std::string name(layerName.substr(begin, end-begin));
         if(end != std::string::npos)
             begin = end+1;
         else

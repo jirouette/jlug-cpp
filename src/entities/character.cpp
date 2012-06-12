@@ -599,7 +599,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
 
     // Transformations
 
-    square.rotate(45, 0, 0);
+    square.rotate(30, 0, 0);
     square.scale(rect.w, rect.h, 1);
 
     //Texturing

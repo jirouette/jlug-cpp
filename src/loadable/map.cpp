@@ -428,12 +428,13 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
 
             if (layer) // A tile layer is found ! 
             {
-                if (!layer->GetProperties().Empty()) // Whole vertex setting ! 
-                    setVertex(index, jlug::Rect(0, 0, getWidth(), getHeight()), layer->GetProperties().GetList(), true);
-
                 for (int i(0) ; i < layer->GetWidth() ; ++i)
                     for (int j(0) ; j < layer->GetHeight() ; ++j)
-                        setVertex(index, i, j, layer->GetTileGid(i, j));
+                    {
+                        if (setVertex(index, i, j, layer->GetTileGid(i, j)))
+                            if (!layer->GetProperties().Empty())
+                                setVertex(index, jlug::Rect(i, j, i+1, j+1), layer->GetProperties().GetList(), true);
+                    }
             }
         }
     }
@@ -604,17 +605,19 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 * \param y : the Y coordinate of the tile
 * \param gid : data
 */
-void jlug::Map::setVertex(unsigned int layer, int x, int y, unsigned int gid)
+bool jlug::Map::setVertex(unsigned int layer, int x, int y, unsigned int gid)
 {
     unsigned int localGid(0);
     jlug::TileProp& tile(tiles[x][y][layer]);
-    const std::string data("0 0 1");
+    const std::string data("0 0 0.5");
     const unsigned int DR(50), DOWN(51), DL(52),
                        RGT(60), CENTER(61), LFT(62),
                        UR(70), UP(71), UL(72),
 
                        DaR(54), DaL(55),
-                       UaR(64), UaL(65);
+                       UaR(64), UaL(65),
+
+                       HLFUP(57);
 
     for (int i(0) ; i < map.GetNumTilesets() ; ++i)
     {
@@ -625,7 +628,7 @@ void jlug::Map::setVertex(unsigned int layer, int x, int y, unsigned int gid)
     }
 
     if (!localGid)
-        return;
+        return false;
 
     switch(localGid)
     {
@@ -697,9 +700,16 @@ void jlug::Map::setVertex(unsigned int layer, int x, int y, unsigned int gid)
             addToPoint(tile.downerLeftCorner, data);
             break;
 
+        case HLFUP:
+            addToPoint(tile.upperRightCorner, "0 0 0.25");
+            addToPoint(tile.upperLeftCorner, "0 0 0.25");
+            break;
+
         default:
+            return false;
             break;
     }
+    return true;
 }
 
 /**

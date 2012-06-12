@@ -61,7 +61,7 @@ namespace jlug
 
             void setTransformation(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties);
             void setVertex(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties, bool add = true);
-            void setVertex(unsigned int layer, int x, int y, unsigned int gid);
+            bool setVertex(unsigned int layer, int x, int y, unsigned int gid);
 
             void setPoint(jlug::Point& point, const std::string& values);
             void addToPoint(jlug::Point& point, const std::string& values);

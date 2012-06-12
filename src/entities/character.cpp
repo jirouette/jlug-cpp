@@ -461,12 +461,17 @@ void jlug::Character::move(jlug::Map& map)
                     // Pix between the current tile and the next tile
 
                     if (previousDirection == jlug::Move::RIGHT)
-                        pixbetween = std::abs(((x+1)*16)-static_cast<int>(pixX));
+                        pixbetween = std::abs(((static_cast<int>(pixX+tileWidth)/static_cast<int>(tileWidth))
+                                                *static_cast<int>(tileWidth))-static_cast<int>(pixX));
                     else if (previousDirection == jlug::Move::LEFT)
-                        pixbetween = std::abs(((x-1)*16)-static_cast<int>(pixX));
+                        pixbetween = std::abs(((static_cast<int>(pixX)/static_cast<int>(tileWidth))
+                                                *static_cast<int>(tileWidth)) - static_cast<int>(pixX));
+
+                    if (pixbetween <= 0)
+                        pixbetween = 1;
 
 
-                    while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
+                    while (pixbetween < static_cast<int>(altSpeed)) // If speed is too big, we reduce it.
                         altSpeed /= 2;
 
                     // Then, we go to this next tile
@@ -483,12 +488,16 @@ void jlug::Character::move(jlug::Map& map)
                     // Pix between the current tile and the next tile
 
                     if (previousDirection == jlug::Move::DOWN)
-                        pixbetween = std::abs(((y+1)*16)-static_cast<int>(pixY));
+                        pixbetween = std::abs(((static_cast<int>(pixY+tileHeight)/static_cast<int>(tileHeight))
+                                                *static_cast<int>(tileHeight))-static_cast<int>(pixY));
                     else if (previousDirection == jlug::Move::UP)
-                        pixbetween = std::abs(((y-1)*16)-static_cast<int>(pixY));
+                        pixbetween = std::abs(((static_cast<int>(pixY)/static_cast<int>(tileHeight))
+                                                *static_cast<int>(tileHeight))-static_cast<int>(pixY));
 
+                    if (pixbetween <= 0)
+                        pixbetween = 1;
 
-                    while (static_cast<unsigned int>(pixbetween) < altSpeed) // If speed is too big, we reduce it.
+                    while (pixbetween < static_cast<int>(altSpeed)) // If speed is too big, we reduce it.
                         altSpeed /= 2;
 
                     // Then, we go to this next tile

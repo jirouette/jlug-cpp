@@ -6,7 +6,7 @@ EXEC=bin/jlug
 SRC= $(wildcard src/geom/*.cpp) $(wildcard src/entities/*.cpp) $(wildcard src/loadable/*.cpp) $(wildcard src/models/*.cpp) $(wildcard src/utils/*.cpp) $(wildcard src/*.cpp) $(wildcard lib/*.cpp) $(wildcard lib/utils/*.cpp) $(wildcard lib/TmxParser/*.cpp) $(wildcard lib/TmxParser/base64/*.cpp)
 OBJ= $(SRC:.cpp=.o)
 
-all: $(EXEC)
+build: $(EXEC)
 
 $(EXEC): $(OBJ)
 	$(CXX) -o $(EXEC) $^ $(LDFLAGS)
@@ -26,3 +26,6 @@ mrproper: clean
 
 run:
 	$(EXEC)
+
+build-run: build run
+

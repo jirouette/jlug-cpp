@@ -163,9 +163,9 @@ void jlug::Window::blit(jlug::Image& img, const jlug::Rect& pos)
 void jlug::Window::text(const std::string& sentence, int x, int y)
 {
     winstr.SetText(sentence);
-    winstr.Move(x, y);
 
     beforeDisplaying();
+        winstr.Move(x, y);
         win.Draw(winstr);
     afterDisplaying();
 }

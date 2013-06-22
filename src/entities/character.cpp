@@ -586,7 +586,6 @@ double jlug::Character::getDepthByTile(jlug::Map& map)
 
 void jlug::Character::display(jlug::Map& map, jlug::Window& win)
  {
-    std::ostringstream buffer;
     jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
     jlug::Rect rect;
     jlug::Square square;
@@ -619,12 +618,6 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
 
     // Finally ! 
     square.draw();
-
-    buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
-    buffer << std::endl;
-    buffer << "worldCoordinates(" << worldCoordinates.x << ", " << worldCoordinates.y;
-    buffer << ", " << worldCoordinates.z << ")" << std::endl;
-    win.debug(buffer.str());
  }
 
 void jlug::Character::displayUsername(jlug::Window& win)
@@ -637,9 +630,11 @@ void jlug::Character::displayUsername(jlug::Window& win)
 
     gluProject(worldCoordinates.x, worldCoordinates.y, worldCoordinates.z,
     modelviewMatrix, projectionMatrix, 0,
-    (screenCoordinates), &(screenCoordinates[1]), &(screenCoordinates[2]));
+    (screenCoordinates), &(screenCoordinates[1]), &(screenCoordinates[2]));*/
 
-    win.text("Patate", screenCoordinates[0], screenCoordinates[1]);*/
+    //glTranslatef(0, 0, worldCoordinates.z);
+
+    win.text("Patate", worldCoordinates.x, worldCoordinates.y);
     // Yeah, this method does absolutely nothing. 
 
 }
@@ -681,10 +676,13 @@ void jlug::Character::animate(void)
 * \param speedParam : Facultative. New speed.
 */
 
-void jlug::Character::setMove(const jlug::Move::Direction& dir, unsigned int speedParam)
+void jlug::Character::setMove(jlug::Map& map, const jlug::Move::Direction& dir, unsigned int speedParam, bool force)
  {
-     setDirection(dir);
-     setPosition(dir);
+    if ((pixX%map.getTileWidth() == 0 && pixY%map.getTileHeight() == 0) || force || dir == jlug::Move::NONE)
+    {
+         setDirection(dir);
+         setPosition(dir);
+    }
      if (speedParam > 0)
         setSpeed(speedParam);
  }

@@ -84,32 +84,45 @@ void jlug::Player::move(jlug::Map& map)
      else
         velocity = 5;
 
-     setMove(jlug::Move::NONE);
+     setMove(map, jlug::Move::NONE);
 
      if (input[jlug::KeyCode::Left])
      {
         if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::LEFT))
-            setMove(jlug::Move::LEFT, velocity);
+            setMove(map, jlug::Move::LEFT, velocity);
      }
      else if (input[jlug::KeyCode::Right])
      {
         if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::RIGHT))
-            setMove(jlug::Move::RIGHT, velocity);
+            setMove(map, jlug::Move::RIGHT, velocity);
      }
      else if (input[jlug::KeyCode::Up])
      {
         if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::UP))
-            setMove(jlug::Move::UP, velocity);
+            setMove(map, jlug::Move::UP, velocity);
      }
      else if (input[jlug::KeyCode::Down])
      {
         if ((pixX%tileWidth == 0 && pixY%tileHeight == 0)||(isMoving && dir == jlug::Move::DOWN))
-            setMove(jlug::Move::DOWN, velocity);
+            setMove(map, jlug::Move::DOWN, velocity);
      }
 
      jlug::Character::move(map);
      scroll(map);
  }
+
+
+void jlug::Player::display(jlug::Map& map, jlug::Window& win)
+{
+    std::ostringstream buffer;
+    jlug::Character::display(map, win);
+
+    buffer << "(" << x << ", " << y << ") Speed = " << speed << "\n\n(" << pixX << ", " << pixY << ")";
+    buffer << std::endl;
+    buffer << "worldCoordinates(" << worldCoordinates.x << ", " << worldCoordinates.y;
+    buffer << ", " << worldCoordinates.z << ")" << std::endl;
+    win.debug(buffer.str());
+}
 
 
 /**

@@ -1,6 +1,7 @@
 #ifndef EXAMPLE_HPP_INCLUDED
 #define EXAMPLE_HPP_INCLUDED
 
+#include <list>
 #include "loadable/map.hpp"
 #include "utils/window.hpp"
 #include "entities/character.hpp"

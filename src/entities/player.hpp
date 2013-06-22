@@ -30,6 +30,7 @@ namespace jlug
             ~Player(void);
 
             virtual void move(jlug::Map& map);
+            virtual void display(jlug::Map& map, jlug::Window& win);
             virtual void scroll(jlug::Map& map);
 
         protected:

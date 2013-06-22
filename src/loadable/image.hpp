@@ -3,7 +3,7 @@
 
 /**
 * \file image.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <SFML/Graphics.hpp>

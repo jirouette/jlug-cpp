@@ -2,7 +2,7 @@
 
 /**
 * \file character.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 

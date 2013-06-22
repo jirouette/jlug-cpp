@@ -3,7 +3,7 @@
 
 /**
 * \file utils/Constants.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <map>

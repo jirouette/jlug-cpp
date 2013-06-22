@@ -3,7 +3,7 @@
 
 /**
 * \file rectangle.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

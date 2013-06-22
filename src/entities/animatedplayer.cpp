@@ -2,7 +2,7 @@
 
 /**
 * \file animatedplayer.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 

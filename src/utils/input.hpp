@@ -3,7 +3,7 @@
 
 /**
 * \file input.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <SFML/Window.hpp>

@@ -3,7 +3,7 @@
 #define POINT_CPP_INCLUDED
 /**
 * \file point.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 

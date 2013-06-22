@@ -3,7 +3,7 @@
 
 /**
 * \file point.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

@@ -2,7 +2,7 @@
 
 /**
 * \file shape.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

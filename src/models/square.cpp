@@ -2,7 +2,7 @@
 
 /**
 * \file square.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

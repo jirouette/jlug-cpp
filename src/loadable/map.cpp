@@ -2,7 +2,7 @@
 
 /**
 * \file map.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

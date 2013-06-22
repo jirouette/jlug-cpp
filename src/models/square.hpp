@@ -3,7 +3,7 @@
 
 /**
 * \file square.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include "models/shape.hpp"

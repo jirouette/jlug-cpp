@@ -3,7 +3,7 @@
 
 /**
 * \file resourcemanager.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <map>

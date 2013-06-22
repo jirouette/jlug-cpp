@@ -3,7 +3,7 @@
 
 /**
 * \file utils/dir.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <string>

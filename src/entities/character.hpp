@@ -3,7 +3,7 @@
 
 /**
 * \file character.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include <cmath>

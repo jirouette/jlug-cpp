@@ -3,7 +3,7 @@
 #define RECTANGLE_CPP_INCLUDED
 /**
 * \file rectangle.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

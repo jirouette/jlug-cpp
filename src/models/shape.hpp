@@ -3,7 +3,7 @@
 
 /**
 * \file shape.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include "utils.hpp"

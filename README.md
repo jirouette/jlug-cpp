@@ -1,4 +1,4 @@
-![jlug logo](https://github.com/jirialmovie/jlug/raw/master/res/images/logo.png "jlug") jlug
+![jlug logo](https://github.com/jirouette/jlug/raw/master/res/images/logo.png "jlug") jlug
 =================
 
 
@@ -15,7 +15,7 @@ How to compile it
 
 Download the entire project by
 
-`git clone git@github.com:jirialmovie/jlug.git`
+`git clone git@github.com:jirouette/jlug.git`
 
 then, simply do 
 

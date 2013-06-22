@@ -4,7 +4,7 @@
 
 /**
 * \file resourcemanager.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 

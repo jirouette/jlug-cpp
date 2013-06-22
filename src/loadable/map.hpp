@@ -3,7 +3,7 @@
 
 /**
 * \file map.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include "utils.hpp"

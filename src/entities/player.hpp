@@ -3,7 +3,7 @@
 
 /**
 * \file player.hpp
-* \author JirialMovie
+* \author jirouette
 */
 
 #include "entities/character.hpp"

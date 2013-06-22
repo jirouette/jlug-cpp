@@ -2,7 +2,7 @@
 
 /**
 * \file utils/constants.cpp
-* \author JirialMovie
+* \author jirouette
 */
 
 /**

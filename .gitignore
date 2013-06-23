@@ -1,5 +1,8 @@
 *.xml
 *.bmp
 *.o
+*.sublime*
+*.ogv
+*.backup
 .*
 jlug

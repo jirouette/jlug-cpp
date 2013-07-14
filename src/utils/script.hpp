@@ -6,9 +6,18 @@
 * \author jirouette
 */
 
-#include <list>
+#include <map>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdarg>
 #include "utils.hpp"
+extern "C" 
+{
+  #include <lua5.2/lua.h>
+  #include <lua5.2/lualib.h>
+  #include <lua5.2/lauxlib.h>
+}  
 
 /**
 * \namespace jlug
@@ -24,12 +33,29 @@ namespace jlug
     class Script
     {
         protected:
-            static std::list<Script*> scripts;
-            static std::list<Script*> initScripts();
+            static std::map<lua_State*, Script*> scripts;
+            static std::map<lua_State*, Script*> initScripts();
+            Script(const std::string& filename, bool special);
+            static int createScript(lua_State *state);
+
+            void init();
+
+            lua_State *L;
+            bool working;
+            bool special;
+
+            std::ostringstream out;
+            std::ostringstream err;
+            std::string name;
         
         public:
-            Script();
+            static void end();
+            Script(const std::string& filename);
             ~Script();
+            void call(const std::string& function, int nbargs, const std::string& param, ...);
+            void flush();
+            std::ostringstream& error();
+            std::ostringstream& print();
     };
 }
 

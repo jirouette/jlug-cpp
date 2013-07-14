@@ -3,6 +3,7 @@
 #include "models/square.hpp"
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
+#include "utils/script.hpp"
 #include <iostream>
 
 void game(void)
@@ -23,6 +24,9 @@ void game(void)
     (*it)->setCoord(10, 35);
     (*++it)->setCoord(25, 40);
     (*++it)->setCoord(10, 10);
+
+    jlug::Script coucou("scripts/init.lua");
+    coucou.call("main", 1, "%s", "jlug");
 
     while(!input[jlug::KeyCode::Escape] && win.isOpen())
     {
@@ -53,4 +57,6 @@ void game(void)
         win.flip();
     }
     win.close();
+    jlug::Script::end();
+
  }

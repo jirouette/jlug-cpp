@@ -30,3 +30,9 @@ __Important :__ You'll need those different packages :
 
 * libsfml-dev
 * libtinyxml-dev
+* mesa-common-dev
+* freeglut3-dev
+* lua5.2
+* liblua5.2-0
+* liblua5.2-dev
+

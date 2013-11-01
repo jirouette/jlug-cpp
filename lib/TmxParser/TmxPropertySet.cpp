@@ -74,4 +74,9 @@ namespace Tmx
 		return atoi(GetLiteralProperty(name).c_str());
 	}
 
+	bool PropertySet::HasProperty(const string &name)
+	{
+		return (properties.find(name) != properties.end());
+	}
+
 }

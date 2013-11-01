@@ -13,9 +13,13 @@
 #include "utils/window.hpp"
 #include "models/shape.hpp"
 #include "models/square.hpp"
+#include "entities/character.hpp"
+#include "entities/animatedcharacter.hpp"
+#include "entities/player.hpp"
 
 #include "TmxParser/Tmx.h"
 
+#include <list>
 
 /**
 * \namespace jlug
@@ -24,6 +28,8 @@
 */
 namespace jlug
 {
+    class Character;
+
     /**
     * \class Map
     * \brief Orthogonal tiles format displaying
@@ -34,10 +40,10 @@ namespace jlug
         public:
 
             Map(void);
-            Map(const std::string& filename);
+            Map(const std::string& filename, jlug::Window& win, jlug::Input& input);
             ~Map(void);
 
-            void loadMap(const std::string& filename);
+            void loadMap(const std::string& filename, jlug::Window& win, jlug::Input& input);
             unsigned int getTileWidth(void);
             unsigned int getTileHeight(void);
             unsigned int getWidth(void);
@@ -57,6 +63,7 @@ namespace jlug
             void setTile(TileProp& tile, unsigned int gid);
             void setTransformations(unsigned int layer, const std::string& layerName);
             void setCollisions(unsigned int z, const std::string& layerName);
+            void setObjects(unsigned int z, const std::string& layerName, jlug::Window& win, jlug::Input& input);
             void insertTile(unsigned int x, unsigned int y, unsigned int z, unsigned int gid, const std::string& objectLayerName);
 
             void setTransformation(unsigned int layer, const jlug::Rect& selectedTiles, const std::map<std::string, std::string>& properties);
@@ -70,6 +77,11 @@ namespace jlug
 
             bool displayLayer(jlug::Window& win, int index);
 
+            void addCharacter(jlug::Character* c);
+            void moveCharacters();
+            void displayCharacters(jlug::Window& win);
+
+
 
         protected:
             int xscroll; /*!< X-position of the camera on the map */
@@ -82,6 +94,7 @@ namespace jlug
             Tmx::Map map; /*!< Tmx-file parser */
 
             std::vector< std::vector< std::vector < jlug::TileProp > > > tiles; /*!< tiles */
+            std::list<jlug::Character*> characters;
             std::vector< std::pair<unsigned int, unsigned int> > gaps; // <== SEGFAULT
 
 

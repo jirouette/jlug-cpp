@@ -11,19 +11,16 @@ void game(void)
     jlug::Window win(800, 600, "hello world ! ");
     jlug::Input input = win.getInput();
 
-    std::list<jlug::Character*> characters;
+    jlug::Map map("../res/maps/map.tmx", win, input);
 
-    characters.push_back(new jlug::Player(4, "jr", input, win));
-    characters.push_back(new jlug::Character(3, ""));
-    characters.push_back(new jlug::AnimatedCharacter(1, ""));
-    jlug::Map map("../res/maps/map.tmx");
+    //map.addCharacter(new jlug::Player(4, "jr", input, win));
+    /*map.addCharacter(new jlug::Character(3, ""));
+    map.addCharacter(new jlug::AnimatedCharacter(1, ""));*/
 
 
-    std::list<jlug::Character*>::iterator it(characters.begin());
-
-    (*it)->setCoord(10, 35);
+    /*(*it)->setCoord(10, 35);
     (*++it)->setCoord(25, 40);
-    (*++it)->setCoord(10, 10);
+    (*++it)->setCoord(10, 10);*/
 
     jlug::Script coucou("scripts/init.lua");
     coucou.call("main", 1, "%s", "jlug");
@@ -40,16 +37,11 @@ void game(void)
 
         //player.move(map); // hi ! 
 
-        for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
-            (*character)->move(map);
-
-
+        map.moveCharacters();
         for (unsigned int k(0);k<map.getDepth();++k)
             map.displayLayer(win, k);
+        map.displayCharacters(win);
         
-
-        for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
-            (*character)->display(map, win);
 
 
         //player.displayUsername(win);

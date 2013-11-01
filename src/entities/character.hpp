@@ -21,6 +21,8 @@
 */
 namespace jlug
 {
+    class Map;
+    
     /**
     * \class Character
     * \brief Interactive and movable objects on the map

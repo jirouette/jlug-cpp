@@ -15,9 +15,9 @@ jlug::Map::Map(void):xscroll(0), yscroll(0), depth(0), mapFilename(""), weather(
 * \brief constructor which loads a map
 * \param filename : path to the map.tmx (relative to executable)
 */
-jlug::Map::Map(const std::string& filename):xscroll(0), yscroll(0), depth(0), mapFilename(filename), weather(jlug::NORMAL), map()
+jlug::Map::Map(const std::string& filename, jlug::Window& win, jlug::Input& input):xscroll(0), yscroll(0), depth(0), mapFilename(filename), weather(jlug::NORMAL), map()
 {
-    loadMap(mapFilename);
+    loadMap(mapFilename, win, input);
 }
 
 /**
@@ -30,7 +30,7 @@ jlug::Map::~Map(void)
 * \brief loads a map
 * \param filename : path to the map.tmx (relative to executable)
 */
-void jlug::Map::loadMap(const std::string& filename)
+void jlug::Map::loadMap(const std::string& filename, jlug::Window& win, jlug::Input& input)
 {
     mapFilename = jlug::Constants::getInstance().get("path")+
                   filename;
@@ -52,6 +52,7 @@ void jlug::Map::loadMap(const std::string& filename)
                 setVertex(depth, jlug::Rect(0, 0, getWidth(), getHeight()), layer->GetProperties().GetList(), true);
 
                 setCollisions(depth, layer->GetProperties().GetLiteralProperty("collisions"));
+                setObjects(depth, layer->GetProperties().GetLiteralProperty("objects"), win, input);
             }
             else
                 gaps.push_back(std::pair<unsigned int, unsigned int>(1, 1));
@@ -277,6 +278,56 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
                     tile.limit.x *= tile.limit.w;
                     tile.limit.y *= tile.limit.h;
                 }
+            }
+        }
+    }
+}
+
+/**
+* \brief applies objects by a object layer name
+* \param index of the receiver layer
+* \param object layer name which gets objects data
+* \param window
+*/
+void jlug::Map::setObjects(unsigned int z, const std::string& layerName, jlug::Window& win, jlug::Input& input)
+{
+    const Tmx::ObjectGroup* layer(0);
+    for (int i(0) ; i < map.GetNumObjectGroups() ; ++i)
+    {
+        const Tmx::ObjectGroup *currentLayer = map.GetObjectGroup(i);
+        if (currentLayer)
+            if (currentLayer->GetName() == layerName) // match
+            {
+                layer = currentLayer;
+                break;
+            }
+    }
+
+    if (!layer)
+        return;
+
+    for (int i(0) ; i < layer->GetNumObjects() ; ++i)
+    {
+        const Tmx::Object *object = layer->GetObject(i);
+        if (object)
+        {
+            if (object->GetType() == "character")
+            {
+                Character* c = new Character(object->GetProperties().GetNumericProperty("charset"), object->GetName());
+                c->setCoord(object->GetX()/map.GetTileWidth(), object->GetY()/map.GetTileHeight());
+                addCharacter(c);
+            }
+            else if (object->GetType() == "animatedcharacter")
+            {
+                Character* c = new AnimatedCharacter(object->GetProperties().GetNumericProperty("charset"), object->GetName());
+                c->setCoord(object->GetX()/map.GetTileWidth(), object->GetY()/map.GetTileHeight());
+                addCharacter(c);
+            }
+            else if (object->GetType() == "player")
+            {
+                Character* c = new Player(object->GetProperties().GetNumericProperty("charset"), object->GetName(), input, win);
+                c->setCoord(object->GetX()/map.GetTileWidth(), object->GetY()/map.GetTileHeight());
+                addCharacter(c);
             }
         }
     }
@@ -873,4 +924,33 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
             }
             
     return true;
+}
+
+
+/**
+* \brief add a character to the map
+* \param new character
+*/
+void jlug::Map::addCharacter(jlug::Character* c)
+{
+    characters.push_back(c);
+}
+
+/**
+* \brief process characters moving
+*/
+void jlug::Map::moveCharacters()
+{
+    for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
+        (*character)->move(*this);
+}
+
+/**
+* \brief display every characters
+* \param window
+*/
+void jlug::Map::displayCharacters(jlug::Window& win)
+{
+    for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
+        (*character)->display(*this, win);
 }

@@ -16,6 +16,9 @@
 */
 namespace jlug
 {
+    class Character;
+    class Player;
+    class Map;
     /**
     * \class AnimatedCharacter
     * \brief Animated Character.

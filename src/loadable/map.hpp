@@ -14,8 +14,6 @@
 #include "models/shape.hpp"
 #include "models/square.hpp"
 #include "entities/character.hpp"
-#include "entities/animatedcharacter.hpp"
-#include "entities/player.hpp"
 
 #include "TmxParser/Tmx.h"
 

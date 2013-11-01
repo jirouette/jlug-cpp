@@ -1,4 +1,6 @@
 #include "loadable/map.hpp"
+#include "entities/animatedcharacter.hpp"
+#include "entities/player.hpp"
 
 /**
 * \file map.cpp

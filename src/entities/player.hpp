@@ -16,6 +16,8 @@
 */
 namespace jlug
 {
+    class Map;
+    class Character;
     /**
     * \class Player
     * \brief Playable Character.

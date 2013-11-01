@@ -4,6 +4,7 @@
 #include "utils/resourcemanager.hpp"
 #include "utils/constants.hpp"
 #include "utils/script.hpp"
+#include "models/polygon.hpp"
 #include <iostream>
 
 void game(void)
@@ -18,6 +19,10 @@ void game(void)
     characters.push_back(new jlug::AnimatedCharacter(1, ""));
     jlug::Map map("../res/maps/map.tmx");
 
+    std::string charsetFilename;
+    charsetFilename = jlug::Constants::getInstance().get("path");
+    charsetFilename += jlug::Constants::getInstance().get("charsets");
+    charsetFilename += "4.png";
 
     std::list<jlug::Character*>::iterator it(characters.begin());
 
@@ -27,6 +32,29 @@ void game(void)
 
     jlug::Script coucou("scripts/init.lua");
     coucou.call("main", 1, "%s", "jlug");
+
+    jlug::Image& sprite(jlug::ImageManager::getInstance()[charsetFilename]);
+    //jlug::Square p;
+    /*jlug::Polygon p(GL_TRIANGLES, 10);
+    p.addVertex(jlug::Point(0, 0, 0), jlug::Point(0, 25, 0));
+    p.addVertex(jlug::Point(0, 1, 0), jlug::Point(0, 0, 0));
+    p.addVertex(jlug::Point(1, 1, 0), jlug::Point(19, 0, 0));
+    //p.addVertex(jlug::Point(1, 0, 0), jlug::Point(19, 25, 0));
+    //p.addVertex(jlug::Point(1, 0, 2));
+    p.setPixelTranslation(16, 16);
+    p.setColor(255, 255, 255);
+    p.setPosition(jlug::Point(20, 30, 1));
+    p.scale(19, 25, 1);
+    p.rotate(30, 0, 0);
+    p.setTextureSize(0, 0, sprite.getRealWidth(), sprite.getRealHeight());
+    p.setTextureZone(0, 0, 19, 25);
+    p.setTexture(sprite.getTexture());*/
+    jlug::ObjRenderer objr("BR_Umbreon.obj");
+    objr.setColor(255, 255, 255);
+    //objr.setPosition(jlug::Point(99990, 99990, 99990));
+
+    //objr.translate(30, 30, 2);
+
 
     while(!input[jlug::KeyCode::Escape] && win.isOpen())
     {
@@ -53,7 +81,10 @@ void game(void)
 
 
         //player.displayUsername(win);
-        
+        //p.draw();
+        objr.rotate(180, 0, 0);
+        objr.translate(0, -20, 0);
+        objr.draw();
         win.flip();
     }
     win.close();

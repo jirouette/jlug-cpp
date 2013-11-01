@@ -596,8 +596,8 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     rect = getCharsetRect(position, animation, sprite.getWidth(), sprite.getHeight());
     sprite.setBlitRect(rect);
 
-    worldCoordinates.x = pixX/static_cast<double>(map.getTileWidth());
-    worldCoordinates.y = pixY/static_cast<double>(map.getTileHeight());
+    worldCoordinates.x = (pixX - sprite.getWidth()/2.0/2.0)/static_cast<double>(map.getTileWidth()) + 0.5;
+    worldCoordinates.y = (pixY - sprite.getHeight()/6.0/2.0)/static_cast<double>(map.getTileHeight()) + 0.5;
     worldCoordinates.z = getDepthByTile(map);
 
     square.setPixelTranslation(map.getTileWidth(), map.getTileHeight());

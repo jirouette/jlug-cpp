@@ -8,6 +8,7 @@
 #include "entities/player.hpp"
 #include "entities/animatedcharacter.hpp"
 #include "entities/animatedplayer.hpp"
+#include "models/objrenderer.hpp"
 
 void game(void);
 

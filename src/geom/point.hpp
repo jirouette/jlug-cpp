@@ -6,6 +6,8 @@
 * \author jirouette
 */
 
+#include <iostream>
+
 /**
 * \namespace jlug
 * \brief All jLug components.
@@ -32,6 +34,7 @@ namespace jlug
         Point3D(T pX, T pY);
         Point3D(T pX);
         Point3D(void);
+
     };
 
     typedef Point3D<double> Point;

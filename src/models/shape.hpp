@@ -48,37 +48,37 @@ namespace jlug
             Shape(void);
             ~Shape(void);
 
-            void translate(const jlug::Point& tAxes);
-            void rotate(const jlug::Point& rAxes);
-            void scale(const jlug::Point& sAxes);
+            virtual void translate(const jlug::Point& tAxes);
+            virtual void rotate(const jlug::Point& rAxes);
+            virtual void scale(const jlug::Point& sAxes);
 
-            void translate(const double& x, const double& y, const double& z);
-            void rotate(const double& x, const double& y, const double& z);
-            void scale(const double& x, const double& y, const double& z);
+            virtual void translate(const double& x, const double& y, const double& z);
+            virtual void rotate(const double& x, const double& y, const double& z);
+            virtual void scale(const double& x, const double& y, const double& z);
 
             virtual void cancelTransformations(void);
 
-            void setPosition(const jlug::Point& pAxes);
-            void setPosition(const double& x, const double& y, const double& z);
-            jlug::Point getPosition(void);
+            virtual void setPosition(const jlug::Point& pAxes);
+            virtual void setPosition(const double& x, const double& y, const double& z);
+            virtual jlug::Point getPosition(void);
 
-            void setColor(const jlug::Point& colors);
-            void setColor(const double& r, const double& g, const double& b);
-            jlug::Point getColor(void);
+            virtual void setColor(const jlug::Point& colors);
+            virtual void setColor(const double& r, const double& g, const double& b);
+            virtual jlug::Point getColor(void);
 
-            void setTexture(GLuint id);
-            GLuint getTexture(void);
+            virtual void setTexture(GLuint id);
+            virtual GLuint getTexture(void);
 
             void setTextureSize(const jlug::Rectangle<double>& size);
-            void setTextureSize(const double& x, const double& y, const double& w, const double& h);
-            jlug::Rectangle<double> getTextureSize(void);
+            virtual void setTextureSize(const double& x, const double& y, const double& w, const double& h);
+            virtual jlug::Rectangle<double> getTextureSize(void);
 
-            void setTextureZone(const jlug::Rectangle<double>& zone);
-            void setTextureZone(const double& x, const double& y, const double& w, const double& h);
-            jlug::Rectangle<double> getTextureZone(void);
+            virtual void setTextureZone(const jlug::Rectangle<double>& zone);
+            virtual void setTextureZone(const double& x, const double& y, const double& w, const double& h);
+            virtual jlug::Rectangle<double> getTextureZone(void);
 
-            void setPixelTranslation(double x, double y);
-            jlug::Point getPixelTranslation(void);
+            virtual void setPixelTranslation(double x, double y);
+            virtual jlug::Point getPixelTranslation(void);
 
 
 

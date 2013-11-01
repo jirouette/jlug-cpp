@@ -956,3 +956,15 @@ void jlug::Map::displayCharacters(jlug::Window& win)
     for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
         (*character)->display(*this, win);
 }
+
+
+/**
+* \brief check whether a character is in a tile
+*/
+bool jlug::Map::characterIn(unsigned x, unsigned y, unsigned z, jlug::Character* except)
+{
+    for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
+        if ((*character) != except && x == (*character)->getX() && y == (*character)->getY() && z == (*character)->getZ())
+            return true;
+    return false;
+}

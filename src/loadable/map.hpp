@@ -78,6 +78,7 @@ namespace jlug
             void addCharacter(jlug::Character* c);
             void moveCharacters();
             void displayCharacters(jlug::Window& win);
+            bool characterIn(unsigned x, unsigned y, unsigned z, jlug::Character* except);
 
 
 

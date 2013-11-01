@@ -394,7 +394,7 @@ void jlug::Character::checkCollisions(jlug::Map& map)
 bool jlug::Character::checkTile(jlug::Map& map, int tileX, int tileY)
  {
     int width(map.getWidth()), height(map.getHeight());
-    if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
+    if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height || map.characterIn(tileX, tileY, z, this))
         return false;
 
     switch (map.getTile(tileX, tileY, z).collision)

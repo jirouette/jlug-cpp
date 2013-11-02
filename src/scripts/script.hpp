@@ -12,12 +12,14 @@
 #include <string>
 #include <cstdarg>
 #include "utils.hpp"
+#include "utils/window.hpp"
 extern "C" 
 {
-  #include <lua5.2/lua.h>
-  #include <lua5.2/lualib.h>
-  #include <lua5.2/lauxlib.h>
+  #include <lua5.1/lua.h>
+  #include <lua5.1/lualib.h>
+  #include <lua5.1/lauxlib.h>
 }  
+#include "lunar.hpp"
 
 /**
 * \namespace jlug

@@ -5,6 +5,16 @@
 * \author jirouette
 */
 
+const char jlug::Window::className[] = "Window";
+Lunar<jlug::Window>::RegType jlug::Window::methods[] = {
+    LUNAR_DECLARE_METHOD(jlug::Window, close),
+    LUNAR_DECLARE_METHOD(jlug::Window, debug),
+    LUNAR_DECLARE_METHOD(jlug::Window, clear),
+    LUNAR_DECLARE_METHOD(jlug::Window, flip),
+    LUNAR_DECLARE_METHOD(jlug::Window, test),
+  {0,0}
+};
+
 /**
 * \brief Constructor
 * \param width : width of the window in pixels
@@ -43,6 +53,35 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
 
  }
 
+
+jlug::Window::Window(lua_State* L):
+                        win(sf::VideoMode(luaL_checknumber(L, 1), luaL_checknumber(L, 2), 32), luaL_checkstring(L, 3), sf::Style::Close|sf::Style::Titlebar, sf::WindowSettings(24, 8, 4)),
+                        debugStr(""), debugWinstr(), winstr(), font()
+{
+     blitRect.x = blitRect.y = 0;
+     blitRect.w = luaL_checknumber(L, 1);
+     blitRect.h = luaL_checknumber(L, 2);
+
+     font.LoadFromFile(jlug::Constants::getInstance().get("path")+
+                        "../res/fonts/Arial.ttf");
+     winstr.SetFont(font);
+     winstr.SetSize(12);
+     debugWinstr.SetFont(font);
+     debugWinstr.SetSize(12);
+
+
+    glEnable(GL_TEXTURE_2D); 
+    glClearDepth(1.f);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(70.f, static_cast<double>(luaL_checknumber(L, 1))/static_cast<double>(luaL_checknumber(L, 2)), 1.f, 500.f);
+}
+
 /**
 * \brief Destructor
 *
@@ -61,6 +100,12 @@ void jlug::Window::close(void)
  {
      win.Close();
  }
+
+int jlug::Window::close(lua_State* L)
+{
+    close();
+    return 0;
+}
 
 /**
 * \brief Listen the events
@@ -184,6 +229,12 @@ void jlug::Window::flip(void)
     win.Display();
  }
 
+int jlug::Window::flip(lua_State* L)
+{
+    flip();
+    return 0;
+}
+
 /**
 * \brief clear the screen
 */
@@ -199,12 +250,18 @@ void jlug::Window::clear(void)
      gluLookAt(5, -15, 10, 5, 0, -5, 0, 1, 0);
  }
 
+int jlug::Window::clear(lua_State* L)
+{
+    clear();
+    return 0;
+}
+
 /**
 * \brief get width of the window
 */
 unsigned int jlug::Window::getWidth(void)
  {
-     return 550;//win.GetWidth();
+     return win.GetWidth();
  }
 
 /**
@@ -212,7 +269,7 @@ unsigned int jlug::Window::getWidth(void)
 */
 unsigned int jlug::Window::getHeight(void)
  {
-     return 400;//win.GetHeight();
+     return win.GetHeight();
  }
 
 /**
@@ -256,6 +313,12 @@ void jlug::Window::debug(const std::string& str)
      debugWinstr.SetText(debugStr);
  }
 
+int jlug::Window::debug(lua_State* L)
+{
+    debug(luaL_checkstring(L, 1));
+    return 0;
+}
+
 
 void jlug::Window::beforeDisplaying(void)
 {
@@ -276,4 +339,13 @@ void jlug::Window::afterDisplaying(void)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glPopAttrib();
+}
+
+int jlug::Window::test(lua_State* L)
+{
+    jlug::Window* p = Lunar<jlug::Window>::check(L, 1);
+    std::cout << "p" << p << std::endl;
+    if (p)
+        std::cout << p->getWidth() << ";" << p->getHeight() << std::endl;
+    return 0;
 }

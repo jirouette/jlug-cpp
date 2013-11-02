@@ -14,6 +14,7 @@
 #include "loadable/image.hpp"
 #include "utils/input.hpp"
 #include "utils/constants.hpp"
+#include "scripts/lunar.hpp"
 
 /**
 * \namespace jlug
@@ -28,8 +29,14 @@ namespace jlug
     */
     class Window
     {
+        private:
+            friend class Lunar<Window>;
+            static const char className[];
+            static Lunar<Window>::RegType methods[];
+
         public:
             Window(unsigned int width, unsigned int height, const std::string& name = "jLug");
+            Window(lua_State* L);
             ~Window(void);
             void setBlitRect(const jlug::Rect& rect);
             void setBlitRect(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
@@ -38,11 +45,16 @@ namespace jlug
             void blit(jlug::Image& img, const jlug::Rect& pos);
             void text(const std::string& sentence, int x, int y);
             void flip(void);
+            int flip(lua_State* L);
             void clear(void);
+            int clear(lua_State* L);
             void close(void);
+            int close(lua_State* L);
             void processEvents(void);
 
             void debug(const std::string& str);
+            int debug(lua_State* L);
+            int test(lua_State* L);
 
             unsigned int getWidth(void);
             unsigned int getHeight(void);

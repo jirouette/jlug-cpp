@@ -939,6 +939,20 @@ void jlug::Map::addCharacter(jlug::Character* c)
 }
 
 /**
+* \brief remove a character from the map
+* \param name of the character
+*/
+void jlug::Map::removeCharacter(const std::string& name)
+{
+    for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
+        if ((*character)->getName() == name)
+        {
+            characters.erase(character);
+            return;
+        }
+}
+
+/**
 * \brief process characters moving
 */
 void jlug::Map::moveCharacters()

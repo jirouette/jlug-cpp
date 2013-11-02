@@ -76,6 +76,7 @@ namespace jlug
             bool displayLayer(jlug::Window& win, int index);
 
             void addCharacter(jlug::Character* c);
+            void removeCharacter(const std::string& name);
             void moveCharacters();
             void displayCharacters(jlug::Window& win);
             bool characterIn(unsigned x, unsigned y, unsigned z, jlug::Character* except);

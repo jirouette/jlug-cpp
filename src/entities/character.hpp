@@ -12,7 +12,7 @@
 #include "utils/window.hpp"
 #include "loadable/map.hpp"
 #include "utils.hpp"
-
+#include "scripts/lunar.hpp"
 
 /**
 * \namespace jlug
@@ -30,12 +30,16 @@ namespace jlug
 
     class Character
     {
-
+        private:
+            friend class Lunar<Character>;
+            static const char className[];
+            static Lunar<Character>::RegType methods[];
         public:
             Character(void);
             Character(unsigned int cid, const std::string& cname);
             Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy);
             Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz);
+            Character(lua_State* L);
             ~Character(void);
 
             void setX(unsigned int posx);
@@ -50,6 +54,7 @@ namespace jlug
             void setSpeed(unsigned int speedParam);
 
             void setMove(jlug::Map& map, const jlug::Move::Direction& dir, unsigned int speedParam = 0, bool force = false);
+            int setMove(lua_State* L);
 
             unsigned int getX(void);
             unsigned int getY(void);

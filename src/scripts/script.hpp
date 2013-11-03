@@ -15,6 +15,7 @@
 #include "utils/window.hpp"
 #include "utils/input.hpp"
 #include "loadable/map.hpp"
+#include "entities/character.hpp"
 extern "C" 
 {
   #include <lua5.1/lua.h>

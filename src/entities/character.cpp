@@ -5,7 +5,11 @@
 * \author jirouette
 */
 
-
+const char jlug::Character::className[] = "Character";
+Lunar<jlug::Character>::RegType jlug::Character::methods[] = {
+    LUNAR_DECLARE_METHOD(jlug::Character, setMove),
+  {0,0}
+};
 
 
 /**
@@ -99,6 +103,18 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 }
 
 
+jlug::Character::Character(lua_State* L):
+                        charset(luaL_checknumber(L, 1)), name(luaL_checkstring(L, 2)), charsetFilename(""), x(luaL_checknumber(L, 3)), y(luaL_checknumber(L, 4)), z(luaL_checknumber(L, 5)), pixX(x*16), pixY(y*16), 
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), 
+                        speed(4), isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
+{
+    std::ostringstream buffer;
+    buffer << charset;
+    charsetFilename = jlug::Constants::getInstance().get("path");
+    charsetFilename += jlug::Constants::getInstance().get("charsets");
+    charsetFilename += buffer.str();
+    charsetFilename += ".png";
+}
 
 /**
 * \brief Destructor
@@ -686,6 +702,24 @@ void jlug::Character::setMove(jlug::Map& map, const jlug::Move::Direction& dir, 
      if (speedParam > 0)
         setSpeed(speedParam);
  }
+
+int jlug::Character::setMove(lua_State* L)
+{
+    const std::string s(luaL_checkstring(L, 2));
+    jlug::Move::Direction dir(jlug::Move::NONE);
+
+    if (s == "DOWN")
+        dir = jlug::Move::DOWN;
+    else if (s == "UP")
+        dir = jlug::Move::UP;
+    else if (s == "LEFT")
+        dir = jlug::Move::LEFT;
+    else if (s == "RIGHT")
+        dir = jlug::Move::RIGHT;
+
+    setMove(*Lunar<jlug::Map>::check(L, 1), dir, luaL_checknumber(L, 3));
+    return 0;
+}
 
 /**
 * \brief get charset's rect in order to obtain the sprite of a position

@@ -12,6 +12,7 @@ Lunar<jlug::Map>::RegType jlug::Map::methods[] = {
     LUNAR_DECLARE_METHOD(jlug::Map, displayCharacters),
     LUNAR_DECLARE_METHOD(jlug::Map, moveCharacters),
     LUNAR_DECLARE_METHOD(jlug::Map, displayLayers),
+    LUNAR_DECLARE_METHOD(jlug::Map, addCharacter),
   {0,0}
 };
 
@@ -963,6 +964,13 @@ int jlug::Map::displayLayers(lua_State* L)
 void jlug::Map::addCharacter(jlug::Character* c)
 {
     characters.push_back(c);
+}
+
+int jlug::Map::addCharacter(lua_State* L)
+{
+    addCharacter(Lunar<jlug::Character>::check(L, 1));
+    //Lunar<jlug::Character>::check(L, 1)->setMove(*this, jlug::Move::LEFT, 5);
+    return 0;
 }
 
 /**

@@ -85,6 +85,7 @@ namespace jlug
             int displayLayers(lua_State* L);
 
             void addCharacter(jlug::Character* c);
+            int addCharacter(lua_State* L);
             void removeCharacter(const std::string& name);
             void moveCharacters();
             int moveCharacters(lua_State* L);

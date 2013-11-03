@@ -23,6 +23,7 @@
 */
 namespace jlug
 {
+    class Input;
     /**
     * \class Window
     * \brief Display a window where we will draw and listen events
@@ -62,6 +63,7 @@ namespace jlug
             const jlug::Input& getInput(void);
 
             bool isOpen(void);
+            int isOpen(lua_State* L);
         protected:
             void beforeDisplaying(void);
             void afterDisplaying(void);

@@ -13,6 +13,8 @@
 #include <cstdarg>
 #include "utils.hpp"
 #include "utils/window.hpp"
+#include "utils/input.hpp"
+#include "loadable/map.hpp"
 extern "C" 
 {
   #include <lua5.1/lua.h>

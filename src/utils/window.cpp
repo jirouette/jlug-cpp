@@ -11,6 +11,7 @@ Lunar<jlug::Window>::RegType jlug::Window::methods[] = {
     LUNAR_DECLARE_METHOD(jlug::Window, debug),
     LUNAR_DECLARE_METHOD(jlug::Window, clear),
     LUNAR_DECLARE_METHOD(jlug::Window, flip),
+    LUNAR_DECLARE_METHOD(jlug::Window, isOpen),
     LUNAR_DECLARE_METHOD(jlug::Window, test),
   {0,0}
 };
@@ -301,6 +302,13 @@ bool jlug::Window::isOpen(void)
      processEvents();
      return win.IsOpened();
  }
+
+int jlug::Window::isOpen(lua_State* L)
+{
+    jlug::Input in = getInput();
+    lua_pushboolean(L, isOpen() && !in[jlug::KeyCode::Escape]);
+    return 1;
+}
 
 /**
 * \brief write a debug-text on the window.

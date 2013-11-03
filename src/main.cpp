@@ -1,6 +1,6 @@
 #include <iostream>
 #include "utils/constants.hpp"
-#include "example.hpp"
+#include "scripts/script.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
 
     jlug::Constants::getInstance().set("charsets", "../res/charsets/");
 
-    game();
+    jlug::Script("../scripts/main.lua");
+    jlug::Script::end();
     return 0;
 }

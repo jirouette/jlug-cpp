@@ -9,6 +9,8 @@
 #include <SFML/Window.hpp>
 #include "geom/rectangle.hpp"
 #include "utils.hpp"
+#include "utils/window.hpp"
+#include "scripts/lunar.hpp"
 
 /**
 * \namespace jlug
@@ -17,14 +19,21 @@
 */
 namespace jlug
 {
+    class Window;
     /**
     * \class Input
     * \brief Store and check input states.
     */
     class Input
     {
+        private:
+            friend class Lunar<Input>;
+            static const char className[];
+            static Lunar<Input>::RegType methods[];
+
         public:
             Input(const sf::Input& sfinput);
+            Input(lua_State* L);
             ~Input();
 
             bool operator[](const jlug::KeyCode::Code& keycode);

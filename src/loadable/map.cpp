@@ -7,6 +7,14 @@
 * \author jirouette
 */
 
+const char jlug::Map::className[] = "Map";
+Lunar<jlug::Map>::RegType jlug::Map::methods[] = {
+    LUNAR_DECLARE_METHOD(jlug::Map, displayCharacters),
+    LUNAR_DECLARE_METHOD(jlug::Map, moveCharacters),
+    LUNAR_DECLARE_METHOD(jlug::Map, displayLayers),
+  {0,0}
+};
+
 /**
 * \brief default constructor
 */
@@ -20,6 +28,11 @@ jlug::Map::Map(void):xscroll(0), yscroll(0), depth(0), mapFilename(""), weather(
 jlug::Map::Map(const std::string& filename, jlug::Window& win, jlug::Input& input):xscroll(0), yscroll(0), depth(0), mapFilename(filename), weather(jlug::NORMAL), map()
 {
     loadMap(mapFilename, win, input);
+}
+
+jlug::Map::Map(lua_State* L):xscroll(0), yscroll(0), depth(0), mapFilename(""), weather(jlug::NORMAL), map()
+{
+    loadMap(L);
 }
 
 /**
@@ -36,7 +49,7 @@ void jlug::Map::loadMap(const std::string& filename, jlug::Window& win, jlug::In
 {
     mapFilename = jlug::Constants::getInstance().get("path")+
                   filename;
-    map.ParseFile(filename); // Getting a usable data structure of the map
+    map.ParseFile(mapFilename); // Getting a usable data structure of the map
 
     for (int z(0) ; z < map.GetNumLayers() ; ++z)
     {
@@ -62,6 +75,12 @@ void jlug::Map::loadMap(const std::string& filename, jlug::Window& win, jlug::In
             ++depth;
         }
     }
+}
+
+int jlug::Map::loadMap(lua_State* L)
+{
+    loadMap(luaL_checkstring(L, 1), *Lunar<jlug::Window>::check(L, 2), *Lunar<jlug::Input>::check(L, 3));
+    return 0;
 }
 
 /**
@@ -928,6 +947,14 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
     return true;
 }
 
+int jlug::Map::displayLayers(lua_State* L)
+{
+    jlug::Window& win = *Lunar<jlug::Window>::check(L, 1);
+    for (unsigned int k(0);k<depth;++k)
+            displayLayer(win, k);
+    return 0;
+}
+
 
 /**
 * \brief add a character to the map
@@ -961,6 +988,12 @@ void jlug::Map::moveCharacters()
         (*character)->move(*this);
 }
 
+int jlug::Map::moveCharacters(lua_State* L)
+{
+    moveCharacters();
+    return 0;
+}
+
 /**
 * \brief display every characters
 * \param window
@@ -969,6 +1002,12 @@ void jlug::Map::displayCharacters(jlug::Window& win)
 {
     for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
         (*character)->display(*this, win);
+}
+
+int jlug::Map::displayCharacters(lua_State* L)
+{
+    displayCharacters(*Lunar<jlug::Window>::check(L, 1));
+    return 0;
 }
 
 

@@ -5,6 +5,11 @@
 * \author jirouette
 */
 
+const char jlug::Input::className[] = "Input";
+Lunar<jlug::Input>::RegType jlug::Input::methods[] = {
+  {0,0}
+};
+
 /**
 * \brief Constructor
 * \param sfinput : Reference to graphic library's event type variable.
@@ -16,6 +21,9 @@ jlug::Input::Input(const sf::Input& sfinput)
 {
     //memcpy((void*)(&input), (void*)(&sfinput), sizeof(const sf::Input));
 }
+
+jlug::Input::Input(lua_State* L):input(Lunar<jlug::Window>::check(L, 1)->getInput().input)
+{}
 
 /**
 * \brief Destructor

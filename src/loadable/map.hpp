@@ -16,6 +16,7 @@
 #include "entities/character.hpp"
 
 #include "TmxParser/Tmx.h"
+#include "scripts/lunar.hpp"
 
 #include <list>
 
@@ -35,13 +36,20 @@ namespace jlug
     
     class Map
     {
+        private:
+            friend class Lunar<Map>;
+            static const char className[];
+            static Lunar<Map>::RegType methods[];
+
         public:
 
             Map(void);
             Map(const std::string& filename, jlug::Window& win, jlug::Input& input);
+            Map(lua_State* L);
             ~Map(void);
 
             void loadMap(const std::string& filename, jlug::Window& win, jlug::Input& input);
+            int loadMap(lua_State* L);
             unsigned int getTileWidth(void);
             unsigned int getTileHeight(void);
             unsigned int getWidth(void);
@@ -74,11 +82,14 @@ namespace jlug
             void setRotation(TileProp& tile, /*const jlug::Point& current, const jlug::Point& max,*/ const std::string& prop);
 
             bool displayLayer(jlug::Window& win, int index);
+            int displayLayers(lua_State* L);
 
             void addCharacter(jlug::Character* c);
             void removeCharacter(const std::string& name);
             void moveCharacters();
+            int moveCharacters(lua_State* L);
             void displayCharacters(jlug::Window& win);
+            int displayCharacters(lua_State* L);
             bool characterIn(unsigned x, unsigned y, unsigned z, jlug::Character* except);
 
 

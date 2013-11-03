@@ -45,7 +45,9 @@ void jlug::Script::init()
 	luaL_openlibs(L);
 	lua_register(L, "script", jlug::Script::createScript);
 	Lunar<jlug::Window>::Register(L);
-	working = !(luaL_loadfile(L, name.c_str()) || lua_pcall(L, 0, 0, 0));
+	Lunar<jlug::Input>::Register(L);
+	Lunar<jlug::Map>::Register(L);
+	working = !(luaL_loadfile(L, (jlug::Constants::getInstance().get("path")+name).c_str()) || lua_pcall(L, 0, 0, 0));
 	if (!working)
 		error() << "Cannot read '" << name << "' : " << lua_tostring(L, -1) << std::endl;
 	call("init", 0, "");

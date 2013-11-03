@@ -59,6 +59,8 @@ namespace jlug
             unsigned int getX(void);
             unsigned int getY(void);
             unsigned int getZ(void);
+            unsigned int getPixX(void);
+            unsigned int getPixY(void);
             jlug::Rect getCoord(void);
             unsigned int getCharset(void);
             const std::string& getName(void);

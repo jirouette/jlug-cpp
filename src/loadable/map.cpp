@@ -1025,7 +1025,9 @@ int jlug::Map::displayCharacters(lua_State* L)
 bool jlug::Map::characterIn(unsigned x, unsigned y, unsigned z, jlug::Character* except)
 {
     for(std::list<jlug::Character*>::iterator character(characters.begin()) ; character != characters.end() ; ++character)
-        if ((*character) != except && x == (*character)->getX() && y == (*character)->getY() && z == (*character)->getZ())
-            return true;
+        if ((*character) != except && z == (*character)->getZ())
+            if(((*character)->getPixX() >= x*map.GetTileWidth() && (*character)->getPixX() < ((x+1)*map.GetTileWidth())) || (((*character)->getPixX()+map.GetTileWidth()-1) >= x*map.GetTileWidth() && ((*character)->getPixX()+map.GetTileWidth()-1) < ((x+1)*map.GetTileWidth())))
+            if(((*character)->getPixY() >= y*map.GetTileHeight() && (*character)->getPixY() < ((y+1)*map.GetTileHeight())) || (((*character)->getPixY()+map.GetTileHeight()-1) >= y*map.GetTileHeight() && ((*character)->getPixY()+map.GetTileHeight()-1) < ((y+1)*map.GetTileHeight())))
+                return true;
     return false;
 }

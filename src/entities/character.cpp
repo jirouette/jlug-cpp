@@ -267,6 +267,17 @@ unsigned int jlug::Character::getZ(void)
      return z;
  }
 
+
+unsigned int jlug::Character::getPixX(void)
+{
+    return pixX;
+}
+
+unsigned int jlug::Character::getPixY(void)
+{
+    return pixY;
+}
+
 /**
 * \brief get character's 2D coord
 * \return 2D coord in a Rect

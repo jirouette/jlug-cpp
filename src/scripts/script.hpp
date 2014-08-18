@@ -16,12 +16,12 @@
 #include "utils/input.hpp"
 #include "loadable/map.hpp"
 #include "entities/character.hpp"
-extern "C" 
+extern "C"
 {
   #include <lua5.1/lua.h>
   #include <lua5.1/lualib.h>
   #include <lua5.1/lauxlib.h>
-}  
+}
 #include "lunar.hpp"
 
 /**
@@ -52,7 +52,7 @@ namespace jlug
             std::ostringstream out;
             std::ostringstream err;
             std::string name;
-        
+
         public:
             static void end();
             Script(const std::string& filename);

@@ -55,7 +55,7 @@ jlug::Image& jlug::Image::operator=(const std::string& filename)
 
 
      {
-          sf::Image tempImage(getTextureSize(raw.GetWidth()), 
+          sf::Image tempImage(getTextureSize(raw.GetWidth()),
                               getTextureSize(raw.GetHeight()),
                               sf::Color(0, 255, 0)
                               );
@@ -75,7 +75,7 @@ jlug::Image& jlug::Image::operator=(const std::string& filename)
          glGenTextures(1, &texture);
          glBindTexture(GL_TEXTURE_2D, texture);
          gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,
-                           getRealWidth(), 
+                           getRealWidth(),
                            getRealHeight(),
                            GL_RGBA,GL_UNSIGNED_BYTE,
                            raw.GetPixelsPtr());

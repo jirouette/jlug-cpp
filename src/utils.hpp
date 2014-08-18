@@ -45,7 +45,7 @@ namespace jlug
       jlug::Image* image;
       GLuint texture;
       jlug::Rectangle<double> limit;
-      
+
       jlug::Collision collision;
       jlug::Point scaling;
       jlug::Point rotation;

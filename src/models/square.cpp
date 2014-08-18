@@ -7,7 +7,7 @@
 
 /**
 * \brief Default constructor
-* Default and only constructor. 
+* Default and only constructor.
 */
 
 jlug::Square::Square(void):Shape()
@@ -33,7 +33,7 @@ jlug::Square::Square(void):Shape()
 
 /**
 * \brief Destructor
-* Nothing to do. 
+* Nothing to do.
 */
 jlug::Square::~Square(void)
 {}
@@ -71,7 +71,7 @@ void jlug::Square::draw(void)
            YPOS(static_cast<double>(textureSize.y+textureZone.y)/static_cast<double>(textureSize.h)),
            MAXXPOS(static_cast<double>(textureSize.x+textureZone.x+textureZone.w)/static_cast<double>(textureSize.w)),
            MAXYPOS(static_cast<double>(textureSize.y+textureZone.y+textureZone.h)/static_cast<double>(textureSize.h));
-    
+
      glPushMatrix(); // saving the current matrix
 
      jlug::Shape::applyTransformations();

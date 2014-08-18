@@ -12,11 +12,11 @@ int main(int argc, char* argv[])
         jlug::Constants::getInstance().set("exec", path);
 
         if (filePos != std::string::npos)
-            jlug::Constants::getInstance().set("path", 
+            jlug::Constants::getInstance().set("path",
                     path.substr(0, filePos)+'/');
         else
             jlug::Constants::getInstance().set("path", "./");
-        
+
         for (int i(0); i < argc ; ++i)
         {
             std::ostringstream oss;

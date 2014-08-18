@@ -60,8 +60,8 @@ void jlug::Map::loadMap(const std::string& filename, jlug::Window& win, jlug::In
             for (int x(0) ; x < layer->GetWidth() ; ++x)
                 for (int y(0) ; y < layer->GetHeight() ; ++y)
                         createTile(x,y,depth, layer->GetTileGid(x, y)); // graphics settings
-            
-            // Is the tile layer associated with a transformations layer ? 
+
+            // Is the tile layer associated with a transformations layer ?
             if (!layer->GetProperties().Empty())
             {
                 setTransformations(depth, layer->GetProperties().GetLiteralProperty("transformations"));
@@ -177,14 +177,14 @@ void jlug::Map::createTile(unsigned int x, unsigned int y, unsigned int z, unsig
 
     if (tiles.size() <= x)
         tiles.resize(x+1);
-    
+
     if (tiles[x].size() <= y)
         tiles[x].resize(y+1);
-    
+
     if (tiles[x][y].size() <= z)
         tiles[x][y].resize(z+1);
-    
-    // Our tile is now created ! 
+
+    // Our tile is now created !
 
     tiles[x][y][z] = tile;
 }
@@ -276,7 +276,7 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
             {
 
                 // Since we're in a "for", the following lines repeated until
-                // the current tileset does not match. 
+                // the current tileset does not match.
 
                 const Tmx::Image *img(tileset->GetImage());
                 if (img) // The tileset has an image
@@ -286,7 +286,7 @@ void jlug::Map::setTile(TileProp& tile, unsigned int gid)
                                     jlug::getDir(mapFilename)+
                                     img->GetSource()
                                 ]); // Calling ImageManager instance
-                    tile.texture = tile.image->getTexture(); 
+                    tile.texture = tile.image->getTexture();
 
                     // Coordinates of the tile in the tileset
 
@@ -369,7 +369,7 @@ void jlug::Map::setCollisions(unsigned int z, const std::string& layerName)
     {
         const Tmx::Layer *currentLayer = map.GetLayer(i);
         if (currentLayer) // the layer exists
-            if (currentLayer->GetName() == layerName) // and matches ! 
+            if (currentLayer->GetName() == layerName) // and matches !
             {
                 layer = currentLayer;
                 break;
@@ -447,9 +447,9 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
         /*
         * This method looks for an object layer which matches
         * to the associated object/tile layer that the tile layer
-        * provided. 
+        * provided.
         * If there is one, so, check every object/tile the layer contains
-        * in order to apply transformations or vertex settings. 
+        * in order to apply transformations or vertex settings.
         */
 
 
@@ -458,14 +458,14 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
         {
             const Tmx::ObjectGroup *currentObjectLayer = map.GetObjectGroup(i);
             if (currentObjectLayer) // the object layer exists
-                if(currentObjectLayer->GetName() == name) // and matches ! 
+                if(currentObjectLayer->GetName() == name) // and matches !
                 {
                     objectLayer = currentObjectLayer;
                     break; // we don't need to continue since we found our object layer
                 }
         }
 
-        if (objectLayer) // An object layer is found ! 
+        if (objectLayer) // An object layer is found !
             for (int i(0); i < objectLayer->GetNumObjects() ; ++i)
             {
                 const Tmx::Object *object = objectLayer->GetObject(i);
@@ -477,7 +477,7 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
                                                  object->GetY()/tileset->GetTileHeight(),
                                                  (object->GetX()+object->GetWidth())/tileset->GetTileWidth(),
                                                  (object->GetY()+object->GetHeight())/tileset->GetTileHeight());
-                        
+
                         if (object->GetType() == "transform")
                             setTransformation(index, selectedTiles, object->GetProperties().GetList());
                         else if (object->GetType() == "modifyVertex")
@@ -486,20 +486,20 @@ void jlug::Map::setTransformations(unsigned int index, const std::string& layerN
                             setVertex(index, selectedTiles, object->GetProperties().GetList(), true);
                     }
             }
-        else // Let's check tile layers... 
+        else // Let's check tile layers...
         {
             for (int i(0) ; i < map.GetNumLayers() ; ++i)
             {
                 const Tmx::Layer *currentLayer = map.GetLayer(i);
                 if (currentLayer) // the layer exists
-                    if (currentLayer->GetName() == name) // and matches ! 
+                    if (currentLayer->GetName() == name) // and matches !
                     {
                         layer = currentLayer;
                         break;
                     }
             }
 
-            if (layer) // A tile layer is found ! 
+            if (layer) // A tile layer is found !
             {
                 for (int i(0) ; i < layer->GetWidth() ; ++i)
                     for (int j(0) ; j < layer->GetHeight() ; ++j)
@@ -523,12 +523,12 @@ void jlug::Map::setTransformation(unsigned int layer, const jlug::Rect& selected
 {
     std::map<std::string, std::string>::const_iterator it;
 
-    /* Disclaimer : 
+    /* Disclaimer :
     *  I know that the following lines are absolutely ugly
     *  However, I do not think that using only 2 "for"
-    *  and then, call std::map.find is a really better idea... 
+    *  and then, call std::map.find is a really better idea...
     *  Don't forget that properties can have so many values
-    *  even if I don't use all of them... 
+    *  even if I don't use all of them...
     */
 
     it = properties.find("rotation");
@@ -540,20 +540,20 @@ void jlug::Map::setTransformation(unsigned int layer, const jlug::Rect& selected
     {
         for (int i(selectedTiles.x) ; i < selectedTiles.w ; ++i)
             for (int j(selectedTiles.y) ; j < selectedTiles.h ; ++j)
-                setRotation(tiles[i][j][layer], 
-                            /*jlug::Point(i, j, layer), 
+                setRotation(tiles[i][j][layer],
+                            /*jlug::Point(i, j, layer),
                             jlug::Point(selectedTiles.x+selectedTiles.w,
                                         selectedTiles.y+selectedTiles.h,
                                         layer),*/
-                            it->second); 
-                                // Applies transformation 
+                            it->second);
+                                // Applies transformation
     }
 
     it = properties.find("translation");
 
     if (it == properties.end())
         it = properties.find("translate");
-    
+
     if (it != properties.end()) // object has "translate" or "translation" property
     {
         for (int i(selectedTiles.x) ; i < selectedTiles.w ; ++i)
@@ -566,7 +566,7 @@ void jlug::Map::setTransformation(unsigned int layer, const jlug::Rect& selected
 
     if (it == properties.end())
         it = properties.find("scale");
-    
+
     if (it != properties.end()) // object has "scale" or "scaling" property
     {
         for (int i(selectedTiles.x) ; i < selectedTiles.w ; ++i)
@@ -587,17 +587,17 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 {
     std::map<std::string, std::string>::const_iterator it;
 
-    /* Disclaimer : 
+    /* Disclaimer :
     *  I know that the following lines are absolutely ugly
     *  However, I do not think that using only 2 "for"
-    *  and then, call std::map.find is a really better idea... 
+    *  and then, call std::map.find is a really better idea...
     *  Don't forget that properties can have so many values
-    *  even if I don't use all of them... 
+    *  even if I don't use all of them...
     */
 
     it = properties.find("all");
 
-    if (it != properties.end()) // modify every vertex in a while ! 
+    if (it != properties.end()) // modify every vertex in a while !
         for (int i(selectedTiles.x); i < selectedTiles.w ; ++i)
             for (int j(selectedTiles.y) ; j < selectedTiles.h ; ++j)
                 if (add)
@@ -633,7 +633,7 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 
     if (it == properties.end())
         it = properties.find("UR");
-    
+
     if (it != properties.end()) // vertex of the upper right corner of the square
         for (int i(selectedTiles.x); i < selectedTiles.w ; ++i)
             for (int j(selectedTiles.y) ; j < selectedTiles.h ; ++j)
@@ -647,7 +647,7 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 
     if (it == properties.end())
         it = properties.find("DL");
-    
+
     if (it != properties.end()) // vertex of the downer left corner of the square
         for (int i(selectedTiles.x); i < selectedTiles.w ; ++i)
             for (int j(selectedTiles.y) ; j < selectedTiles.h ; ++j)
@@ -661,7 +661,7 @@ void jlug::Map::setVertex(unsigned int layer, const jlug::Rect& selectedTiles, c
 
     if (it == properties.end())
         it = properties.find("DR");
-    
+
     if (it != properties.end()) // vertex of the downer right corner of the square
         for (int i(selectedTiles.x); i < selectedTiles.w ; ++i)
             for (int j(selectedTiles.y) ; j < selectedTiles.h ; ++j)
@@ -805,7 +805,7 @@ void jlug::Map::setPoint(jlug::Point& point, const std::string& values)
                 point.x = atof(buffer.c_str());
                 axis = jlug::Axis::Y;
                 break;
-            
+
             case jlug::Axis::Y:
                 point.y = atof(buffer.c_str());
                 axis = jlug::Axis::Z;
@@ -814,7 +814,7 @@ void jlug::Map::setPoint(jlug::Point& point, const std::string& values)
             case jlug::Axis::Z:
                 point.z = atof(buffer.c_str());
                 break;
-            
+
             default:
                 break;
         }
@@ -840,7 +840,7 @@ void jlug::Map::addToPoint(jlug::Point& point, const std::string& values)
                 point.x += atof(buffer.c_str());
                 axis = jlug::Axis::Y;
                 break;
-            
+
             case jlug::Axis::Y:
                 point.y += atof(buffer.c_str());
                 axis = jlug::Axis::Z;
@@ -849,14 +849,14 @@ void jlug::Map::addToPoint(jlug::Point& point, const std::string& values)
             case jlug::Axis::Z:
                 point.z += atof(buffer.c_str());
                 break;
-            
+
             default:
                 break;
         }
 }
 
 /**
-* \brief Coming soon ! 
+* \brief Coming soon !
 */
 void jlug::Map::setRotation(TileProp& tile, /*const jlug::Point& current, const jlug::Point& max,*/ const std::string& prop)
 {
@@ -869,17 +869,17 @@ void jlug::Map::setRotation(TileProp& tile, /*const jlug::Point& current, const 
         switch(axis)
         {
             // modify axis by axis
-            
+
             case jlug::Axis::X:
                 tile.rotation.x += atof(buffer.c_str());
                 axis = jlug::Axis::Y;
                 break;
-            
+
             case jlug::Axis::Y:
                 tile.rotation.y += atof(buffer.c_str());
                 axis = jlug::Axis::Z;
                 break;
-            
+
             case jlug::Axis::Z:
                 tile.rotation.z += atof(buffer.c_str());
                 break;
@@ -916,7 +916,7 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
         for (int i(xscroll/tileWidth);i<MAXW && i<MAP_MAXW;++i)
             if (i >= 0 && j >= 0)
             {
-                const jlug::TileProp& tile(tiles[i][j][index]); 
+                const jlug::TileProp& tile(tiles[i][j][index]);
                 if (tile.gid != UINT_MAX && tile.gid != 0 && tile.image) // tile exists and is not empty
                 {
                     square.setPosition(i, j, index*0.011); // Initial position
@@ -928,7 +928,7 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
                     square.scale(tile.scaling);
                     square.translate(tile.translationAfterRotation);
 
-                    // Texturing 
+                    // Texturing
 
                     square.setTexture(tile.texture);
                     square.setTextureSize(0, 0, tile.image->getRealWidth(), tile.image->getRealHeight());
@@ -941,10 +941,10 @@ bool jlug::Map::displayLayer(jlug::Window& win, int index)
                     square.setVertex(true, false, tile.downerRightCorner);
                     square.setVertex(true, true, tile.upperRightCorner);
 
-                    square.draw(); // finally ! 
+                    square.draw(); // finally !
                 }
             }
-            
+
     return true;
 }
 

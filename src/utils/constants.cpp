@@ -76,7 +76,7 @@ double jlug::Constants::getNumeric(const std::string& name)
         return i;
     }
 
-    // Well, there is no constant. 
+    // Well, there is no constant.
 
     return 0;
 }
@@ -84,14 +84,23 @@ double jlug::Constants::getNumeric(const std::string& name)
 /**
 * \brief get a string constant
 */
+int jlug::Constants::get(lua_State* L)
+{
+    const std::string name(luaL_checkstring(L, 1));
+    std::string value(this->get(name));
+    lua_pushstring(L, value.c_str());
+
+    return 1;
+}
+
 std::string jlug::Constants::get(const std::string& name)
 {
     std::map<std::string, std::string>::iterator
     it(stringConstants.find(name));
 
-    if (it != stringConstants.end()) // Found it ! 
+    if (it != stringConstants.end()) // Found it !
         return it->second;
-    
+
     // Nothing ? Let's check numericConstants...
 
     std::map<std::string, double>::iterator
@@ -105,7 +114,7 @@ std::string jlug::Constants::get(const std::string& name)
         return oss.str();
     }
 
-    // Well, there is no constant. 
+    // Well, there is no constant.
 
     return "";
 }
@@ -132,7 +141,7 @@ bool jlug::Constants::exists(const std::string& name)
 bool jlug::Constants::set(const std::string& name, double value)
 {
     if (exists(name))
-        return false; // We don't over define a constant 
+        return false; // We don't over define a constant
     numericConstants.insert(std::pair<std::string,double>(name, value));
     return true; // Inserted
 }

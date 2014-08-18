@@ -43,7 +43,7 @@ namespace jlug
 
 
             virtual void applyTransformations(void);
-        
+
         public:
             Shape(void);
             ~Shape(void);

@@ -21,7 +21,7 @@ Lunar<jlug::Character>::RegType jlug::Character::methods[] = {
 
 jlug::Character::Character(void):
                         charset(0), name(""), charsetFilename(""), x(0), y(0), z(0), pixX(x*16), pixY(y*16),
-                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), 
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4),
                         isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
@@ -43,7 +43,7 @@ jlug::Character::Character(void):
 
 jlug::Character::Character(unsigned int cid, const std::string& cname):
                         charset(cid), name(cname), charsetFilename(""), x(0), y(0), z(0), pixX(x*16), pixY(y*16),
-                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4), 
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), speed(4),
                         isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
@@ -90,8 +90,8 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 */
 
 jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned int posx, unsigned int posy, unsigned int posz):
-                        charset(cid), name(cname), charsetFilename(""), x(posx), y(posy), z(posz), pixX(x*16), pixY(y*16), 
-                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), 
+                        charset(cid), name(cname), charsetFilename(""), x(posx), y(posy), z(posz), pixX(x*16), pixY(y*16),
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE),
                         speed(4), isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
@@ -104,8 +104,8 @@ jlug::Character::Character(unsigned int cid, const std::string& cname, unsigned 
 
 
 jlug::Character::Character(lua_State* L):
-                        charset(luaL_checknumber(L, 1)), name(luaL_checkstring(L, 2)), charsetFilename(""), x(luaL_checknumber(L, 3)), y(luaL_checknumber(L, 4)), z(luaL_checknumber(L, 5)), pixX(x*16), pixY(y*16), 
-                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE), 
+                        charset(luaL_checknumber(L, 1)), name(luaL_checkstring(L, 2)), charsetFilename(""), x(luaL_checknumber(L, 3)), y(luaL_checknumber(L, 4)), z(luaL_checknumber(L, 5)), pixX(x*16), pixY(y*16),
+                        position(jlug::Move::DOWN), direction(jlug::Move::NONE), previousDirection(jlug::Move::NONE),
                         speed(4), isMoving(false), animation(0), previousAnimation(1), lastAnimation(clock()), animationTime(0.2)
 {
     std::ostringstream buffer;
@@ -643,7 +643,7 @@ void jlug::Character::display(jlug::Map& map, jlug::Window& win)
     square.setTextureZone(rect.x, rect.y, rect.w, rect.h);
     square.setTexture(sprite.getTexture());
 
-    // Finally ! 
+    // Finally !
     square.draw();
  }
 
@@ -662,7 +662,7 @@ void jlug::Character::displayUsername(jlug::Window& win)
     //glTranslatef(0, 0, worldCoordinates.z);
 
     win.text("Patate", worldCoordinates.x, worldCoordinates.y);
-    // Yeah, this method does absolutely nothing. 
+    // Yeah, this method does absolutely nothing.
 
 }
 

@@ -40,7 +40,7 @@ jlug::Window::Window(unsigned int width, unsigned int height, const std::string&
      debugWinstr.SetSize(12);
 
 
-    glEnable(GL_TEXTURE_2D); 
+    glEnable(GL_TEXTURE_2D);
     glClearDepth(1.f);
     glClearColor(0.f, 0.f, 0.f, 0.f);
 
@@ -71,7 +71,7 @@ jlug::Window::Window(lua_State* L):
      debugWinstr.SetSize(12);
 
 
-    glEnable(GL_TEXTURE_2D); 
+    glEnable(GL_TEXTURE_2D);
     glClearDepth(1.f);
     glClearColor(0.f, 0.f, 0.f, 0.f);
 
@@ -330,14 +330,14 @@ int jlug::Window::debug(lua_State* L)
 
 void jlug::Window::beforeDisplaying(void)
 {
-    glMatrixMode(GL_MODELVIEW); 
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  | GL_TEXTURE_BIT | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING); 
+    glDisable(GL_LIGHTING);
 }
 
 void jlug::Window::afterDisplaying(void)

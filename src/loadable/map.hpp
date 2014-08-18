@@ -33,7 +33,7 @@ namespace jlug
     * \class Map
     * \brief Orthogonal tiles format displaying
     */
-    
+
     class Map
     {
         private:

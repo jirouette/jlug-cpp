@@ -84,7 +84,7 @@ void jlug::Shape::rotate(const double& x, const double& y, const double& z)
 {
     jlug::Point rAxes;
 
-    // We don't need pixelTranslation here. Rotation is... particular. 
+    // We don't need pixelTranslation here. Rotation is... particular.
     rAxes.x = x;
     rAxes.y = -y; // Y-axis is reversed
     rAxes.z = z;
@@ -104,7 +104,7 @@ void jlug::Shape::scale(const double& x, const double& y, const double& z)
     jlug::Point sAxes;
 
     sAxes.x = x*pixelTranslation.x;
-    sAxes.y = y*pixelTranslation.y; // We don't care if the Y-axis is reversed or not. 
+    sAxes.y = y*pixelTranslation.y; // We don't care if the Y-axis is reversed or not.
     sAxes.z = z*pixelTranslation.z;
 
     if (sAxes.x != 0 || sAxes.y != 0 || sAxes.z != 0) // saving
@@ -137,7 +137,7 @@ void jlug::Shape::applyTransformations(void)
             glTranslatef(transformation.second.x, transformation.second.y, transformation.second.z);
         else if (transformation.first == jlug::Shape::ROTATION)
         {
-            // Even in the applying, Rotation is particular... 
+            // Even in the applying, Rotation is particular...
             glRotatef(transformation.second.x, 1, 0, 0);
             glRotatef(transformation.second.y, 0, 1, 0);
             glRotatef(transformation.second.z, 0, 0, 1);
@@ -167,7 +167,7 @@ void jlug::Shape::setPosition(const jlug::Point& pAxes)
 void jlug::Shape::setPosition(const double& x, const double& y, const double& z)
 {
     centerAxes.x = x;
-    centerAxes.y = -y; // Y-Axis is reversed ! 
+    centerAxes.y = -y; // Y-Axis is reversed !
     centerAxes.z = z;
 }
 
@@ -231,7 +231,7 @@ GLuint jlug::Shape::getTexture(void)
 
 /**
 * \brief sets the size of the texture source
-* \param size : well... Y U NO UNDERSTAND "SIZE" ? 
+* \param size : well... Y U NO UNDERSTAND "SIZE" ?
 */
 void jlug::Shape::setTextureSize(const jlug::Rectangle<double>& size)
 {

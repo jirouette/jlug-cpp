@@ -7,8 +7,11 @@
 #include <iostream>
 
 void game(void)
- {
-    jlug::Window win(800, 600, "hello world ! ");
+{
+    std::ostringstream title;
+    title << "jLug - " << GIT_VERSION;
+
+    jlug::Window win(800, 600, title.str());
     jlug::Input input = win.getInput();
 
     jlug::Map map("../res/maps/map.tmx", win, input);
@@ -35,17 +38,17 @@ void game(void)
 
         //first.move(map);
 
-        //player.move(map); // hi ! 
+        //player.move(map); // hi !
 
         map.moveCharacters();
         for (unsigned int k(0);k<map.getDepth();++k)
             map.displayLayer(win, k);
         map.displayCharacters(win);
-        
+
 
 
         //player.displayUsername(win);
-        
+
         win.flip();
     }
     win.close();

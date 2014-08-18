@@ -1,10 +1,13 @@
+GIT_VERSION := $(shell git describe --abbrev=4 --dirty --always)
+
 CXX=g++
-CFLAGS=-W -Wall -Wextra -ansi -pedantic -s -O2 -DTIXML_USE_STL -DGL_GLEXT_PROTOTYPES $(INCLUDE)
+CFLAGS=-W -Wall -Wextra -ansi -pedantic -s -O2 -DTIXML_USE_STL -DGL_GLEXT_PROTOTYPES -DGIT_VERSION=\"$(GIT_VERSION)\" $(INCLUDE)
 INCLUDE=-Isrc/entities -Isrc/loadable -Isrc/models -Isrc/ -Isrc/utils -Isrc/geom -Ilib/ -Ilib/utils/ -Ilib/TmxParser/ -Ilib/TmxParser/base64/
 LDFLAGS=-lsfml-system -lsfml-graphics -lsfml-window -ltinyxml -lGL -lglut -lGLU -lz -llua5.2
 EXEC=bin/jlug
 SRC= $(wildcard src/geom/*.cpp) $(wildcard src/entities/*.cpp) $(wildcard src/loadable/*.cpp) $(wildcard src/models/*.cpp) $(wildcard src/utils/*.cpp) $(wildcard src/*.cpp) $(wildcard lib/*.cpp) $(wildcard lib/utils/*.cpp) $(wildcard lib/TmxParser/*.cpp) $(wildcard lib/TmxParser/base64/*.cpp)
 OBJ= $(SRC:.cpp=.o)
+
 
 build: $(EXEC)
 

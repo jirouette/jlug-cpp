@@ -5,15 +5,31 @@
 * \author jirouette
 */
 
+const char jlug::Constants::className[] = "Constants";
+Lunar<jlug::Constants>::RegType jlug::Constants::methods[] = {
+    LUNAR_DECLARE_METHOD(jlug::Constants, get),
+    {0,0}
+};
+
+luaL_reg jlug::Constants::functions[] = {
+    LUNAR_DECLARE_METHOD(jlug::Constants, getInstance),
+    {0,0}
+};
+
 /**
-* \brief Default and only constructor. Does nothing. 
+* \brief Default and only constructor. Does nothing.
 */
 jlug::Constants::Constants()
                     :stringConstants(), numericConstants()
 {}
 
+jlug::Constants::Constants(lua_State* L):stringConstants(), numericConstants()
+{
+    (void) L;
+}
+
 /**
-* \brief Destructor. Does nothing. 
+* \brief Destructor. Does nothing.
 */
 jlug::Constants::~Constants()
 {}
@@ -27,17 +43,24 @@ jlug::Constants& jlug::Constants::getInstance(void)
     return *instance;
 }
 
+int jlug::Constants::getInstance(lua_State *L)
+{
+    Lunar<Constants>::push(L, &getInstance());
+
+    return 1;
+}
+
 /**
 * \brief get a numeric constant
 */
 double jlug::Constants::getNumeric(const std::string& name)
 {
-    std::map<std::string, double>::iterator 
+    std::map<std::string, double>::iterator
     it(numericConstants.find(name));
 
-    if (it != numericConstants.end()) // Found it ! 
+    if (it != numericConstants.end()) // Found it !
         return it->second;
-    
+
     // Nothing ? Let's check stringConstants...
 
     std::map<std::string, std::string>::iterator

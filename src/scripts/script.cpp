@@ -48,6 +48,8 @@ void jlug::Script::init()
 	Lunar<jlug::Input>::Register(L);
 	Lunar<jlug::Map>::Register(L);
 	Lunar<jlug::Character>::Register(L);
+	Lunar<jlug::Constants>::Register(L);
+	Lunar<jlug::Constants>::register_functions(L); //For static methods
 	working = !(luaL_loadfile(L, (jlug::Constants::getInstance().get("path")+name).c_str()) || lua_pcall(L, 0, 0, 0));
 	if (!working)
 		error() << "Cannot read '" << name << "' : " << lua_tostring(L, -1) << std::endl;

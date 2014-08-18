@@ -31,6 +31,7 @@ int main(int argc, char* argv[])
         jlug::Constants::getInstance().set("path", "./");
     }
 
+    jlug::Constants::getInstance().set("git_version", GIT_VERSION);
     jlug::Constants::getInstance().set("charsets", "../res/charsets/");
 
     jlug::Script("../scripts/main.lua");

@@ -55,6 +55,12 @@ public:
     lua_pop(L, 2);  // drop metatable and method table
   }
 
+  static void register_functions(lua_State *L)
+  {
+    luaL_openlib(L, T::className, T::functions, 0);
+    lua_pop(L, 1);
+  }
+
   // call named lua method from userdata method table
   static int call(lua_State *L, const char *method,
                   int nargs=0, int nresults=LUA_MULTRET, int errfunc=0)

@@ -1,7 +1,7 @@
 ![jlug logo](https://github.com/jirouette/jlug/raw/master/res/images/logo.png "jlug") jlug
 =================
 
-
+**This project is now longer maintained :(**
     
 What is *jlug* ? 
 -----------------
